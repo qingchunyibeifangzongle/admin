@@ -18,6 +18,7 @@ type Power struct {
 	Action           string         `orm:"size(100)" form:"Action"  valid:"Required"`
 	Powername       string          `orm:"size(100)" form:"Powername" valid:"Required;MaxSize(20);MinSize(6)"`
 	Pid             int             `form:"Pid"  valid:"Required"`
+	Level           int             `orm:"default(2)" form:"Level" valid:"Range(1,2);"`
 	Status          int             `orm:"default(2)" form:"Status" valid:"Range(1,2);"`
 	Createtime      time.Time       `orm:"type(datetime);auto_now_add"`
 	Updatetime      time.Time       `orm:"null;type(datetime)" form:"-"`
@@ -28,4 +29,17 @@ func (u *Power) TableName() string {
 }
 func init() {
 	orm.RegisterModel(new(Power))
+}
+
+func GetPowerTree(pid int64) ([]orm.Params, error) {
+	o := orm.NewOrm()
+	power := new(Power)
+	var powers []orm.Params
+	_ , err := o.QueryTable(power).Filter("pid",pid).Values(&powers)
+	if err != nil {
+		return powers,err
+	}
+	return powers,nil
+	
+	
 }

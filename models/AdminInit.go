@@ -157,11 +157,11 @@ func insertRole() {
 //insert into role_power 派生表
 func insertRolePower() {
 	fmt.Println("insert into role_power ...")
-	u := new(RolePower)
-	u.Role_id = 1
-	u.Power_id = 1
-	o := orm.NewOrm()
-	o.Insert(u)
+	//u := new(RolePower)
+	//u.Role_id = 1
+	//u.Power_id = 1
+	//o := orm.NewOrm()
+	//o.Insert(u)
 	fmt.Println("insert into role_power end")
 }
 
@@ -169,22 +169,22 @@ func insertRolePower() {
 func insertPower() {
 	fmt.Println("insert into power ...")
 	power := [16]Power{
-		{Controller:"admin",Action:"index",Powername:"后台管理员管理",Pid:0,Status:2}, //id 1
-		{Controller:"admin/user",Action:"user",Powername:"用户列表",Pid:1,Status:2},  //id 2
-		{Controller:"admin/role",Action:"role",Powername:"角色列表",Pid:1,Status:2},  //id 3
-		{Controller:"admin/power",Action:"power",Powername:"权限列表",Pid:1,Status:2}, //id 4
-		{Controller:"admin/user",Action:"edit",Powername:"用户列表",Pid:2,Status:2},
-		{Controller:"admin/user",Action:"add",Powername:"用户列表",Pid:2,Status:2},
-		{Controller:"admin/user",Action:"upd",Powername:"用户列表",Pid:2,Status:2},
-		{Controller:"admin/user",Action:"del",Powername:"用户列表",Pid:2,Status:2},
-		{Controller:"admin/role",Action:"edit",Powername:"角色列表",Pid:3,Status:2},
-		{Controller:"admin/role",Action:"add",Powername:"角色列表",Pid:3,Status:2},
-		{Controller:"admin/role",Action:"upd",Powername:"角色列表",Pid:3,Status:2},
-		{Controller:"admin/role",Action:"del",Powername:"角色列表",Pid:3,Status:2},
-		{Controller:"admin/power",Action:"edit",Powername:"权限列表",Pid:4,Status:2},
-		{Controller:"admin/power",Action:"add",Powername:"权限列表",Pid:4,Status:2},
-		{Controller:"admin/power",Action:"upd",Powername:"权限列表",Pid:4,Status:2},
-		{Controller:"admin/power",Action:"del",Powername:"权限列表",Pid:4,Status:2},
+		{Controller:"admin",Action:"index",Powername:"后台管理员管理",Pid:0,Level:1,Status:2}, //id 1
+		{Controller:"admin/user",Action:"user",Powername:"用户列表",Pid:1,Level:1,Status:2},  //id 2
+		{Controller:"admin/role",Action:"role",Powername:"角色列表",Pid:1,Level:1,Status:2},  //id 3
+		{Controller:"admin/power",Action:"power",Powername:"权限列表",Pid:1,Level:1,Status:2}, //id 4
+		{Controller:"admin/user",Action:"edit",Powername:"用户列表",Pid:2,Level:2,Status:2},
+		{Controller:"admin/user",Action:"add",Powername:"用户列表",Pid:2,Level:2,Status:2},
+		{Controller:"admin/user",Action:"upd",Powername:"用户列表",Pid:2,Level:2,Status:2},
+		{Controller:"admin/user",Action:"del",Powername:"用户列表",Pid:2,Level:2,Status:2},
+		{Controller:"admin/role",Action:"edit",Powername:"角色列表",Pid:3,Level:2,Status:2},
+		{Controller:"admin/role",Action:"add",Powername:"角色列表",Pid:3,Level:2,Status:2},
+		{Controller:"admin/role",Action:"upd",Powername:"角色列表",Pid:3,Level:2,Status:2},
+		{Controller:"admin/role",Action:"del",Powername:"角色列表",Pid:3,Level:2,Status:2},
+		{Controller:"admin/power",Action:"edit",Powername:"权限列表",Pid:4,Level:2,Status:2},
+		{Controller:"admin/power",Action:"add",Powername:"权限列表",Pid:4,Level:2,Status:2},
+		{Controller:"admin/power",Action:"upd",Powername:"权限列表",Pid:4,Level:2,Status:2},
+		{Controller:"admin/power",Action:"del",Powername:"权限列表",Pid:4,Level:2,Status:2},
 	}
 	
 	for _,v := range power  {
@@ -194,7 +194,13 @@ func insertPower() {
 		n.Action = v.Action
 		n.Pid = v.Pid
 		n.Status = v.Status
+		n.Level = v.Level
 		o.Insert(n)
+		
+		u := new(RolePower)
+		u.Role_id = 1
+		u.Power_id = v.Id
+		o.Insert(u)
 	}
 	fmt.Println("insert into power end")
 }
