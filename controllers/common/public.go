@@ -5,7 +5,10 @@
 
 package common
 
-import "github.com/astaxie/beego"
+import (
+	"github.com/astaxie/beego"
+	"admin/models"
+)
 
 type MainController struct {
 	CommonController
@@ -66,6 +69,44 @@ func (this *MainController) Login()  {
 		this.Ctx.Redirect(302, "/public/index")
 	}
 	this.TplName = this.GetTemplatetype() + "/public/login.tpl"
+}
+
+//退出
+func (this *MainController) Logout() {
+	this.DelSession("userinfo")
+	this.Ctx.Redirect(302,"/public/login")
+}
+
+//修改密码
+func (this *MainController) Changepwd() {
+	userinfo := this.GetSession("userinfo")
+	if userinfo == nil {
+		this.Ctx.Redirect(302,beego.AppConfig.String("rbac_auth_gateway"))
+	}
+	
+	oldPwd := this.GetString("oldpassword")
+	newPwd := this.GetString("newpassword")
+	repeatPwd := this.GetString("repeatpassword")
+	
+	if newPwd != repeatPwd {
+		this.Rsp(false,"两次输入的密码不一致！")
+	}
+	user , err := CheckLogin(userinfo.(models.User).Username,oldPwd)
+	if err == nil {
+		var u models.User
+		u.Password = newPwd
+		u.Id  = user.Id
+		num , err := models.UpdPwd(&u)
+		
+		if err == nil && num > 0 {
+			this.Rsp(true , "密码修改成功！")
+			return
+		} else {
+			this.Rsp(false , err.Error())
+			return
+		}
+	}
+	this.Rsp(false , "密码有误！")
 }
 
 
