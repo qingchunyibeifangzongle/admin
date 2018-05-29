@@ -8,6 +8,7 @@ package common
 import (
 	"github.com/astaxie/beego"
 	"admin/models"
+	"fmt"
 )
 
 type MainController struct {
@@ -38,9 +39,20 @@ func (this *MainController) Index() {
 	if userinfo == nil {
 		this.Ctx.Redirect(302, beego.AppConfig.String("rbac_auth_gateway"))
 	}
-	this.TplName = this.GetTemplatetype() + "/public/index.tpl"
-	//tree := this.GetTree()
-	
+	tree := this.GetTree()
+	fmt.Println(tree)
+	if this.IsAjax() {
+		this.Data["json"] = &tree
+		this.ServeJSON()
+	} else {
+		//groups := models.GroupList()
+		this.Data["tree"] = &tree
+		this.Data["userinfo"] = userinfo
+		if this.GetTemplatetype() != "easyui"{
+			this.Layout = this.GetTemplatetype() + "/public/layout.tpl"
+		}
+		this.TplName = this.GetTemplatetype() + "/public/index.tpl"
+	}
 	
 	
 }
@@ -52,7 +64,6 @@ func (this *MainController) Login()  {
 		username := this.GetString("username")
 		password := this.GetString("password")
 		user ,err := CheckLogin(username,password)
-		beego.Debug(user)
 		if err == nil  {
 			this.SetSession("userinfo",user)
 			accessList, _ := GetAccessList(user.Id)
