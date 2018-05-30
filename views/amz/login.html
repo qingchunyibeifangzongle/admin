@@ -38,38 +38,49 @@
   {{/*<script src="/static/assets/js/app.js"></script>*/}}
   <script type="text/javascript">
       var URL="/public"
-		  $(".am-btn-default").click(function () {
-			  username = $("#doc-ipt-email-1").val();
-			  password = $("#doc-ipt-pwd-1").val();
-			  if(username == "") {
-			      alert("null");
-				  return
-			  }
-			  if(password == "") {
-			      alert("null");
-				  return
-			  }
+      $(function () {
+          $(".am-btn-default").click(function () {
+              var username = $("#doc-ipt-email-1").val();
+              var password = $("#doc-ipt-pwd-1").val();
+              if (username == "") {
+                  alert("null");
+                  $('#doc-ipt-email-1').focus();
+                  return
+              }
+              if (password == "") {
+                  alert("null");
+                  $("#doc-ipt-pwd-1").focus();
+                  return
+              }
               $.ajax({
                   type: "post",
-                  url: URL+'/login',
-                  data: {isajax:1,username:username,password:password},
+                  url: URL + '/login',
+                  data: {isajax: 1, username: username, password: password},
                   dataType: 'json',
-                  success: function(r){
+                  success: function (r) {
                       // console.log(r)
                       // var rs = $.parseJSON( r )
                       // var rs = JSON.parse(r)
-					  // alert(rs)
+                      // alert(rs)
 
-                      if(r.status){
-                          location.href = URL+"/index"
-                      }else{
+                      if (r.status) {
+                          location.href = URL + "/index"
+                      } else {
                           alert(r.info);
                           return
                       }
 
-				  }
+                  }
               });
-          })
+          });
+		  document.onkeydown = function(e){
+			  var ev = document.all ? window.event : e;
+			  if(ev.keyCode==13) {
+				  $('.am-btn-default').triggerHandler('click');
+			  }
+		  }
+      })
+
   </script>
 </body>
 
