@@ -8,7 +8,6 @@ package common
 import (
 	"github.com/astaxie/beego"
 	"admin/models"
-	"fmt"
 )
 
 type MainController struct {
@@ -30,7 +29,7 @@ type Attributes struct {
 }
 
 func (this *MainController) Admin(){
-	this.TplName = this.GetTemplatetype() + "/public/login.tpl"
+	this.TplName = this.GetTemplatetype() + "/login.html"
 }
 //首页
 //session不存在，跳到网关登陆页面
@@ -40,7 +39,6 @@ func (this *MainController) Index() {
 		this.Ctx.Redirect(302, beego.AppConfig.String("rbac_auth_gateway"))
 	}
 	tree := this.GetTree()
-	fmt.Println(tree)
 	if this.IsAjax() {
 		this.Data["json"] = &tree
 		this.ServeJSON()
@@ -48,10 +46,10 @@ func (this *MainController) Index() {
 		//groups := models.GroupList()
 		this.Data["tree"] = &tree
 		this.Data["userinfo"] = userinfo
-		if this.GetTemplatetype() != "easyui"{
-			this.Layout = this.GetTemplatetype() + "/public/layout.tpl"
+		if this.GetTemplatetype() != "amz"{
+			this.Layout = this.GetTemplatetype() + "/layout.tpl"
 		}
-		this.TplName = this.GetTemplatetype() + "/public/index.tpl"
+		this.TplName = this.GetTemplatetype() + "/index.html"
 	}
 	
 	
@@ -60,6 +58,7 @@ func (this *MainController) Index() {
 //登陆
 func (this *MainController) Login()  {
 	isajax := this.GetString("isajax")
+	this.Data["json"] = isajax
 	if isajax == "1" {
 		username := this.GetString("username")
 		password := this.GetString("password")
@@ -76,10 +75,11 @@ func (this *MainController) Login()  {
 		}
 	}
 	userinfo := this.GetSession("userinfo")
+	beego.Info(userinfo)
 	if userinfo != nil {
 		this.Ctx.Redirect(302, "/public/index")
 	}
-	this.TplName = this.GetTemplatetype() + "/public/login.tpl"
+	this.TplName = this.GetTemplatetype() + "/login.html"
 }
 
 //退出

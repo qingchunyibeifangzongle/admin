@@ -58,3 +58,19 @@ func UpdPwd(u *User)(int64, error) {
 	num,err := o.QueryTable(table).Filter("Id",u.Id).Update(user)
 	return num ,err
 }
+
+func Getuserlist(page int64, pageSize int64 , sort string) (users []orm.Params , count int64){
+	o := orm.NewOrm()
+	user := new(User)
+	qs := o.QueryTable(user)
+	var offset int64
+	if page <= 1 {
+		offset = 0
+	} else {
+		offset = (page - 1) * pageSize
+	}
+	
+	qs.Limit(pageSize , offset).OrderBy(sort).Values(&users)
+	count , _ = qs.Count()
+	return users , count
+}

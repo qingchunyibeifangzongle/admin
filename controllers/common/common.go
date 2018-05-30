@@ -26,6 +26,7 @@ func (this *CommonController) GetTree() []Tree {
 	for k,v := range powers {
 		tree[k].Id = v["Id"].(int64)
 		tree[k].Text = v["Powername"].(string)
+		
 		children, _ := models.GetPowerTree(v["Id"].(int64), 2)
 		tree[k].Children = make([]Tree , len(children))
 		for k1,v1 := range children {

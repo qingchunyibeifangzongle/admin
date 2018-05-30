@@ -31,15 +31,24 @@ func init() {
 	orm.RegisterModel(new(Power))
 }
 
-func GetPowerTree(pid int64) ([]orm.Params, error) {
+func GetPowerTree(pid int64 , level int64) ([]orm.Params, error) {
 	o := orm.NewOrm()
 	power := new(Power)
 	var powers []orm.Params
-	_ , err := o.QueryTable(power).Filter("pid",pid).Values(&powers)
+	_, err := o.QueryTable(power).Filter("Pid", pid).Filter("Level" , level).Values(&powers)
 	if err != nil {
-		return powers,err
+		return powers, err
 	}
-	return powers,nil
-	
-	
+	return powers, nil
+}
+
+
+
+func GroupList() (groups []orm.Params) {
+	//o := orm.NewOrm()
+	//group := new(Group)
+	//qs := o.QueryTable(group)
+	//qs.Values(&groups, "id", "title")
+	//return groups
+	return
 }

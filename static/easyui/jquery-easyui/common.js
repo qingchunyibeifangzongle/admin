@@ -19,7 +19,7 @@ vac.ajax = function(url,data,type,callback)
 		url: url,
 		type: type,
 		data: data,
-		dataType: 'json',
+
         async: false,
 		timeout: 180000,
 		error: function(request, type, ex){

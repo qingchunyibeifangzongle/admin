@@ -27,3 +27,51 @@ func (u *Role) TableName() string {
 func init() {
 	orm.RegisterModel(new(Role))
 }
+
+func Accesslist(id int64) (list []orm.Params, err error) {
+	var users []orm.Params
+	o := orm.NewOrm()
+	userRole := new(UserRole)
+	_, err = o.QueryTable(userRole).Filter("User_id",id).Values(&users)
+	if err != nil {
+		return nil,err
+	}
+	var role_id interface{}
+	for _,v := range users {
+		role_id  = v["Role_id"]
+	}
+	var roles []orm.Params
+	role := new(Role)
+	_,err = o.QueryTable(role).Filter("id",role_id).Values(&roles)
+	if err != nil {
+		return nil,err
+	}
+	
+	var powerId []orm.Params
+	role_power := new(RolePower)
+	for _,v := range roles {
+		_,err = o.QueryTable(role_power).Filter("Role_id",v["Id"]).Values(&powerId)
+	}
+	
+	if err != nil {
+		return nil,err
+	}
+	
+	
+	//这个里面的roles是多维数组，有n个power——id，so raqnge去select
+	var powers []orm.Params
+	power := new(Power)
+	for _,v := range powerId {
+		_,err = o.QueryTable(power).Filter("id",v["Power_id"]).Values(&powers)
+		if err != nil  {
+			return nil,err
+		}
+		
+		for _,n := range powers {
+			list = append(list, n)
+			
+		}
+	}
+	
+	return list,nil
+}

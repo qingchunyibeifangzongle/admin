@@ -17,6 +17,11 @@ func init() {
 	
 	
 	
+	beego.Router("admin/changepwd",&common.MainController{},"*:Changepwd")
+	beego.Router("admin/user/index",&common.MainController{},"*:Index")
+	
+	
+	
 	
 	//
 	//beego.Router("/", &rbac.MainController{}, "*:Index")

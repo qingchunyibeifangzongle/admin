@@ -39,9 +39,9 @@ function fromsubmit(){
 var SubmitOrHidden = function(evt){
     evt = window.event || evt;
     if(evt.keyCode==13){//如果取到的键值是回车
-          fromsubmit();       
+          fromsubmit();
      }
-                
+
 }
 window.document.onkeydown=SubmitOrHidden;//当有键按下时执行函数
 </script>
