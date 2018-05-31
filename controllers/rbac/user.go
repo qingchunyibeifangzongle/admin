@@ -8,6 +8,7 @@ package rbac
 import (
 	"admin/controllers/common"
 	"admin/models"
+	"github.com/astaxie/beego/orm"
 )
 
 type UserController struct {
@@ -47,7 +48,8 @@ func (this *UserController) Index ()  {
 	}
 }
 
-
+//user add
+//user redirect
 func (this *UserController) UserAdd() {
 	userinfo := this.GetSession("userinfo")
 	if userinfo == nil {
@@ -56,4 +58,22 @@ func (this *UserController) UserAdd() {
 	tree := this.GetTree()
 	this.Data["tree"] = &tree
 	this.TplName = this.GetTemplatetype() + "/useradd.html"
+}
+
+// user add  now
+func (this *UserController) UserAdds() {
+	username := this.GetString("username")
+	password := this.GetString("password")
+	email := this.GetString("email")
+	
+	o := orm.NewOrm()
+	user := new(models.User)
+	user.Username = username
+	user.Password = models.Pwdhash(password)
+	user.Email = email
+	num,_ := o.Insert(user)
+	if num == 0 {
+		this.Rsp(false,"用户添加失败！")
+	}
+	this.Rsp(true,"用户添加成功！")
 }

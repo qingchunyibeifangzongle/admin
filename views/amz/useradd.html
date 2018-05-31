@@ -49,16 +49,6 @@
                         <span class=""></span> <a href="/public/index" class="am-icon-home">首页</a>
                         <span class=""></span>>>> 用户添加
                     </div>
-                {{/*<div class="tpl-portlet-input tpl-fz-ml">*/}}
-                {{/*<div class="portlet-input input-small input-inline">*/}}
-                {{/*<div class="input-icon right">*/}}
-                {{/*<i class="am-icon-search"></i>*/}}
-                {{/*<input type="text" class="form-control form-control-solid" placeholder="搜索..."> </div>*/}}
-                {{/*</div>*/}}
-                {{/*</div>*/}}
-
-
-
                 </div>
                 <div class="tpl-block ">
 
@@ -70,47 +60,49 @@
                                 <div class="am-form-group">
                                     <label for="user-name" class="am-u-sm-3 am-form-label">姓名 / Name</label>
                                     <div class="am-u-sm-9">
-                                        <input type="text" id="user-name" placeholder="姓名 / Name">
+                                        <input type="text" id="user-name" name="username" placeholder="姓名 / Name">
                                         <small>输入你的名字，让我们记住你。</small>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="am-form-group">
+                                    <label for="user-password" class="am-u-sm-3 am-form-label">密码 / Passsword</label>
+                                    <div class="am-u-sm-9">
+                                        <input type="tel" id="user-password" name="password" placeholder="输入你的密码 / Password">
                                     </div>
                                 </div>
 
                                 <div class="am-form-group">
                                     <label for="user-email" class="am-u-sm-3 am-form-label">电子邮件 / Email</label>
                                     <div class="am-u-sm-9">
-                                        <input type="email" id="user-email" placeholder="输入你的电子邮件 / Email">
+                                        <input type="email" id="user-email" name="email" placeholder="输入你的电子邮件 / Email">
                                         <small>邮箱你懂得...</small>
                                     </div>
                                 </div>
+                                {{/*<div class="am-form-group">*/}}
+                                    {{/*<label for="user-status" class="am-u-sm-3 am-form-label">状态</label>*/}}
+                                    {{/*<div class="am-u-sm-9">*/}}
+                                        {{/*<input type="radio" name="status" id="user-status1" placeholder="请选择状态" value="1">   <span style="margin-left: 5px">关闭</span>*/}}
+                                        {{/*<input type="radio" name="status" id="user-status2" placeholder="请选择状态" value="2">    <span style="margin-left: 5px">开启</span>*/}}
+                                    {{/*</div>*/}}
+                                {{/*</div>*/}}
 
-                                <div class="am-form-group">
-                                    <label for="user-phone" class="am-u-sm-3 am-form-label">电话 / Telephone</label>
-                                    <div class="am-u-sm-9">
-                                        <input type="tel" id="user-phone" placeholder="输入你的电话号码 / Telephone">
-                                    </div>
-                                </div>
+                                {{/*<div class="am-form-group">*/}}
+                                    {{/*<label for="user-weibo" class="am-u-sm-3 am-form-label">微博 / Twitter</label>*/}}
+                                    {{/*<div class="am-u-sm-9">*/}}
+                                        {{/*<input type="text" id="user-weibo" placeholder="输入你的微博 / Twitter">*/}}
+                                    {{/*</div>*/}}
+                                {{/*</div>*/}}
 
-                                <div class="am-form-group">
-                                    <label for="user-QQ" class="am-u-sm-3 am-form-label">QQ</label>
-                                    <div class="am-u-sm-9">
-                                        <input type="number" pattern="[0-9]*" id="user-QQ" placeholder="输入你的QQ号码">
-                                    </div>
-                                </div>
-
-                                <div class="am-form-group">
-                                    <label for="user-weibo" class="am-u-sm-3 am-form-label">微博 / Twitter</label>
-                                    <div class="am-u-sm-9">
-                                        <input type="text" id="user-weibo" placeholder="输入你的微博 / Twitter">
-                                    </div>
-                                </div>
-
-                                <div class="am-form-group">
-                                    <label for="user-intro" class="am-u-sm-3 am-form-label">简介 / Intro</label>
-                                    <div class="am-u-sm-9">
-                                        <textarea class="" rows="5" id="user-intro" placeholder="输入个人简介"></textarea>
-                                        <small>250字以内写出你的一生...</small>
-                                    </div>
-                                </div>
+                                {{/*<div class="am-form-group">*/}}
+                                    {{/*<label for="user-intro" class="am-u-sm-3 am-form-label">简介 / Intro</label>*/}}
+                                    {{/*<div class="am-u-sm-9">*/}}
+                                        {{/*<textarea class="" rows="5" id="user-intro" placeholder="输入个人简介"></textarea>*/}}
+                                        {{/*<small>250字以内写出你的一生...</small>*/}}
+                                    {{/*</div>*/}}
+                                {{/*</div>*/}}
 
                                 <div class="am-form-group">
                                     <div class="am-u-sm-9 am-u-sm-push-3">
@@ -136,4 +128,28 @@
         </div>
 
     </div>
+
 {{template "../amz/foot.html"}}
+<script>
+	var URL = "/admin/user/"
+	$(".am-btn-primary").click(function () {
+        var username = $("#user-name").val()
+        var password = $("#user-password").val()
+        var email = $("#user-email").val()
+        // var status =  $("input[name='status']:checked").val();
+        $.post(
+            URL + '/adds',
+			{username:username,password:password,email:email},
+			function (res) {
+                if (res.status) {
+                    location.href = URL
+                } else {
+                    alert(res.info);
+                    return
+                }
+
+            }
+		)
+    })
+
+</script>

@@ -20,6 +20,7 @@ func init() {
 	
 	beego.Router("admin/user",&rbac.UserController{},"*:Index")
 	beego.Router("admin/user/add",&rbac.UserController{},"*:UserAdd")
+	beego.Router("admin/user/adds",&rbac.UserController{},"*:UserAdds")
 	
 	
 	
