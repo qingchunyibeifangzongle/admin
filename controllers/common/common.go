@@ -45,7 +45,7 @@ func (this *CommonController) GetTree() []Tree {
 func (this *CommonController) GetTemplatetype() string {
 	templatetype := beego.AppConfig.String("template_type")
 	if templatetype == "" {
-		templatetype = "easyui"
+		templatetype = "amz"
 	}
 	return templatetype
 }

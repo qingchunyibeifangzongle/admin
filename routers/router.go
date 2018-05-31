@@ -4,6 +4,7 @@ import (
 	"github.com/astaxie/beego"
 	"admin/controllers/common"
 	//"admin/controllers"
+	"admin/controllers/rbac"
 )
 
 func init() {
@@ -17,8 +18,8 @@ func init() {
 	
 	
 	
-	beego.Router("admin/changepwd",&common.MainController{},"*:Changepwd")
-	beego.Router("admin/user/index",&common.MainController{},"*:Index")
+	beego.Router("admin/user",&rbac.UserController{},"*:Index")
+	beego.Router("admin/user/add",&rbac.UserController{},"*:UserAdd")
 	
 	
 	

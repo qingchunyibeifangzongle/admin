@@ -4,6 +4,7 @@ import (
 	"github.com/astaxie/beego"
 	//"admin/models"
 	//"github.com/astaxie/beego/orm"
+	
 )
 
 type MainController struct {
@@ -11,6 +12,11 @@ type MainController struct {
 }
 
 func (this *MainController) Get() {
+	const DATE_LAYOUT = "2006-01-02 15:04:05"
+	now := time.Now()
+	now_str := now.Format(DATE_LAYOUT)
+	beego.Info(now_str)
+	this.ServeJSON()
 	this.TplName = "amz/login.html"
 	//models.Connect()
 	//o := orm.NewOrm()

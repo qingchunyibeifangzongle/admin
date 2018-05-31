@@ -46,9 +46,6 @@ func (this *MainController) Index() {
 		//groups := models.GroupList()
 		this.Data["tree"] = &tree
 		this.Data["userinfo"] = userinfo
-		if this.GetTemplatetype() != "amz"{
-			this.Layout = this.GetTemplatetype() + "/layout.tpl"
-		}
 		this.TplName = this.GetTemplatetype() + "/index.html"
 	}
 	
