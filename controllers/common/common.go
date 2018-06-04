@@ -32,7 +32,7 @@ func (this *CommonController) GetTree() []Tree {
 		for k1,v1 := range children {
 			tree[k].Children[k1].Id = v1["Id"].(int64)
 			tree[k].Children[k1].Text = v1["Powername"].(string)
-			tree[k].Children[k1].Attributes.Url = "/" + v["Action"].(string)+ "/" + v1["Action"].(string)
+			tree[k].Children[k1].Attributes.Url = "/" + v["Controller"].(string)+ "/" + v1["Action"].(string)
 		}
 	}
 	return tree
