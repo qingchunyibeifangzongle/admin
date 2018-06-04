@@ -9,6 +9,9 @@ import (
 	"admin/controllers/common"
 	"admin/models"
 	"github.com/astaxie/beego/orm"
+	"github.com/astaxie/beego"
+	"strconv"
+	"reflect"
 )
 
 type UserController struct {
@@ -16,36 +19,40 @@ type UserController struct {
 }
 
 func (this *UserController) Index ()  {
+	
 	userinfo := this.GetSession("userinfo")
 	if userinfo == nil {
 		this.Ctx.Redirect(302,"/public/login")
 	}
-	page , _ := this.GetInt64("page")
-	pageSize ,_  := this.GetInt64("rows")
-	sort := this.GetString("sort")
-	order := this.GetString("order")
+	//var pagination []orm.Params
 	
-	if len(order) > 0 {
-		if order == "desc" {
-			sort = "-" + sort
-		}
-	} else {
-		sort = "Id"
-	}
-	
-	users , count := models.Getuserlist(page , pageSize ,sort)
-	
-	if this.IsAjax() {
-		this.Data["json"] = &map[string]interface{}{"total":count , "rows": &users}
-		this.ServeJSON()
-		return
-	} else  {
-		tree := this.GetTree()
-		this.Data["tree"] = &tree
-		this.Data["users"] = &users
-		
-		this.TplName = this.GetTemplatetype() + "/userlist.html"
-	}
+	const pageSize = 1
+	var page int
+	//var offset int
+	this.Ctx.Input.Bind(&page,"page")
+ 	////pageSize ,_  := this.GetInt64("rows")
+	//sort := this.GetString("sort")
+	//order := this.GetString("order")
+	////
+	//if len(order) > 0 {
+	//	if order == "desc" {
+	//		sort = "-" + sort
+	//	}
+	//} else {
+	//	sort = "Id"
+	//}
+	//
+	var sort string
+	sort = "Id"
+	users , totalRows := models.Getuserlist(page , pageSize ,sort)
+	res := models.Paginator(page, pageSize, totalRows)
+	tree := this.GetTree()
+	this.Data["tree"] = &tree
+	this.Data["users"] = &users
+	this.Data["paginator"] = res
+	this.Data["totals"] = totalRows
+	this.TplName = this.GetTemplatetype() + "/userlist.html"
+
 }
 
 //user add
@@ -57,6 +64,7 @@ func (this *UserController) UserAdd() {
 	}
 	tree := this.GetTree()
 	this.Data["tree"] = &tree
+	this.Data["users"] = userinfo
 	this.TplName = this.GetTemplatetype() + "/useradd.html"
 }
 
@@ -76,4 +84,41 @@ func (this *UserController) UserAdds() {
 		this.Rsp(false,"用户添加失败！")
 	}
 	this.Rsp(true,"用户添加成功！")
+}
+
+// user edit redirect
+func (this *UserController) UserEdit() {
+	userinfo := this.GetSession("userinfo")
+	if userinfo == nil {
+		this.Ctx.Redirect(302,"/public/login")
+	}
+	tree := this.GetTree()
+	this.Data["tree"] = &tree
+	this.Data["username"] = userinfo.(models.User).Username
+	this.Data["email"] = userinfo.(models.User).Email
+	this.Data["id"] = userinfo.(models.User).Id
+	
+	this.TplName = this.GetTemplatetype() + "/useredit.html"
+}
+
+// user edit now
+func (this *UserController) UserEdits() {
+	email := this.GetString("email")
+	username := this.GetString("username")
+	id := this.GetString("id")
+	intid ,_ := strconv.ParseInt(id, 10, 64)
+	u := models.User{Id:intid,Username:username,Email:email}
+	if err := this.ParseForm(&u); err != nil {
+		//handle error
+		this.Rsp(false, err.Error())
+		return
+	}
+	beego.Info(u)
+	//id, err := models.UpdUser(&u)
+	//if err == nil && id >0 {
+	//	this.Rsp(true, "Success")
+	//	return
+	//} else {
+	//	this.Rsp(false, err.Error())
+	//}
 }

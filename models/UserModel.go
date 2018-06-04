@@ -59,11 +59,11 @@ func UpdPwd(u *User)(int64, error) {
 	return num ,err
 }
 
-func Getuserlist(page int64, pageSize int64 , sort string) (users []orm.Params , count int64){
+func Getuserlist(page int, pageSize int , sort string) (users []orm.Params , count int64){
 	o := orm.NewOrm()
 	user := new(User)
 	qs := o.QueryTable(user)
-	var offset int64
+	var offset int
 	if page <= 1 {
 		offset = 0
 	} else {
@@ -73,4 +73,31 @@ func Getuserlist(page int64, pageSize int64 , sort string) (users []orm.Params ,
 	qs.Limit(pageSize , offset).OrderBy(sort).Values(&users)
 	count , _ = qs.Count()
 	return users , count
+}
+
+//修改用户信息
+func UpdUser(u *User) (int64 ,error) {
+	//if err := checkUser(u); err != nil {
+	//	return 0, err
+	//}
+	o := orm.NewOrm()
+	
+	user := make(orm.Params)
+	if len(u.Username) > 0 {
+		user["Username"] = u.Username
+	}
+	
+	if len(u.Email) > 0 {
+		user["Email"] = u.Email
+	}
+	if len(u.Password) > 0 {
+		user["Password"] = Strtomd5(u.Password)
+	}
+	if len(user) == 0 {
+		return 0, errors.New("update field is empty")
+	}
+	var table User
+	num, err := o.QueryTable(table).Filter("Id", u.Id).Update(user)
+	return num, err
+	
 }

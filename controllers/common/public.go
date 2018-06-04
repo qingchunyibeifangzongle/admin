@@ -72,7 +72,6 @@ func (this *MainController) Login()  {
 		}
 	}
 	userinfo := this.GetSession("userinfo")
-	beego.Info(userinfo)
 	if userinfo != nil {
 		this.Ctx.Redirect(302, "/public/index")
 	}

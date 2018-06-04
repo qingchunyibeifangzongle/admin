@@ -74,25 +74,25 @@
                             <div class="am-btn-group am-btn-group-xs">
                                 <button type="button" class="am-btn am-btn-default am-btn-success"><span class="am-icon-plus"></span><a
                                         href="/admin/user/add">新增</a></button>
-                                <button type="button" class="am-btn am-btn-default am-btn-secondary"><span class="am-icon-save"></span> 保存</button>
-                                <button type="button" class="am-btn am-btn-default am-btn-warning"><span class="am-icon-archive"></span> 审核</button>
-                                <button type="button" class="am-btn am-btn-default am-btn-danger"><span class="am-icon-trash-o"></span> 删除</button>
+                                {{/*<button type="button" class="am-btn am-btn-default am-btn-secondary"><span class="am-icon-save"></span> 保存</button>*/}}
+                                {{/*<button type="button" class="am-btn am-btn-default am-btn-warning"><span class="am-icon-archive"></span> 审核</button>*/}}
+                                {{/*<button type="button" class="am-btn am-btn-default am-btn-danger"><span class="am-icon-trash-o"></span> 删除</button>*/}}
                             </div>
                         </div>
                     </div>
-                    <div class="am-u-sm-12 am-u-md-3">
-                        <div class="am-form-group">
-                            <select data-am-selected="{btnSize: 'sm'}">
-                                <option value="option1">所有类别</option>
-                                <option value="option2">IT业界</option>
-                                <option value="option3">数码产品</option>
-                                <option value="option3">笔记本电脑</option>
-                                <option value="option3">平板电脑</option>
-                                <option value="option3">只能手机</option>
-                                <option value="option3">超极本</option>
-                            </select>
-                        </div>
-                    </div>
+                    {{/*<div class="am-u-sm-12 am-u-md-3">*/}}
+                        {{/*<div class="am-form-group">*/}}
+                            {{/*<select data-am-selected="{btnSize: 'sm'}">*/}}
+                                {{/*<option value="option1">所有类别</option>*/}}
+                                {{/*<option value="option2">IT业界</option>*/}}
+                                {{/*<option value="option3">数码产品</option>*/}}
+                                {{/*<option value="option3">笔记本电脑</option>*/}}
+                                {{/*<option value="option3">平板电脑</option>*/}}
+                                {{/*<option value="option3">只能手机</option>*/}}
+                                {{/*<option value="option3">超极本</option>*/}}
+                            {{/*</select>*/}}
+                        {{/*</div>*/}}
+                    {{/*</div>*/}}
                     <div class="am-u-sm-12 am-u-md-3">
                         <div class="am-input-group am-input-group-sm">
                             <input type="text" class="am-form-field">
@@ -133,13 +133,20 @@
                                     </td>
                                     <td>{{.Email}}</td>
                                     <td class="createtime">{{.Createtime}}</td>
-                                    <td class="updatetime">{{.Updatetime}}</td>
+                                    <td class="updatetime">
+										{{if .Updatetime}}
+											{{.Updatetime}}
+										{{else}}
+                                            null
+										{{end}}
+									</td>
                                     <td>
                                         <div class="am-btn-toolbar">
                                             <div class="am-btn-group am-btn-group-xs">
-                                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary"><span class="am-icon-pencil-square-o"></span> 编辑</button>
-                                                <button class="am-btn am-btn-default am-btn-xs am-hide-sm-only"><span class="am-icon-copy"></span> 复制</button>
-                                                <button class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only"><span class="am-icon-trash-o"></span> 删除</button>
+                                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary"  style="width: 65.8px;height: 28px"><span class="am-icon-pencil-square-o"></span>
+                                                    <a href="/admin/user/edit">编辑</a></button>
+                                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary"  style="width: 65.8px;height: 28px"><span class="am-icon-trash-o"></span>
+                                                    <a href="/admin/user/del">删除</a></button>
                                             </div>
                                         </div>
                                     </td>
@@ -148,19 +155,32 @@
                                 </tbody>
                             </table>
                             <div class="am-cf">
-
-                                <div class="am-fr">
-                                    <ul class="am-pagination tpl-pagination">
-                                        <li class="am-disabled"><a href="#">«</a></li>
-                                        <li class="am-active"><a href="#">1</a></li>
-                                        <li><a href="#">2</a></li>
-                                        <li><a href="#">3</a></li>
-                                        <li><a href="#">4</a></li>
-                                        <li><a href="#">5</a></li>
-                                        <li><a href="#">»</a></li>
-                                    </ul>
+                                <div class="am-cf">
+                                    共 <span class="total"> {{.totals}} </span> 条记录
+									共记 {{.paginator.totalpages}} 页 当前第 {{.paginator.currpage}} 页
+                                    <div class="am-fr">
+                                        <ul class="am-pagination">
+                                            <li class=""><a href="/admin/user?page={{.paginator.firstpage}}">«</a></li>
+										{{range $index,$page := .paginator.pages}}
+                                            <li  {{if eq $.paginator.currpage $page }}class="am-active"{{end}}><a href="/admin/user?page={{$page}}">{{$page}}</a></li>
+										{{end}}
+                                            <li><a href="/admin/user?page={{.paginator.lastpage}}" class="lastpage">»</a></li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
+
+                                {{/*<div class="am-fr">*/}}
+                                    {{/*<ul class="am-pagination tpl-pagination">*/}}
+                                        {{/*<li class="am-disabled"><a href="#">«</a></li>*/}}
+                                        {{/*<li class="am-active"><a href="#">1</a></li>*/}}
+                                        {{/*<li><a href="#">2</a></li>*/}}
+                                        {{/*<li><a href="#">3</a></li>*/}}
+                                        {{/*<li><a href="#">4</a></li>*/}}
+                                        {{/*<li><a href="#">5</a></li>*/}}
+                                        {{/*<li><a href="#">»</a></li>*/}}
+                                    {{/*</ul>*/}}
+                                {{/*</div>*/}}
                             <hr>
 
                         </form>
@@ -172,26 +192,38 @@
         </div>
 
 
-
-
-
-
-
-
-
-
     </div>
 
 </div>
 
 {{template "../amz/foot.html"}}
 <script>
-    $(function () {
-        var time = $(".createtime").html();
-        a = time.substr(0,19)
-        // $(".createtime").html(date.toLocaleString())
-        $(".createtime").html(a)
+    // $(document).ready(function(){
+    //     $(".createtime").each(function(){
+    //         var createtime = $(this).html()
+    //         create = createtime.substr(0,19);
+    //         $(".createtime").html(create)
+	//
+    //     })
+        // var createtime = $(".createtime").html();
+        // var updatetime = $(".updatetime").html();
+        // create = createtime.substr(0,19);
+        // update = updatetime.substr(0,19);
+        // // $(".createtime").html(date.toLocaleString())
+        // $(".createtime").html(create)
+        // $(".updatetime").html(update)
 
 
+    // })
+
+	$(".lastpage").click(function () {
+		var lastpage = $(".lastpage").parent().html()
+        var url = window.location.href;
+        var arr = url.split("?page=");
+        var total = $(".total").text()
+		if ($.trim(arr[1]) == $.trim(total)) {
+            $(".lastpage").parent().html("<a href='javascript:void(0)' class='lastpage'>»</a>")
+			return  false
+		}
     })
 </script>
