@@ -47,7 +47,7 @@
             <div class="portlet-title">
                 <div class="caption font-green bold">
                     <span class=""></span> <a href="/public/index" class="am-icon-home">首页</a>
-                    <span class=""></span>>>> 用户添加
+                    <span class=""></span>>>> 用户修改
                 </div>
             </div>
             <div class="tpl-block ">
@@ -72,7 +72,7 @@
                             {{/*<div class="am-form-group">*/}}
                                 {{/*<label for="user-password" class="am-u-sm-3 am-form-label">密码 / Passsword</label>*/}}
                                 {{/*<div class="am-u-sm-9">*/}}
-                                    {{/*<input type="tel" id="user-password" name="password" placeholder="{{.Password}}">*/}}
+                                    {{/*<input type="tel" id="user-password" name="password" placeholder="{{.Password}}" value="{{.pass}}">*/}}
                                 {{/*</div>*/}}
                             {{/*</div>*/}}
 
@@ -136,6 +136,7 @@
     $(".am-btn-primary").click(function () {
         var id = $("#user-id").val()
         var username = $("#user-username").val()
+        // var password = $("#user-password").val()
         var email = $("#user-email").val()
         $.post(
                 URL + '/edits',

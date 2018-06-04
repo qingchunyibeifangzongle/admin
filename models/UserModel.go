@@ -96,6 +96,7 @@ func UpdUser(u *User) (int64 ,error) {
 	if len(user) == 0 {
 		return 0, errors.New("update field is empty")
 	}
+	user["Updatetime"] = time.Now()
 	var table User
 	num, err := o.QueryTable(table).Filter("Id", u.Id).Update(user)
 	return num, err

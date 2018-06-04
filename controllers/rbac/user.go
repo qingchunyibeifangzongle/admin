@@ -9,9 +9,7 @@ import (
 	"admin/controllers/common"
 	"admin/models"
 	"github.com/astaxie/beego/orm"
-	"github.com/astaxie/beego"
 	"strconv"
-	"reflect"
 )
 
 type UserController struct {
@@ -97,6 +95,7 @@ func (this *UserController) UserEdit() {
 	this.Data["username"] = userinfo.(models.User).Username
 	this.Data["email"] = userinfo.(models.User).Email
 	this.Data["id"] = userinfo.(models.User).Id
+	//this.Data["password"] = userinfo.(models.User).Password
 	
 	this.TplName = this.GetTemplatetype() + "/useredit.html"
 }
@@ -105,20 +104,25 @@ func (this *UserController) UserEdit() {
 func (this *UserController) UserEdits() {
 	email := this.GetString("email")
 	username := this.GetString("username")
+	//password := this.GetString("password")
 	id := this.GetString("id")
 	intid ,_ := strconv.ParseInt(id, 10, 64)
+	
 	u := models.User{Id:intid,Username:username,Email:email}
+	
 	if err := this.ParseForm(&u); err != nil {
 		//handle error
 		this.Rsp(false, err.Error())
 		return
 	}
-	beego.Info(u)
-	//id, err := models.UpdUser(&u)
-	//if err == nil && id >0 {
-	//	this.Rsp(true, "Success")
-	//	return
-	//} else {
-	//	this.Rsp(false, err.Error())
-	//}
+	num, err := models.UpdUser(&u)
+	if err == nil && num > 0 {
+		o := orm.NewOrm()
+		user := o.Read(&u)
+		this.SetSession("userinfo",user)
+		this.Rsp(true, "Success")
+		return
+	} else {
+		this.Rsp(false, err.Error())
+	}
 }
