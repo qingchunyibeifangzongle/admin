@@ -22,24 +22,11 @@ func (this *UserController) Index ()  {
 	if userinfo == nil {
 		this.Ctx.Redirect(302,"/public/login")
 	}
-	//var pagination []orm.Params
-	
 	const pageSize = 1
 	var page int
 	//var offset int
 	this.Ctx.Input.Bind(&page,"page")
- 	////pageSize ,_  := this.GetInt64("rows")
-	//sort := this.GetString("sort")
-	//order := this.GetString("order")
-	////
-	//if len(order) > 0 {
-	//	if order == "desc" {
-	//		sort = "-" + sort
-	//	}
-	//} else {
-	//	sort = "Id"
-	//}
-	//
+ 
 	var sort string
 	sort = "Id"
 	users , totalRows := models.Getuserlist(page , pageSize ,sort)
@@ -90,8 +77,10 @@ func (this *UserController) UserEdit() {
 	if userinfo == nil {
 		this.Ctx.Redirect(302,"/public/login")
 	}
+	roles := models.GetRoleAll()
 	tree := this.GetTree()
 	this.Data["tree"] = &tree
+	this.Data["roles"] = &roles
 	this.Data["username"] = userinfo.(models.User).Username
 	this.Data["email"] = userinfo.(models.User).Email
 	this.Data["id"] = userinfo.(models.User).Id
@@ -104,25 +93,26 @@ func (this *UserController) UserEdit() {
 func (this *UserController) UserEdits() {
 	email := this.GetString("email")
 	username := this.GetString("username")
-	//password := this.GetString("password")
+	role_id := this.GetString("rolename")
+
 	id := this.GetString("id")
 	intid ,_ := strconv.ParseInt(id, 10, 64)
-	
+	introleid ,_ := strconv.ParseInt(role_id, 10, 64)
+	o := orm.NewOrm()
+	err := o.Begin()
 	u := models.User{Id:intid,Username:username,Email:email}
-	
-	if err := this.ParseForm(&u); err != nil {
-		//handle error
-		this.Rsp(false, err.Error())
-		return
-	}
 	num, err := models.UpdUser(&u)
+	
+	r := models.UserRole{User_id:intid,Role_id:introleid}
 	if err == nil && num > 0 {
-		o := orm.NewOrm()
+		models.UpdUSerRole(&r)
 		user := o.Read(&u)
 		this.SetSession("userinfo",user)
+		err = o.Commit()
 		this.Rsp(true, "Success")
 		return
 	} else {
+		err = o.Rollback()
 		this.Rsp(false, err.Error())
 	}
 }

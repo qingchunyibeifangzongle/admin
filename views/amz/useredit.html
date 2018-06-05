@@ -60,14 +60,36 @@
                             <div class="am-form-group">
                                 <label for="user-name" class="am-u-sm-3 am-form-label">姓名 / Name</label>
                                 <div class="am-u-sm-9">
-                                    {{if eq .username  "admin"}}
-                                <input type="text" id="user-name" disabled name="username"  value="{{.username}}" >                      {{else}}
-                                <input type="text" id="user-name"  name="username"  value="{{.username}}" >                      {{end}}
+                                {{if eq .username  "admin"}}
+                                    <input type="text" id="user-name" disabled name="username"  value="{{.username}}" >                      {{else}}
+                                    <input type="text" id="user-name"  name="username"  value="{{.username}}" >                      {{end}}
                                     <input type="hidden" id="user-id" name="id" value="{{.id}}" >
                                 </div>
                             </div>
+                            <div class="am-form-group">
+                                <label for="user-name" class="am-u-sm-3 am-form-label">角色 / Role</label>
+                                <div class="am-u-sm-9">
+                                    <select name="rolename" class="rolename">
+                                        {{range .roles}}
+                                        <option value="{{.Id}}">{{.Rolename}}</option>
+                                        {{end}}
+                                    </select>
+                                </div>
+                            </div>
 
-
+                            {{/*<div class="am-u-sm-12 am-u-md-3">*/}}
+                                {{/*<div class="am-form-group">*/}}
+                                    {{/*<select data-am-selected="{btnSize: 'sm'}">*/}}
+                                        {{/*<option value="option1">所有类别</option>*/}}
+                                        {{/*<option value="option2">IT业界</option>*/}}
+                                        {{/*<option value="option3">数码产品</option>*/}}
+                                        {{/*<option value="option3">笔记本电脑</option>*/}}
+                                        {{/*<option value="option3">平板电脑</option>*/}}
+                                        {{/*<option value="option3">只能手机</option>*/}}
+                                        {{/*<option value="option3">超极本</option>*/}}
+                                    {{/*</select>*/}}
+                                {{/*</div>*/}}
+                            {{/*</div>*/}}
 
                             {{/*<div class="am-form-group">*/}}
                                 {{/*<label for="user-password" class="am-u-sm-3 am-form-label">密码 / Passsword</label>*/}}
@@ -136,11 +158,12 @@
     $(".am-btn-primary").click(function () {
         var id = $("#user-id").val()
         var username = $("#user-username").val()
+        var rolename = $(".rolename").val()
         // var password = $("#user-password").val()
         var email = $("#user-email").val()
         $.post(
                 URL + '/edits',
-                {id:id,username:username,email:email},
+                {id:id,username:username,email:email,rolename:rolename},
                 function (res) {
                     if (res.status) {
                         location.href = URL

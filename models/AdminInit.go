@@ -149,6 +149,8 @@ func insertRole() {
 	fmt.Println("insert into role ...")
 	u := new(Role)
 	u.Rolename = "超级管理员"
+	u.Remark = "超级管理员,拥有所有权限"
+	u.Status  = 2
 	o := orm.NewOrm()
 	o.Insert(u)
 	fmt.Println("insert into role end")

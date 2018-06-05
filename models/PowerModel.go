@@ -52,3 +52,24 @@ func GroupList() (groups []orm.Params) {
 	//return groups
 	return
 }
+
+func Getpowerlist(page int, pageSize int , sort string) (users []orm.Params , count int64){
+	qb, _ := orm.NewQueryBuilder("mysql")
+	
+	//var offset int
+	//if page <= 1 {
+	//	offset = 0
+	//} else {
+	//	offset = (page - 1) * pageSize
+	//}
+	qb.Select("rolename","role.status","powername","role.id as role_id","power.id as power_id").From("role_power").LeftJoin("role").On("role.id = role_power.role_id").RightJoin("power").On("power.id = role_power.power_id").Where("role.status").In("1,2")
+	//qs.Limit(pageSize , offset).OrderBy(sort).Values(&users)
+	//count , _ = qs.Count()
+	
+	sql := qb.String()
+	o := orm.NewOrm()
+	beego.Info(sql)
+	var maps []orm.Params
+	num, _ := o.Raw(sql).Values(&maps)
+	return maps,num
+}

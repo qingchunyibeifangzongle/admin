@@ -23,3 +23,10 @@ func (u *UserRole) TableName() string {
 func init() {
 	orm.RegisterModel(new(UserRole))
 }
+
+func UpdUSerRole(r *UserRole) (int64 ,error){
+	o := orm.NewOrm()
+	userRole := new(UserRole)
+	num, err := o.QueryTable(userRole).Filter("user_id",r.User_id).Update(orm.Params{"role_id":r.Role_id})
+	return num,err
+}

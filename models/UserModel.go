@@ -60,19 +60,34 @@ func UpdPwd(u *User)(int64, error) {
 }
 
 func Getuserlist(page int, pageSize int , sort string) (users []orm.Params , count int64){
-	o := orm.NewOrm()
-	user := new(User)
-	qs := o.QueryTable(user)
+	//o := orm.NewOrm()
+	//user := new(User)
+	//qs := o.QueryTable(user)
+	//var offset int
+	//if page <= 1 {
+	//	offset = 0
+	//} else {
+	//	offset = (page - 1) * pageSize
+	//}
+	//
+	//qs.Limit(pageSize , offset).OrderBy(sort).Values(&users)
+	//count , _ = qs.Count()
+	//return users , count
+	qb, _ := orm.NewQueryBuilder("mysql")
 	var offset int
 	if page <= 1 {
 		offset = 0
 	} else {
 		offset = (page - 1) * pageSize
 	}
-	
-	qs.Limit(pageSize , offset).OrderBy(sort).Values(&users)
-	count , _ = qs.Count()
-	return users , count
+	qb.Select("user.id","password","email","user.createtime","user.updatetime","user.status","username","role.id as role_id","remark","role.status as role_status","rolename").From("user_role").LeftJoin("user").On("user.id = user_role.user_id").RightJoin("role").On("role.id = user_role.role_id").Where("user.status").In("1,2").Limit(pageSize).Offset(offset)
+
+	sql := qb.String()
+	o := orm.NewOrm()
+	num, _ := o.Raw(sql).Values(&users)
+	//beego.Info(users)
+	//beego.Info(num)
+	return users,num
 }
 
 //修改用户信息
@@ -102,3 +117,4 @@ func UpdUser(u *User) (int64 ,error) {
 	return num, err
 	
 }
+

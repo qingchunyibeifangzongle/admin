@@ -111,10 +111,11 @@
                                     <th class="table-check"><input type="checkbox" class="tpl-table-fz-check"></th>
                                     <th class="table-id">ID</th>
                                     <th class="table-title">用户名</th>
-                                    <th class="table-type">状态</th>
+                                    <th class="table-type">角色</th>
                                     <th class="table-author am-hide-sm-only">邮箱</th>
                                     <th class="table-date am-hide-sm-only">创建日期</th>
                                     <th class="table-date am-hide-sm-only">修改日期</th>
+                                    <th class="table-type">状态</th>
                                     <th class="table-set">操作</th>
                                 </tr>
                                 </thead>
@@ -122,24 +123,32 @@
                                 {{range .users}}
                                 <tr>
                                     <td><input type="checkbox"></td>
-                                    <td>{{.Id}}</td>
-                                    <td>{{.Username}}</td>
-                                    <td>
-                                        {{if eq .Status 2}}
-                                            开启
-                                        {{else}}
-                                            关闭
-                                        {{end}}
-                                    </td>
-                                    <td>{{.Email}}</td>
-                                    <td class="createtime">{{.Createtime}}</td>
+                                    <td>{{.id}}</td>
+                                    <td>{{.username}}</td>
+                                    <td>{{.rolename}}</td>
+
+                                    <td>{{.email}}</td>
+                                    <td class="createtime">{{.createtime}}</td>
                                     <td class="updatetime">
-										{{if .Updatetime}}
-											{{.Updatetime}}
+										{{if .updatetime}}
+											{{.updatetime}}
 										{{else}}
                                             null
 										{{end}}
 									</td>
+                                    <td>
+                                        <div class="am-btn-toolbar">
+                                            <div class="am-btn-group am-btn-group-xs">
+                                                <button class="am-btn am-btn-xs am-text-secondary"  style="width: 65.8px;height: 28px"><span class="am-icon-check-square-o"></span>
+												{{if eq .status "2"}}
+                                                    <a href="javascript:0">关闭</a></button>
+												{{else}}
+                                                    <a href="javascript:0">开启</a></button>
+												{{end}}
+
+                                            </div>
+                                        </div>
+                                    </td>
                                     <td>
                                         <div class="am-btn-toolbar">
                                             <div class="am-btn-group am-btn-group-xs">
@@ -221,6 +230,9 @@
         var url = window.location.href;
         var arr = url.split("?page=");
         var total = $(".total").text()
+		if ($.trim(arr[1]) == ""){
+            arr[1] = 1
+		}
 		if ($.trim(arr[1]) == $.trim(total)) {
             $(".lastpage").parent().html("<a href='javascript:void(0)' class='lastpage'>»</a>")
 			return  false
