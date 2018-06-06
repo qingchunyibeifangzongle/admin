@@ -59,7 +59,7 @@ func UpdPwd(u *User)(int64, error) {
 	return num ,err
 }
 
-func Getuserlist(page int, pageSize int , sort string) (users []orm.Params , count int64){
+func Getuserlist(page int, pageSize int) (users []orm.Params , count int64){
 	//o := orm.NewOrm()
 	//user := new(User)
 	//qs := o.QueryTable(user)
@@ -80,14 +80,15 @@ func Getuserlist(page int, pageSize int , sort string) (users []orm.Params , cou
 	} else {
 		offset = (page - 1) * pageSize
 	}
+	o  := orm.NewOrm()
+	count, err := o.QueryTable(new(UserRole)).Count()
+	beego.Info(err)
 	qb.Select("user.id","password","email","user.createtime","user.updatetime","user.status","username","role.id as role_id","remark","role.status as role_status","rolename").From("user_role").LeftJoin("user").On("user.id = user_role.user_id").RightJoin("role").On("role.id = user_role.role_id").Where("user.status").In("1,2").Limit(pageSize).Offset(offset)
 
 	sql := qb.String()
-	o := orm.NewOrm()
-	num, _ := o.Raw(sql).Values(&users)
-	//beego.Info(users)
-	//beego.Info(num)
-	return users,num
+	beego.Info(sql)
+	o.Raw(sql).Values(&users)
+	return users,count
 }
 
 //修改用户信息

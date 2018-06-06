@@ -8,8 +8,9 @@ package rbac
 import (
 	"admin/controllers/common"
 	"admin/models"
-	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/orm"
 	"strconv"
+	"github.com/astaxie/beego"
 )
 
 type RoleController struct {
@@ -17,17 +18,18 @@ type RoleController struct {
 }
 
 func (this *RoleController) Index() {
-	userinfo := this.GetSession("userinfo")
-	if userinfo == nil {
-		this.Ctx.Redirect(302,"/public/login")
-	}
+	//userinfo := this.GetSession("userinfo")
+	//if userinfo == nil {
+	//	this.Ctx.Redirect(302,"/public/login")
+	//}
 	const pageSize = 1
-	var page int
-	var sort string
-	sort = "Id"
-	roles , totalRows := models.Getrolelist(page , pageSize ,sort)
+	page,_ := this.GetInt(":page")
+	if page == 0 {
+		page = 1
+	}
+	beego.Info(page)
+	roles , totalRows := models.Getrolelist(page , pageSize)
 	res := models.Paginator(page, pageSize, totalRows)
-	beego.Info(roles)
 	tree := this.GetTree()
 	this.Data["tree"] = &tree
 	this.Data["roles"] = &roles
@@ -45,7 +47,6 @@ func (this *RoleController) RoleEdit() {
 	var roleId int64
 	this.Ctx.Input.Bind(&roleId,":id")
 	roles := models.GetRoleId(roleId)
-	beego.Info(roles)
 	tree := this.GetTree()
 	this.Data["tree"] = &tree
 	this.Data["Rolename"] = roles.Rolename
@@ -68,7 +69,6 @@ func (this *RoleController) RoleEdits() {
 	
 	roleId ,_ := strconv.ParseInt(id, 10, 64)
 	num,err := models.UpdRole(&models.Role{Id:roleId,Remark:remark,Rolename:rolename,Status:statuss})
-	beego.Info(num)
 	if num > 0 && err == nil {
 		this.Rsp(true, "Success")
 		return
@@ -79,10 +79,36 @@ func (this *RoleController) RoleEdits() {
 }
 
 func (this *RoleController) RoleAdd() {
-
+	//userinfo := this.GetSession("userinfo")
+	//if userinfo == nil {
+	//	this.Ctx.Redirect(302,"/public/login")
+	//}
+	
+	tree := this.GetTree()
+	this.Data["tree"] = &tree
+	//this.Data["users"] = userinfo
+	this.TplName = this.GetTemplatetype() + "/roleadd.html"
 }
 
 
 func (this *RoleController) RoleAdds() {
-
+	//userinfo := this.GetSession("userinfo")
+	//if userinfo == nil {
+	//	this.Ctx.Redirect(302,"/public/login")
+	//}
+	remark := this.GetString("remark")
+	rolename := this.GetString("rolename")
+	st := this.GetString("status")
+	status,_ := strconv.Atoi(st)
+	
+	r := models.Role{Remark:remark,Status:status,Rolename:rolename}
+	
+	o := orm.NewOrm()
+	
+	id, err := o.Insert(&r)
+	if err == nil && id >0 {
+		this.Rsp(true ,"添加成功")
+	}else {
+		this.Rsp(false,err.Error())
+	}
 }

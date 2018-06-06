@@ -18,7 +18,7 @@ func init() {
 	
 	
 	
-	beego.Router("admin/user?:page",&rbac.UserController{},"*:Index")
+	beego.Router("admin/user/?:page",&rbac.UserController{},"*:Index")
 	beego.Router("admin/user/add",&rbac.UserController{},"*:UserAdd")
 	beego.Router("admin/user/adds",&rbac.UserController{},"*:UserAdds")
 	beego.Router("admin/user/edit",&rbac.UserController{},"*:UserEdit")

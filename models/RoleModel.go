@@ -104,23 +104,23 @@ func GetRole(){
 //	return maps,num
 //}
 
-func Getrolelist(page int, pageSize int , sort string) (roles []orm.Params , count int64){
+func Getrolelist(page int, pageSize int) (roles []orm.Params , count int64){
 	qb, _ := orm.NewQueryBuilder("mysql")
 	var offset int
 	if page <= 1 {
-		offset = 0
+		page = 0
 	} else {
 		offset = (page - 1) * pageSize
 	}
+	o  := orm.NewOrm()
+	count, err := o.QueryTable(new(Role)).Count()
+	beego.Info(err)
 	
 	qb.Select("Id","Remark","Rolename","Createtime","Updatetime","Status").From("role").Where("Status").In("1,2").Limit(pageSize).Offset(offset)
 	
 	sql := qb.String()
-	beego.Info(sql)
-	o := orm.NewOrm()
-	num, _ := o.Raw(sql).Values(&roles)
-	
-	return roles , num
+	o.Raw(sql).Values(&roles)
+	return roles , count
 }
 
 func GetRoleAll()(roles []orm.Params) {

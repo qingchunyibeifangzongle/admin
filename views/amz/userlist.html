@@ -166,14 +166,14 @@
                             <div class="am-cf">
                                 <div class="am-cf">
                                     共 <span class="total"> {{.totals}} </span> 条记录
-									共记 {{.paginator.totalpages}} 页 当前第 {{.paginator.currpage}} 页
+									共记 <span class="totalpages">{{.paginator.totalpages}}</span> 页 当前第 {{.paginator.currpage}} 页
                                     <div class="am-fr">
                                         <ul class="am-pagination">
-                                            <li class=""><a href="/admin/user?page={{.paginator.firstpage}}">«</a></li>
+                                            <li><a href="/admin/user/{{.paginator.firstpage}}" class="firstpage">«</a></li>
 										{{range $index,$page := .paginator.pages}}
-                                            <li  {{if eq $.paginator.currpage $page }}class="am-active"{{end}}><a href="/admin/user?page={{$page}}">{{$page}}</a></li>
+                                            <li  {{if eq $.paginator.currpage $page }}class="am-active"{{end}}><a href="/admin/user/{{$page}}">{{$page}}</a></li>
 										{{end}}
-                                            <li><a href="/admin/user?page={{.paginator.lastpage}}" class="lastpage">»</a></li>
+                                            <li><a href="/admin/user/{{.paginator.lastpage}}" class="lastpage">»</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -225,17 +225,27 @@
 
     // })
 
-	$(".lastpage").click(function () {
-		var lastpage = $(".lastpage").parent().html()
+    $(".lastpage").click(function () {
+        var lastpage = $(".lastpage").parent().html()
         var url = window.location.href;
-        var arr = url.split("?page=");
-        var total = $(".total").text()
-		if ($.trim(arr[1]) == ""){
-            arr[1] = 1
-		}
-		if ($.trim(arr[1]) == $.trim(total)) {
+        var arr = url.split("/user/");
+        var totalpages = $(".totalpages").text()
+        if (totalpages == 1) {
             $(".lastpage").parent().html("<a href='javascript:void(0)' class='lastpage'>»</a>")
-			return  false
-		}
+            return  false
+        }else {
+            if ($.trim(arr[1]) == $.trim(totalpages)) {
+                $(".lastpage").parent().html("<a href='javascript:void(0)' class='lastpage'>»</a>")
+                return  false
+            }
+        }
+
+    })
+    $(".firstpage").click(function () {
+        var totalpages = $(".totalpages").text()
+        if (totalpages == 1) {
+            $(".firstpage").parent().html("<a href='javascript:void(0)' class='firstpage'>«</a>")
+            return false
+        }
     })
 </script>

@@ -23,13 +23,12 @@ func (this *UserController) Index ()  {
 		this.Ctx.Redirect(302,"/public/login")
 	}
 	const pageSize = 1
-	var page int
-	//var offset int
-	this.Ctx.Input.Bind(&page,"page")
+	page, _ := this.GetInt(":page")
+	if page == 0 {
+		page = 1
+	}
  
-	var sort string
-	sort = "Id"
-	users , totalRows := models.Getuserlist(page , pageSize ,sort)
+	users , totalRows := models.Getuserlist(page , pageSize)
 	res := models.Paginator(page, pageSize, totalRows)
 	tree := this.GetTree()
 	this.Data["tree"] = &tree
