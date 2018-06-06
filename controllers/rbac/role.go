@@ -11,6 +11,7 @@ import (
 	"github.com/astaxie/beego/orm"
 	"strconv"
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/validation"
 )
 
 type RoleController struct {
@@ -79,10 +80,10 @@ func (this *RoleController) RoleEdits() {
 }
 
 func (this *RoleController) RoleAdd() {
-	//userinfo := this.GetSession("userinfo")
-	//if userinfo == nil {
-	//	this.Ctx.Redirect(302,"/public/login")
-	//}
+	userinfo := this.GetSession("userinfo")
+	if userinfo == nil {
+		this.Ctx.Redirect(302,"/public/login")
+	}
 	
 	tree := this.GetTree()
 	this.Data["tree"] = &tree
@@ -92,15 +93,26 @@ func (this *RoleController) RoleAdd() {
 
 
 func (this *RoleController) RoleAdds() {
-	//userinfo := this.GetSession("userinfo")
-	//if userinfo == nil {
-	//	this.Ctx.Redirect(302,"/public/login")
-	//}
+	userinfo := this.GetSession("userinfo")
+	if userinfo == nil {
+		this.Ctx.Redirect(302,"/public/login")
+	}
 	remark := this.GetString("remark")
 	rolename := this.GetString("rolename")
-	st := this.GetString("status")
-	status,_ := strconv.Atoi(st)
-	
+	status,_ := this.GetInt("status")
+	valid := validation.Validation{}
+	valid.Required(rolename,"角色名称")
+	valid.Required(remark,"角色描述")
+	valid.Required(status,"状态")
+	valid.MaxSize(rolename,20,"角色名称")
+	valid.MaxSize(remark,20,"角色描述")
+	valid.MinSize(remark,1,"角色描述")
+	valid.MinSize(rolename,1,"角色名称")
+	switch { // 使用switch方式来判断是否出现错误，如果有错，则打印错误并返回
+	case valid.HasErrors():
+		this.Rsp(false,valid.Errors[0].Key +"    "+ valid.Errors[0].Message)
+		return
+	}
 	r := models.Role{Remark:remark,Status:status,Rolename:rolename}
 	
 	o := orm.NewOrm()
@@ -108,7 +120,9 @@ func (this *RoleController) RoleAdds() {
 	id, err := o.Insert(&r)
 	if err == nil && id >0 {
 		this.Rsp(true ,"添加成功")
+		return
 	}else {
 		this.Rsp(false,err.Error())
+		return
 	}
 }
