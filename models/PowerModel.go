@@ -12,7 +12,7 @@ import (
 )
 
 type Power struct {
-	Id              int           `orm:"auto"`
+	Id              int64           `orm:"auto"`
 	//Power_id        int64
 	Controller       string         `orm:"size(100)" form:"Controller" valid:"Required;MaxSize(20);MinSize(6)"`
 	Action           string         `orm:"size(100)" form:"Action"  valid:"Required"`

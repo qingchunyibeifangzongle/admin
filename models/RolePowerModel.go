@@ -11,9 +11,9 @@ import (
 )
 
 type RolePower struct {
-	Id          int           `orm:"auto"`
-	Role_id     int
-	Power_id    int
+	Id          int64           `orm:"auto"`
+	Role_id     int64
+	Power_id    int64
 	//Role        []*Role        `orm:"rel(m2m)"`
 	//Power       []*Power       `orm:"rel(m2m)"`
 	

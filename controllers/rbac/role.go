@@ -45,7 +45,7 @@ func (this *RoleController) RoleEdit() {
 	if userinfo == nil {
 		this.Ctx.Redirect(302,"/public/login")
 	}
-	roleId,_ := this.GetInt(":id")
+	roleId,_ := this.GetInt64(":id")
 	//var roleId int
 	//this.Ctx.Input.Bind(&roleId,":id")
 	roles := models.GetRoleId(roleId)
@@ -63,7 +63,7 @@ func (this *RoleController) RoleEdits() {
 	if userinfo == nil {
 		this.Ctx.Redirect(302,"/public/login")
 	}
-	id ,_ := this.GetInt("id")
+	id ,_ := this.GetInt64("id")
 	rolename := this.GetString("rolename")
 	remark := this.GetString("remark")
 	status,_ := this.GetInt("status")
