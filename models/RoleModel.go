@@ -79,10 +79,6 @@ func Accesslist(id int64) (list []orm.Params, err error) {
 	return list,nil
 }
 
-func GetRole(){
-
-}
-
 //func Getrolelist(page int, pageSize int , sort string) (users []orm.Params , count int64){
 //	qb, _ := orm.NewQueryBuilder("mysql")
 //

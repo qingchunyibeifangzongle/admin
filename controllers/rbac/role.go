@@ -11,7 +11,6 @@ import (
 	"github.com/astaxie/beego/orm"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/validation"
-	"reflect"
 )
 
 type RoleController struct {
@@ -133,32 +132,15 @@ func (this *RoleController) RolePower() {
 	//if userinfo == nil {
 	//	this.Ctx.Redirect(302,"/public/login")
 	//}
-	//roleid,_ := this.GetInt64(":id")
+	roleid,_ := this.GetInt64(":id")
+	powers , _ := models.GetPowerlistByRoleId(roleid)
+	beego.Info(powers)
+	parents,parent,children := models.GroupList()
 	
-	//parents,parent,children := models.GroupList()
-	nodes := models.GroupsList()
-	
-	for i := 0; i < len(nodes); i++ {
-		if nodes[i]["Pid"] == int64(0) {
-			nodes[i]["ParentsId"] = nodes[i]["Id"]
-		} else if  nodes[i]["Pid"] == int64(1)  {
-			nodes[i]["ParentId"] = nodes[i]["Id"]
-			nodes[i]["ParentState"] = "closed"
-		}else {
-			nodes[i]["ChildrenId"] = nodes[i]["Id"]
-			nodes[i]["ChildrenState"] = "closed"
-		}
-		
-		beego.Info(reflect.TypeOf(nodes))
-		beego.Info(reflect.TypeOf(nodes[i]["Level"]))
-	}
-	//this.Data["json"] = &map[string]interface{}{"total": 1, "rows": &nodes}
-	//this.ServeJSON()
 	tree := this.GetTree()
 	this.Data["tree"] = &tree
-	//this.Data["parents"] = &parents
-	//this.Data["parent"] = &parent
-	//this.Data["children"] = &children
-	this.Data["groups"] = &nodes
-	this.TplName = this.GetTemplatetype() + "/a.html"
+	this.Data["parents"] = &parents
+	this.Data["parent"] = &parent
+	this.Data["children"] = &children
+	this.TplName = this.GetTemplatetype() + "/rolepower.html"
 }

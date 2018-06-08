@@ -68,6 +68,7 @@ func GroupList() (parents []orm.Params,parent []orm.Params,children []orm.Params
 	//}
 	return parents,parent,children
 }
+
 func GroupsList()(groups []orm.Params) {
 	o := orm.NewOrm()
 	power := new(Power)
@@ -102,12 +103,13 @@ func Getpowerlist(page int, pageSize int , sort string) (users []orm.Params , co
 //	return nodes, 0
 //}
 
-func GetPowerlistByRoleId(Id int64) (powers []orm.Params, count int64) {
+//根据role去读取role_power，获取power数据
+func GetPowerlistByRoleId(id int64) (powers []orm.Params, count int64) {
 	o := orm.NewOrm()
 	qb, _ := orm.NewQueryBuilder("mysql")
-	qb.Select("power.Id","Controller","Action","Powername","Pid","Level").From("role_power").RightJoin("power").On("power.id = role_power.power_id").Where("role_id = 1")
+	qb.Select("power.Id","Controller","Action","Powername","Pid","Level").From("role_power").RightJoin("power").On("power.id = role_power.power_id").Where("role_id = ?" )
 	sql := qb.String()
-	count,err := o.Raw(sql).Values(&powers)
+	count,err := o.Raw(sql,id).Values(&powers)
 	beego.Info(err)
 	return powers, count
 }

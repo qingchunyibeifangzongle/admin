@@ -5,29 +5,19 @@
     <title>Title</title>
 </head>
 <body>
-{{/*<ul>*/}}
-    {{/*{{range $a,$b :=  .groups}}*/}}
-        {{/*{{if eq $b.Level 1}}*/}}
-            {{/*<li>{{$b.Powername}}</li>*/}}
-        {{/*{{else if eq $b.Pid 1}}*/}}
-                {{/*<li>{{$b.ParentsId}}</li>*/}}
-            {{/*<li>{{$b.Powername}}</li>*/}}
-        {{/*{{end}}*/}}
-    {{/*{{end}}*/}}
-{{/*</ul>*/}}
 <ul>
     {{range $a,$b := .groups}}
-        <li>{{$b.ParentsId}}</li>
-        <li>{{$b.Pid}}</li>
-            {{if eq $b.ParentsId $b.Pid}}
+        {{if eq $b.Level 1}}
             <li>{{$b.Powername}}</li>
-            {{end}}
+        {{else if eq $b.Level 2}}
+                {{/*<li>{{$b.Powername}}</li>*/}}
+                <li>{{$b.Pid}}</li>
+                <li>{{$b.ParentsId}}</li>
+                {{if eq $b.Pid $b.ParentsId}}
+                    <li>{{$b.Powername}}</li>
+                {{end}}
+        {{end}}
     {{end}}
-        {{/*{{if eq $b.ParentsId 1}}*/}}
-            {{/*<li>{{.Powername}}</li>*/}}
-        {{/*{{else if eq $b.ParentId 2}}*/}}
-            {{/*<li>{{$b.Powername}}</li>*/}}
-        {{/*{{end}}*/}}
 </ul>
 
 {{/*<ul>*/}}
