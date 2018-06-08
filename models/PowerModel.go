@@ -12,7 +12,7 @@ import (
 )
 
 type Power struct {
-	Id              int64           `orm:"auto"`
+	Id              int           `orm:"auto"`
 	//Power_id        int64
 	Controller       string         `orm:"size(100)" form:"Controller" valid:"Required;MaxSize(20);MinSize(6)"`
 	Action           string         `orm:"size(100)" form:"Action"  valid:"Required"`
@@ -44,15 +44,36 @@ func GetPowerTree(pid int64 , level int64) ([]orm.Params, error) {
 
 
 
-func GroupList() (groups []orm.Params) {
-	//o := orm.NewOrm()
-	//group := new(Group)
-	//qs := o.QueryTable(group)
-	//qs.Values(&groups, "id", "title")
-	//return groups
-	return
+func GroupList() (parents []orm.Params,parent []orm.Params,children []orm.Params) {
+	o := orm.NewOrm()
+	power := new(Power)
+	qs1 := o.QueryTable(power).Filter("Level",1)
+	qs2 := o.QueryTable(power).Filter("Level",2)
+	qs3 := o.QueryTable(power).Filter("Level",3)
+	//var groups []orm.Params
+	qs1.Values(&parents,"Id","Controller","Action","Powername","Pid","Level")
+	qs2.Values(&parent,"Id","Controller","Action","Powername","Pid","Level")
+	qs3.Values(&children,"Id","Controller","Action","Powername","Pid","Level")
+	//beego.Info(parents)
+	//beego.Info(parent)
+	//beego.Info(children)
+	//for _,v := range groups{
+	//	if v["Pid"].(int64) == 0 && v["Level"].(int64) == 1 {
+	//		maps = append(maps, v)
+	//	}else if v["Level"].(int64) == 2 && v["Id"].(int64) == v["Pid"].(int64) {
+	//		maps = append(maps, v)
+	//	}else if  v["Level"].(int64) == 3 && v["Id"].(int64) == v["Pid"].(int64) {
+	//		maps = append(maps, v)
+	//	}
+	//}
+	return parents,parent,children
 }
-
+func GroupsList()(groups []orm.Params) {
+	o := orm.NewOrm()
+	power := new(Power)
+	o.QueryTable(power).Values(&groups,"Id","Controller","Action","Powername","Pid","Level")
+	return groups
+}
 func Getpowerlist(page int, pageSize int , sort string) (users []orm.Params , count int64){
 	qb, _ := orm.NewQueryBuilder("mysql")
 	
@@ -72,4 +93,21 @@ func Getpowerlist(page int, pageSize int , sort string) (users []orm.Params , co
 	var maps []orm.Params
 	num, _ := o.Raw(sql).Values(&maps)
 	return maps,num
+}
+
+//func GetPowerlistByGroupid(Groupid int64) (nodes []orm.Params, count int64) {
+//	o := orm.NewOrm()
+//	power := new(Power)
+//	count, _ = o.QueryTable(power).Filter(, Groupid).RelatedSel().Values(&nodes)
+//	return nodes, 0
+//}
+
+func GetPowerlistByRoleId(Id int64) (powers []orm.Params, count int64) {
+	o := orm.NewOrm()
+	qb, _ := orm.NewQueryBuilder("mysql")
+	qb.Select("power.Id","Controller","Action","Powername","Pid","Level").From("role_power").RightJoin("power").On("power.id = role_power.power_id").Where("role_id = 1")
+	sql := qb.String()
+	count,err := o.Raw(sql).Values(&powers)
+	beego.Info(err)
+	return powers, count
 }

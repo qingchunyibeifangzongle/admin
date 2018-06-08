@@ -175,18 +175,18 @@ func insertPower() {
 		{Id:2,Controller:"admin/user",Action:"user",Powername:"用户列表",Pid:1,Level:2,Status:2},  //id 2
 		{Id:3,Controller:"admin/role",Action:"role",Powername:"角色列表",Pid:1,Level:2,Status:2},  //id 3
 		{Id:4,Controller:"admin/power",Action:"power",Powername:"权限列表",Pid:1,Level:2,Status:2}, //id 4
-		{Id:5,Controller:"admin/user",Action:"edit",Powername:"用户列表",Pid:2,Level:3,Status:2},
-		{Id:6,Controller:"admin/user",Action:"add",Powername:"用户列表",Pid:2,Level:3,Status:2},
-		{Id:7,Controller:"admin/user",Action:"upd",Powername:"用户列表",Pid:2,Level:3,Status:2},
-		{Id:8,Controller:"admin/user",Action:"del",Powername:"用户列表",Pid:2,Level:3,Status:2},
-		{Id:9,Controller:"admin/role",Action:"edit",Powername:"角色列表",Pid:3,Level:3,Status:2},
-		{Id:10,Controller:"admin/role",Action:"add",Powername:"角色列表",Pid:3,Level:3,Status:2},
-		{Id:11,Controller:"admin/role",Action:"upd",Powername:"角色列表",Pid:3,Level:3,Status:2},
-		{Id:12,Controller:"admin/role",Action:"del",Powername:"角色列表",Pid:3,Level:3,Status:2},
-		{Id:13,Controller:"admin/power",Action:"edit",Powername:"权限列表",Pid:4,Level:3,Status:2},
-		{Id:14,Controller:"admin/power",Action:"add",Powername:"权限列表",Pid:4,Level:3,Status:2},
-		{Id:15,Controller:"admin/power",Action:"upd",Powername:"权限列表",Pid:4,Level:3,Status:2},
-		{Id:16,Controller:"admin/power",Action:"del",Powername:"权限列表",Pid:4,Level:3,Status:2},
+		{Id:5,Controller:"admin/user",Action:"edit",Powername:"用户管理",Pid:2,Level:3,Status:2},
+		{Id:6,Controller:"admin/user",Action:"add",Powername:"用户添加",Pid:2,Level:3,Status:2},
+		{Id:7,Controller:"admin/user",Action:"upd",Powername:"用户修改",Pid:2,Level:3,Status:2},
+		{Id:8,Controller:"admin/user",Action:"del",Powername:"用户删除",Pid:2,Level:3,Status:2},
+		{Id:9,Controller:"admin/role",Action:"edit",Powername:"角色管理",Pid:3,Level:3,Status:2},
+		{Id:10,Controller:"admin/role",Action:"add",Powername:"角色添加",Pid:3,Level:3,Status:2},
+		{Id:11,Controller:"admin/role",Action:"upd",Powername:"角色修改",Pid:3,Level:3,Status:2},
+		{Id:12,Controller:"admin/role",Action:"del",Powername:"角色删除",Pid:3,Level:3,Status:2},
+		{Id:13,Controller:"admin/power",Action:"edit",Powername:"权限管理",Pid:4,Level:3,Status:2},
+		{Id:14,Controller:"admin/power",Action:"add",Powername:"权限添加",Pid:4,Level:3,Status:2},
+		{Id:15,Controller:"admin/power",Action:"upd",Powername:"权限修改",Pid:4,Level:3,Status:2},
+		{Id:16,Controller:"admin/power",Action:"del",Powername:"权限删除",Pid:4,Level:3,Status:2},
 	}
 	
 	for _,v := range power  {

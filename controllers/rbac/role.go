@@ -9,9 +9,9 @@ import (
 	"admin/controllers/common"
 	"admin/models"
 	"github.com/astaxie/beego/orm"
-	"strconv"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/validation"
+	"reflect"
 )
 
 type RoleController struct {
@@ -19,10 +19,10 @@ type RoleController struct {
 }
 
 func (this *RoleController) Index() {
-	//userinfo := this.GetSession("userinfo")
-	//if userinfo == nil {
-	//	this.Ctx.Redirect(302,"/public/login")
-	//}
+	userinfo := this.GetSession("userinfo")
+	if userinfo == nil {
+		this.Ctx.Redirect(302,"/public/login")
+	}
 	const pageSize = 1
 	page,_ := this.GetInt(":page")
 	if page == 0 {
@@ -45,8 +45,9 @@ func (this *RoleController) RoleEdit() {
 	if userinfo == nil {
 		this.Ctx.Redirect(302,"/public/login")
 	}
-	var roleId int64
-	this.Ctx.Input.Bind(&roleId,":id")
+	roleId,_ := this.GetInt(":id")
+	//var roleId int
+	//this.Ctx.Input.Bind(&roleId,":id")
 	roles := models.GetRoleId(roleId)
 	tree := this.GetTree()
 	this.Data["tree"] = &tree
@@ -62,14 +63,19 @@ func (this *RoleController) RoleEdits() {
 	if userinfo == nil {
 		this.Ctx.Redirect(302,"/public/login")
 	}
-	id := this.GetString("id")
+	id ,_ := this.GetInt("id")
 	rolename := this.GetString("rolename")
 	remark := this.GetString("remark")
-	status := this.GetString("status")
-	statuss,_:=strconv.Atoi(status)
-	
-	roleId ,_ := strconv.ParseInt(id, 10, 64)
-	num,err := models.UpdRole(&models.Role{Id:roleId,Remark:remark,Rolename:rolename,Status:statuss})
+	status,_ := this.GetInt("status")
+	role := models.Role{Id:id,Remark:remark,Rolename:rolename,Status:status}
+	valid := validation.Validation{}
+	valid.Valid(role)
+	switch { // 使用switch方式来判断是否出现错误，如果有错，则打印错误并返回
+	case valid.HasErrors():
+		this.Rsp(false,valid.Errors[0].Key +"    "+ valid.Errors[0].Message)
+		return
+	}
+	num,err := models.UpdRole(&role)
 	if num > 0 && err == nil {
 		this.Rsp(true, "Success")
 		return
@@ -92,6 +98,7 @@ func (this *RoleController) RoleAdd() {
 }
 
 
+// role add
 func (this *RoleController) RoleAdds() {
 	userinfo := this.GetSession("userinfo")
 	if userinfo == nil {
@@ -101,13 +108,7 @@ func (this *RoleController) RoleAdds() {
 	rolename := this.GetString("rolename")
 	status,_ := this.GetInt("status")
 	valid := validation.Validation{}
-	valid.Required(rolename,"角色名称")
-	valid.Required(remark,"角色描述")
-	valid.Required(status,"状态")
-	valid.MaxSize(rolename,20,"角色名称")
-	valid.MaxSize(remark,20,"角色描述")
-	valid.MinSize(remark,1,"角色描述")
-	valid.MinSize(rolename,1,"角色名称")
+	valid.Valid(models.Role{Remark:remark,Rolename:rolename,Status:status})
 	switch { // 使用switch方式来判断是否出现错误，如果有错，则打印错误并返回
 	case valid.HasErrors():
 		this.Rsp(false,valid.Errors[0].Key +"    "+ valid.Errors[0].Message)
@@ -125,4 +126,39 @@ func (this *RoleController) RoleAdds() {
 		this.Rsp(false,err.Error())
 		return
 	}
+}
+
+func (this *RoleController) RolePower() {
+	//userinfo := this.GetSession("userinfo")
+	//if userinfo == nil {
+	//	this.Ctx.Redirect(302,"/public/login")
+	//}
+	//roleid,_ := this.GetInt64(":id")
+	
+	//parents,parent,children := models.GroupList()
+	nodes := models.GroupsList()
+	
+	for i := 0; i < len(nodes); i++ {
+		if nodes[i]["Pid"] == int64(0) {
+			nodes[i]["ParentsId"] = nodes[i]["Id"]
+		} else if  nodes[i]["Pid"] == int64(1)  {
+			nodes[i]["ParentId"] = nodes[i]["Id"]
+			nodes[i]["ParentState"] = "closed"
+		}else {
+			nodes[i]["ChildrenId"] = nodes[i]["Id"]
+			nodes[i]["ChildrenState"] = "closed"
+		}
+		
+		beego.Info(reflect.TypeOf(nodes))
+		beego.Info(reflect.TypeOf(nodes[i]["Level"]))
+	}
+	//this.Data["json"] = &map[string]interface{}{"total": 1, "rows": &nodes}
+	//this.ServeJSON()
+	tree := this.GetTree()
+	this.Data["tree"] = &tree
+	//this.Data["parents"] = &parents
+	//this.Data["parent"] = &parent
+	//this.Data["children"] = &children
+	this.Data["groups"] = &nodes
+	this.TplName = this.GetTemplatetype() + "/a.html"
 }

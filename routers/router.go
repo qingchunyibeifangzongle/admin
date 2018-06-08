@@ -30,6 +30,7 @@ func init() {
 	beego.Router("admin/role/edits",&rbac.RoleController{},"*:RoleEdits")
 	beego.Router("admin/role/add",&rbac.RoleController{},"*:RoleAdd")
 	beego.Router("admin/role/adds",&rbac.RoleController{},"*:RoleAdds")
+	beego.Router("admin/role/rolepower/:id",&rbac.RoleController{},"*:RolePower")
 	
 	
 	

@@ -13,11 +13,11 @@ import (
 )
 
 type Role struct {
-	Id              int64       `orm:"auto"`
-	Remark          string      `orm:"size(120)" form:"Remark" valid:"Required;MaxSize(20);MinSize(1)"`
+	Id              int       `orm:"auto"`
+	Remark          string      `orm:"size(120)" form:"Remark" valid:"Required;Match(/^[\u4e00-\u9fa5]+$/);MaxSize(20);MinSize(1)"`
 	//Rule            string      `orm:"size(120)" form:"Rule"`
 	Status          int         `orm:"default(2)" form:"Status" valid:"Range(1,2);"`
-	Rolename        string      `orm:"size(32)" form:"Rolename" valid:"Required;MaxSize(20);MinSize(1)"`
+	Rolename        string      `orm:"size(32)" form:"Rolename" valid:"Required;MaxSize(20);MinSize(1);Match(/^[\u4e00-\u9fa5]+$/)"`
 	Createtime     time.Time    `orm:"type(datetime);auto_now_add"`
 	Updatetime     time.Time    `orm:"null;type(datetime)" form:"-"`
 	//User           []*User      `orm:"rel(m2m)"`
@@ -131,7 +131,7 @@ func GetRoleAll()(roles []orm.Params) {
 }
 
 
-func GetRoleId(roleId int64) (role Role ) {
+func GetRoleId(roleId int) (role Role ) {
 	role = Role{Id:roleId}
 	o := orm.NewOrm()
 	o.Read(&role,"Id")

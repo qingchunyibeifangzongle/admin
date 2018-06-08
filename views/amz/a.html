@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{{/*<ul>*/}}
+    {{/*{{range $a,$b :=  .groups}}*/}}
+        {{/*{{if eq $b.Level 1}}*/}}
+            {{/*<li>{{$b.Powername}}</li>*/}}
+        {{/*{{else if eq $b.Pid 1}}*/}}
+                {{/*<li>{{$b.ParentsId}}</li>*/}}
+            {{/*<li>{{$b.Powername}}</li>*/}}
+        {{/*{{end}}*/}}
+    {{/*{{end}}*/}}
+{{/*</ul>*/}}
+<ul>
+    {{range $a,$b := .groups}}
+        <li>{{$b.ParentsId}}</li>
+        <li>{{$b.Pid}}</li>
+            {{if eq $b.ParentsId $b.Pid}}
+            <li>{{$b.Powername}}</li>
+            {{end}}
+    {{end}}
+        {{/*{{if eq $b.ParentsId 1}}*/}}
+            {{/*<li>{{.Powername}}</li>*/}}
+        {{/*{{else if eq $b.ParentId 2}}*/}}
+            {{/*<li>{{$b.Powername}}</li>*/}}
+        {{/*{{end}}*/}}
+</ul>
+
+{{/*<ul>*/}}
+{{/*{{range $a,$b :=  .parents}}*/}}
+    {{/*<li>{{$b.ParentsId}}->{{$b.ParentsPowername}}</li>*/}}
+    {{/*<ul>*/}}
+    {{/*{{range $c,$d := $.parent}}*/}}
+        {{/*{{if eq $d.ParentPid $b.ParentsId}}*/}}
+    {{/*<li>{{.ParentId}}->{{.ParentPowername}}</li>*/}}
+        {{/*{{end}}*/}}
+    {{/*<ul>*/}}
+        {{/*{{range $e,$f := $.children}}*/}}
+            {{/*{{if eq $f.ChildrenPid $d.ParentId}}*/}}
+            {{/*{{if eq .$f.ChildrenPid $d.ParentId}}*/}}
+            {{/*<li>{{$f.ChildrenPowername}}</li>*/}}
+            {{/*{{end}}*/}}
+        {{/*{{end}}*/}}
+    {{/*</ul>*/}}
+    {{/*{{end}}*/}}
+    {{/*</ul>*/}}
+
+
+{{/*{{end}}*/}}
+{{/*</ul>*/}}
+
+{{/*{{range .Categoryjieduan}}*/}}
+    {{/*{{.Id}} {{.Title}} {{.Views}}*/}}
+    {{/*{{range $.Categoryzhuanye}}*/}}
+        {{/*{{.Title}}*/}}
+        {{/*{{range $.Categorychengguo}}*/}}
+            {{/*{{.Title}}*/}}
+        {{/*{{end}}*/}}
+    {{/*{{end}}*/}}
+{{/*{{end}}*/}}
+</body>
+</html>

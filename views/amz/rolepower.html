@@ -1,0 +1,134 @@
+{{template "../amz/header.html"}}
+
+<body data-type="generalComponents">
+
+{{template "../amz/body.html"}}
+
+
+<div class="tpl-page-container tpl-page-header-fixed">
+    <div class="tpl-left-nav tpl-left-nav-hover">
+        <div class="tpl-left-nav-title">
+            左侧导航栏展示
+        </div>
+        <div class="tpl-left-nav-list">
+            <ul class="tpl-left-nav-menu">
+            {{range .tree}}
+                <li class="tpl-left-nav-item">
+                    <a href="javascript:;" class="nav-link tpl-left-nav-link-list">
+                        <i class="am-icon-table"></i>
+                        <span>{{.Text}}</span>
+                        <i class="am-icon-angle-right tpl-left-nav-more-ico am-fr am-margin-right"></i>
+                    </a>
+                    <ul class="tpl-left-nav-sub-menu">
+                    {{range .Children}}
+                        <li>
+                            <a href="{{.Attributes.Url}}">
+                                <i class="am-icon-angle-right"></i>
+                                <span>{{.Text}}</span>
+                                <i class="am-icon-star tpl-left-nav-content-ico am-fr am-margin-right"></i>
+                            </a>
+                        </li>
+                    {{end}}
+                    </ul>
+                </li>
+            {{end}}
+
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="tpl-content-wrapper">
+    {{/*<ol class="am-breadcrumb">*/}}
+    {{/*<li><a href="" class="am-icon-home">首页</a></li>*/}}
+    {{/*<li class="am-active">用户列表</li>*/}}
+    {{/*</ol>*/}}
+        <div class="tpl-portlet-components">
+            <div class="portlet-title">
+                <div class="caption font-green bold">
+                    <span class=""></span> <a href="/public/index" class="am-icon-home">首页</a>
+                    <span class=""></span>>>> 分配权限
+                </div>
+            </div>
+            <div class="tpl-block">
+                <div class="am-g">
+                    <div class="am-u-sm-12">
+                        <form class="am-form">
+                            <table class="am-table am-table-striped am-table-hover table-main">
+                                {{range $a,$b :=  .parents}}
+                                <tr>
+                                    <td><input type="checkbox" value="{{$b.Id}}">{{$b.Powername}}</td>
+                                    {{range $c,$d := $.parent}}
+                                    <tr>
+                                        {{if eq $d.Pid $b.Id}}
+											<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="{{$d.Id}}">{{$d.Powername}}</td>
+										{{end}}
+                                            {{range $e,$f := $.children}}
+                                            <tr>
+                                                {{if eq $f.Pid $d.Id}}
+                                                     <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="{{$f.Id}}">{{$f.Powername}}</td>
+                                            </tr>
+                                                {{end}}
+                                            {{end}}
+                                    </tr>
+                                    {{end}}
+                                </tr>
+                                {{end}}
+								</tbody>
+                            </table>
+                            <hr>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+                            <div class="am-form-group">
+                                <div class="am-u-sm-9 am-u-sm-push-3">
+                                    <button type="button" class="am-btn am-btn-primary">保存修改</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+</div>
+
+{{template "../amz/foot.html"}}
+<script>
+    var URL = "/admin/role/"
+    $(".am-btn-primary").click(function () {
+        var id = $("#role-id").val()
+        var rolename = $("#role-name").val()
+        var remark = $("#role-remark").val()
+        var status = $("input[name=status]:checked").val();
+        $.post(
+                URL + 'edits',
+                {id:id,rolename:rolename,remark:remark,status:status},
+                function (res) {
+                    if (res.status) {
+                        location.href = URL
+                    } else {
+                        alert(res.info);
+                        return
+                    }
+
+                }
+        )
+    })
+
+</script>
