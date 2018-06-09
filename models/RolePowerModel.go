@@ -15,8 +15,6 @@ type RolePower struct {
 	Role_id     int64
 	Power_id    int64
 	//Role        []*Role        `orm:"rel(m2m)"`
-	//Power       []*Power       `orm:"rel(m2m)"`
-	
 }
 func (u *RolePower) TableName() string {
 	return beego.AppConfig.String("rbac_role_power_table")

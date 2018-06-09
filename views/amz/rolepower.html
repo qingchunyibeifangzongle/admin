@@ -57,16 +57,16 @@
                             <table class="am-table am-table-striped am-table-hover table-main">
                                 {{range $a,$b :=  .parents}}
                                 <tr>
-                                    <td><input type="checkbox" value="{{$b.Id}}">{{$b.Powername}}</td>
+                                    <td><input type="checkbox" value="{{$b.Id}}" {{range $aa,$bb := $.powers1}}{{if eq $bb.Id $b.Id }} checked {{end}}{{end}} >{{$b.Powername}}</td>
                                     {{range $c,$d := $.parent}}
                                     <tr>
                                         {{if eq $d.Pid $b.Id}}
-											<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="{{$d.Id}}">{{$d.Powername}}</td>
+											<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="{{$d.Id}}" {{range $cc,$dd := $.powers2}}{{if eq $dd.Id $d.Id }} checked {{end}}{{end}}>{{$d.Powername}}</td>
 										{{end}}
                                             {{range $e,$f := $.children}}
                                             <tr>
                                                 {{if eq $f.Pid $d.Id}}
-                                                     <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="{{$f.Id}}">{{$f.Powername}}</td>
+                                                     <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="{{$f.Id}}"  {{range $ee,$ff := $.powers3}}{{if eq $ff.Id $f.Id }} checked {{end}}{{end}}>{{$f.Powername}}</td>
                                             </tr>
                                                 {{end}}
                                             {{end}}

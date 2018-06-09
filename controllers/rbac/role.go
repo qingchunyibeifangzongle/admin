@@ -11,6 +11,7 @@ import (
 	"github.com/astaxie/beego/orm"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/validation"
+	"reflect"
 )
 
 type RoleController struct {
@@ -133,14 +134,30 @@ func (this *RoleController) RolePower() {
 	//	this.Ctx.Redirect(302,"/public/login")
 	//}
 	roleid,_ := this.GetInt64(":id")
-	powers , _ := models.GetPowerlistByRoleId(roleid)
-	beego.Info(powers)
+	powers1,powers2,powers3:= models.GetPowerlistByRoleId(roleid)
+	//models.GetPowerlistByRoleId(roleid)
 	parents,parent,children := models.GroupList()
-	
+	for _,v := range powers1 {
+		beego.Info(reflect.TypeOf(v["Id"]))
+	}
+	//for k,v := range powers1 {
+	//	beego.Info(powers1[k]["Id"] == v["Id"])
+	//	beego.Info(reflect.TypeOf(v["Id"]))
+	//	beego.Info(reflect.TypeOf(powers1[k]["Id"]).(int64))
+	//		if powers1[k]["Id"] == v["Id"] {
+	//			beego.Info(1)
+	//			parents[k]["status"] = "checked"
+	//	}
+	//}
+	beego.Info(powers1)
 	tree := this.GetTree()
 	this.Data["tree"] = &tree
 	this.Data["parents"] = &parents
 	this.Data["parent"] = &parent
 	this.Data["children"] = &children
+	this.Data["powers1"] = &powers1
+	this.Data["powers2"] = &powers2
+	this.Data["powers3"] = &powers3
+	//this.TplName = this.GetTemplatetype() + "/a.html"
 	this.TplName = this.GetTemplatetype() + "/rolepower.html"
 }
