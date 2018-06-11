@@ -56,17 +56,17 @@
                         <form class="am-form">
                             <table class="am-table am-table-striped am-table-hover table-main">
                                 {{range $a,$b :=  .parents}}
-                                <tr>
-                                    <td><input type="checkbox" value="{{$b.Id}}" {{range $aa,$bb := $.powers1}}{{if eq $bb.Id $b.Id }} checked {{end}}{{end}} >{{$b.Powername}}</td>
+                                <tr class="first">
+                                    <td><input type="checkbox" value="{{$b.Id}}" name="powerid[]" {{range $aa,$bb := $.powers1}}{{if eq $bb.Id $b.Id }} checked {{end}}{{end}} class="parents">{{$b.Powername}}</td>
                                     {{range $c,$d := $.parent}}
-                                    <tr>
+                                    <tr class="second">
                                         {{if eq $d.Pid $b.Id}}
-											<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="{{$d.Id}}" {{range $cc,$dd := $.powers2}}{{if eq $dd.Id $d.Id }} checked {{end}}{{end}}>{{$d.Powername}}</td>
+											<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="{{$d.Id}}" name="powerid[]" {{range $cc,$dd := $.powers2}}{{if eq $dd.Id $d.Id }} checked {{end}}{{end}} class="parent">{{$d.Powername}}</td>
 										{{end}}
                                             {{range $e,$f := $.children}}
-                                            <tr>
+                                            <tr class="last">
                                                 {{if eq $f.Pid $d.Id}}
-                                                     <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="{{$f.Id}}"  {{range $ee,$ff := $.powers3}}{{if eq $ff.Id $f.Id }} checked {{end}}{{end}}>{{$f.Powername}}</td>
+                                                     <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="{{$f.Id}}" name="powerid[]"  {{range $ee,$ff := $.powers3}}{{if eq $ff.Id $f.Id }} checked {{end}}{{end}} class="children">{{$f.Powername}}</td>
                                             </tr>
                                                 {{end}}
                                             {{end}}
@@ -74,6 +74,7 @@
                                     {{end}}
                                 </tr>
                                 {{end}}
+                                    {{/*<input type="hidden" name="userid" value="{{.userid}}" id="userid">*/}}
 								</tbody>
                             </table>
                             <hr>
@@ -110,15 +111,17 @@
 
 {{template "../amz/foot.html"}}
 <script>
-    var URL = "/admin/role/"
+    var URL = "/admin/role/";
     $(".am-btn-primary").click(function () {
-        var id = $("#role-id").val()
-        var rolename = $("#role-name").val()
-        var remark = $("#role-remark").val()
-        var status = $("input[name=status]:checked").val();
+        var valArr = new Array();
+        $("input[name='powerid[]']:checked").each(function (i) {
+            valArr[i] = $(this).val();
+        })
+        var id = location.href.split('/rolepower/')[1];
+        var vals = valArr.join(',');
         $.post(
-                URL + 'edits',
-                {id:id,rolename:rolename,remark:remark,status:status},
+                URL + 'rolepowers',
+                {id:id,powerid:vals},
                 function (res) {
                     if (res.status) {
                         location.href = URL
@@ -130,5 +133,30 @@
                 }
         )
     })
+    // $(function () {
+    //     $(".second").hide()
+    //     $(".last").hide()
+    //     $(".first").click(function () {
+    //         $(".second").show("slow")
+    //     });
+    //     $(".second").click(function () {
+    //         $(".last").show("slow")
+    //     })
+    // })
 
+    // $('input[name="powerid[]"]').click(function(){
+    //     //alert(this.checked);
+    //     if($(this).is(':checked')){
+    //         $('input[name="powerid[]"]').each(function(){
+    //             //此处如果用attr，会出现第三次失效的情况
+    //             $(this).prop("checked",true);
+    //         });
+    //     }else{
+    //         $('input[name="powerid[]"]').each(function(){
+    //             $(this).removeAttr("checked",false);
+    //         });
+    //         //$(this).removeAttr("checked");
+    //     }
+	//
+    // });
 </script>

@@ -10,6 +10,9 @@ import (
 	"admin/models"
 	"github.com/astaxie/beego/orm"
 	"github.com/astaxie/beego/validation"
+	"strings"
+	"strconv"
+	"github.com/astaxie/beego"
 )
 
 type RoleController struct {
@@ -143,4 +146,22 @@ func (this *RoleController) RolePower() {
 	this.Data["powers2"] = &powers2
 	this.Data["powers3"] = &powers3
 	this.TplName = this.GetTemplatetype() + "/rolepower.html"
+}
+func (this *RoleController) RolePowers(){
+	powerid := this.GetString("powerid")
+	roleid,_ := this.GetInt64("id")
+	ids := strings.Split(powerid,",")
+	o := orm.NewOrm()
+	//qb, _ := orm.NewQueryBuilder("mysql")
+	rolepower := new(models.RolePower)
+	
+	o.QueryTable(rolepower).Filter("Role_id",roleid).Delete()
+	for _,v := range ids{
+		pid , _ := strconv.ParseInt(v, 10, 64) //转int64
+		//qb.InsertInto("role_power","Role_id","Power_id").Values("?","?")
+		sql := "INSERT INTO role_power ( Role_id, Power_id ) VALUES (?,?)"
+		o.Raw(sql,roleid,pid).Exec()
+	}
+	this.Rsp(true,"修改成功")
+	
 }
