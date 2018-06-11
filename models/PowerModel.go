@@ -43,7 +43,7 @@ func GetPowerTree(pid int64 , level int64) ([]orm.Params, error) {
 }
 
 
-
+//role 分配权限 父节点
 func GroupList() (parents []orm.Params,parent []orm.Params,children []orm.Params) {
 	o := orm.NewOrm()
 	power := new(Power)
@@ -51,9 +51,9 @@ func GroupList() (parents []orm.Params,parent []orm.Params,children []orm.Params
 	qs2 := o.QueryTable(power).Filter("Level",2)
 	qs3 := o.QueryTable(power).Filter("Level",3)
 	//var groups []orm.Params
-	qs1.Values(&parents,"Id","Controller","Action","Powername","Pid","Level")
-	qs2.Values(&parent,"Id","Controller","Action","Powername","Pid","Level")
-	qs3.Values(&children,"Id","Controller","Action","Powername","Pid","Level")
+	qs1.Values(&parents,"Id","Controller","Action","Powername","Pid","Level","Createtime","Status")
+	qs2.Values(&parent,"Id","Controller","Action","Powername","Pid","Level","Createtime","Status")
+	qs3.Values(&children,"Id","Controller","Action","Powername","Pid","Level","Createtime","Status")
 	return parents,parent,children
 }
 
@@ -63,28 +63,27 @@ func GroupsList()(groups []orm.Params) {
 	o.QueryTable(power).Values(&groups,"Id","Controller","Action","Powername","Pid","Level")
 	return groups
 }
-func Getpowerlist(page int, pageSize int , sort string) (users []orm.Params , count int64){
+func Getpowerlist(page int, pageSize int) (powers []orm.Params , count int64){
 	qb, _ := orm.NewQueryBuilder("mysql")
+	var offset int
+	if page <= 1 {
+		page = 0
+	} else {
+		offset = (page - 1) * pageSize
+	}
+	o  := orm.NewOrm()
+	count, err := o.QueryTable(new(Power)).Count()
+	beego.Info(err)
 	
-	//var offset int
-	//if page <= 1 {
-	//	offset = 0
-	//} else {
-	//	offset = (page - 1) * pageSize
-	//}
-	qb.Select("rolename","role.status","powername","role.id as role_id","power.id as power_id").From("role_power").LeftJoin("role").On("role.id = role_power.role_id").RightJoin("power").On("power.id = role_power.power_id").Where("role.status").In("1,2")
-	//qs.Limit(pageSize , offset).OrderBy(sort).Values(&users)
-	//count , _ = qs.Count()
+	qb.Select("Id","Controller","Action","Level","Pid","Status","Createtime","Updatetime","Powername").From("power").Where("Status").In("1,2").Limit(pageSize).Offset(offset)
 	
 	sql := qb.String()
-	o := orm.NewOrm()
-	beego.Info(sql)
-	var maps []orm.Params
-	num, _ := o.Raw(sql).Values(&maps)
-	return maps,num
+	o.Raw(sql).Values(&powers)
+	return powers , count
 }
 
 //根据role去读取role_power，获取power数据
+//分配权限是否选中
 func GetPowerlistByRoleId(id int64) (power1 []orm.Params,power2 []orm.Params,power3 []orm.Params) {
 	o := orm.NewOrm()
 	var powerIds []orm.Params

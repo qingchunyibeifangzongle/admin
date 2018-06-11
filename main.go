@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/orm"
+	//"github.com/astaxie/beego/orm"
 	"fmt"
 	"mime"
 	"os"
@@ -41,7 +41,7 @@ func main() {
 
 	fmt.Println("Start ok")
 	// 开启 ORM 调试模式
-	orm.Debug = true
+	//orm.Debug = true
 	// 自动建表
 	//orm.RunSyncdb("default", false, true)
 	beego.AddFuncMap("stringsToJson", models.StringsToJson)

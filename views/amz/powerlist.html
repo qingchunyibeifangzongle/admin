@@ -1,0 +1,229 @@
+{{template "../amz/header.html"}}
+
+<body data-type="generalComponents">
+
+
+
+{{template "../amz/body.html"}}
+
+
+
+<div class="tpl-page-container tpl-page-header-fixed">
+
+
+    <div class="tpl-left-nav tpl-left-nav-hover">
+        <div class="tpl-left-nav-title">
+            左侧导航栏展示
+        </div>
+        <div class="tpl-left-nav-list">
+            <ul class="tpl-left-nav-menu">
+            {{range .tree}}
+                <li class="tpl-left-nav-item">
+                    <a href="javascript:;" class="nav-link tpl-left-nav-link-list">
+                        <i class="am-icon-table"></i>
+                        <span>{{.Text}}</span>
+                        <i class="am-icon-angle-right tpl-left-nav-more-ico am-fr am-margin-right"></i>
+                    </a>
+                    <ul class="tpl-left-nav-sub-menu">
+                    {{range .Children}}
+                        <li>
+                            <a href="{{.Attributes.Url}}">
+                                <i class="am-icon-angle-right"></i>
+                                <span>{{.Text}}</span>
+                                <i class="am-icon-star tpl-left-nav-content-ico am-fr am-margin-right"></i>
+                            </a>
+                        </li>
+                    {{end}}
+                    </ul>
+                </li>
+            {{end}}
+
+            </ul>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="tpl-content-wrapper">
+        {{/*<ol class="am-breadcrumb">*/}}
+            {{/*<li><a href="" class="am-icon-home">首页</a></li>*/}}
+            {{/*<li class="am-active">用户列表</li>*/}}
+        {{/*</ol>*/}}
+        <div class="tpl-portlet-components">
+            <div class="portlet-title">
+                <div class="caption font-green bold">
+                    <span class=""></span> <a href="/public/index" class="am-icon-home">首页</a>
+                    <span class=""></span>>>> 列表
+                </div>
+                {{/*<div class="tpl-portlet-input tpl-fz-ml">*/}}
+                    {{/*<div class="portlet-input input-small input-inline">*/}}
+                        {{/*<div class="input-icon right">*/}}
+                            {{/*<i class="am-icon-search"></i>*/}}
+                            {{/*<input type="text" class="form-control form-control-solid" placeholder="搜索..."> </div>*/}}
+                    {{/*</div>*/}}
+                {{/*</div>*/}}
+
+
+            </div>
+            <div class="tpl-block">
+                <div class="am-g">
+                    <div class="am-u-sm-12 am-u-md-6">
+                        <div class="am-btn-toolbar">
+                            <div class="am-btn-group am-btn-group-xs">
+                                <button type="button" class="am-btn am-btn-default am-btn-success"><span class="am-icon-plus"></span><a
+                                        href="/admin/power/add">新增</a></button>
+                                {{/*<button type="button" class="am-btn am-btn-default am-btn-secondary"><span class="am-icon-save"></span> 保存</button>*/}}
+                                {{/*<button type="button" class="am-btn am-btn-default am-btn-warning"><span class="am-icon-archive"></span> 审核</button>*/}}
+                                {{/*<button type="button" class="am-btn am-btn-default am-btn-danger"><span class="am-icon-trash-o"></span> 删除</button>*/}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="am-u-sm-12 am-u-md-3">
+                        <div class="am-input-group am-input-group-sm">
+                            <input type="text" class="am-form-field">
+                            <span class="am-input-group-btn">
+            <button class="am-btn  am-btn-default am-btn-success tpl-am-btn-success am-icon-search" type="button"></button>
+          </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="am-g">
+                    <div class="am-u-sm-12">
+                        <form class="am-form">
+                            <table class="am-table am-table-striped am-table-hover table-main">
+                                <thead>
+                                <tr>
+                                    <th class="table-check"><input type="checkbox" class="tpl-table-fz-check"></th>
+                                    <th class="table-id">ID</th>
+                                    <th class="table-title">权限名称</th>
+                                    <th class="table-title">应用</th>
+                                    <th class="table-title">菜单</th>
+                                    <th class="table-type">状态</th>
+                                    <th class="table-date am-hide-sm-only">创建日期</th>
+                                    <th class="table-set">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {{range $a,$b := .powers1}}
+                                <tr  class="initialized parent collapsed expander" id="tr{{$b.Id}}">
+                                    {{if eq $b.Pid 0}}
+                                        <td><span {{if eq $b.Pid 0}} class="expander"{{end}} onclick="first_show({{$b.Id}})" >▶</span>️</td><td>{{$b.Id}}</td><td>{{$b.Powername}}</td><td>{{$b.Controller}}</td><td>{{$b.Action}}</td><td>{{$b.Createtime}}</td><td><div class="am-btn-toolbar"><div class="am-btn-group am-btn-group-xs"><button class="am-btn am-btn-xs am-text-secondary"  style="width: 65.8px;height: 28px"><span class="am-icon-check-square-o"></span>{{if eq $b.Status 2}}<a href="javascript:0">关闭</a></button>{{else}}<a href="javascript:0">开启</a></button>{{end}}</div></div></td></td><td>
+                                    <div class="am-btn-toolbar">
+                                    <div class="am-btn-group am-btn-group-xs">
+                                    <button class="am-btn am-btn-xs am-text-secondary"  style="width: 65.8px;height: 28px;margin-left: 5px"><span class="am-icon-pencil-square-o"></span>
+                                    <a href="/admin/power/edit/{{.Id}}">编辑</a></button>
+                                    <button class="am-btn am-btn-xs am-text-secondary"  style="width: 65.8px;height: 28px"><span class="am-icon-trash-o"></span>
+                                    <a href="/admin/user/del">删除</a></button>
+                                    </div>
+                                    </div>
+                                    </td>
+                                    {{range $c,$d := $.powers2}}
+                                    <tr class="second">
+                                    {{if eq $d.Pid $b.Id}}
+                                        <td><span>▶</span></td><td>{{$d.Id}}</td><td>├--{{$d.Powername}}</td><td>{{$d.Controller}}</td><td>{{$d.Action}}</td><td>{{$d.Createtime}}</td><td><div class="am-btn-toolbar"><div class="am-btn-group am-btn-group-xs"><button class="am-btn am-btn-xs am-text-secondary"  style="width: 65.8px;height: 28px"><span class="am-icon-check-square-o"></span>{{if eq $d.Status 2}}<a href="javascript:0">关闭</a></button>{{else}}<a href="javascript:0">开启</a></button>{{end}}</div></div></td></td><td>
+                                                <div class="am-btn-toolbar">
+                                                    <div class="am-btn-group am-btn-group-xs">
+                                                        <button class="am-btn am-btn-xs am-text-secondary"  style="width: 65.8px;height: 28px;margin-left: 5px"><span class="am-icon-pencil-square-o"></span>
+                                                            <a href="/admin/power/edit/{{.Id}}">编辑</a></button>
+                                                        <button class="am-btn am-btn-xs am-text-secondary"  style="width: 65.8px;height: 28px"><span class="am-icon-trash-o"></span>
+                                                            <a href="/admin/user/del">删除</a></button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            {{end}}
+                                        {{range $e,$f := $.powers3}}
+                                        <tr class="last">
+                                        {{if eq $f.Pid $d.Id}}
+                                            <td>️</td><td>{{$f.Id}}</td><td>└─{{$f.Powername}}</td><td>{{$f.Controller}}</td><td>{{$f.Action}}</td><td>{{$f.Createtime}}</td><td><div class="am-btn-toolbar"><div class="am-btn-group am-btn-group-xs"><button class="am-btn am-btn-xs am-text-secondary"  style="width: 65.8px;height: 28px"><span class="am-icon-check-square-o"></span>{{if eq $f.Status 2}}<a href="javascript:0">关闭</a></button>{{else}}<a href="javascript:0">开启</a></button>{{end}}</div></div></td></td><td>
+                                            <div class="am-btn-toolbar">
+                                                <div class="am-btn-group am-btn-group-xs">
+                                                    <button class="am-btn am-btn-xs am-text-secondary"  style="width: 65.8px;height: 28px;margin-left: 5px"><span class="am-icon-pencil-square-o"></span>
+                                                        <a href="/admin/power/edit/{{.Id}}">编辑</a></button>
+                                                    <button class="am-btn am-btn-xs am-text-secondary"  style="width: 65.8px;height: 28px"><span class="am-icon-trash-o"></span>
+                                                        <a href="/admin/user/del">删除</a></button>
+                                                </div>
+                                            </div>
+                                        </td>
+                                            {{end}}
+                                        </tr>
+
+                                        {{end}}
+                                    </tr>
+                                    {{end}}
+                                    </tr>
+                                    {{end}}
+                                {{end}}
+                                </tbody>
+                            </table>
+                            <div class="am-cf">
+                                <div class="am-cf">
+                                    共 <span class="total"> {{.totals}} </span> 条记录
+									共记 <span class="totalpages">{{.paginator.totalpages}}</span> 页 当前第 {{.paginator.currpage}} 页
+                                    <div class="am-fr">
+                                        <ul class="am-pagination">
+                                            <li><a href="/admin/power/{{.paginator.firstpage}}" class="firstpage">«</a></li>
+										{{range $index,$page := .paginator.pages}}
+                                            <li  {{if eq $.paginator.currpage $page }}class="am-active"{{end}}><a href="/admin/power/{{$page}}">{{$page}}</a></li>
+										{{end}}
+                                            <li><a href="/admin/power/{{.paginator.lastpage}}" class="lastpage">»</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+            <div class="tpl-alert"></div>
+        </div>
+
+
+    </div>
+
+</div>
+
+{{template "../amz/foot.html"}}
+<script>
+
+    $(".lastpage").click(function () {
+        var lastpage = $(".lastpage").parent().html()
+        var url = window.location.href;
+        var arr = url.split("/power/");
+        var totalpages = $(".totalpages").text()
+        if (totalpages == 1) {
+            $(".lastpage").parent().html("<a href='javascript:void(0)' class='lastpage'>»</a>")
+            return  false
+        }
+        if ($.trim(arr[1]) == $.trim(totalpages)) {
+            $(".lastpage").parent().html("<a href='javascript:void(0)' class='lastpage'>»</a>")
+            return  false
+        }
+
+
+    })
+    $(".firstpage").click(function () {
+        var totalpages = $(".totalpages").text()
+        if (totalpages == 1) {
+            $(".firstpage").parent().html("<a href='javascript:void(0)' class='firstpage'>«</a>")
+            return false
+        }
+    })
+    $(document).ready(function(){
+        $(".second").slideUp()
+        $(".last").slideUp()
+    } )
+function first_show(data) {
+    var show= $('.show'+data);
+    // $(".second").show()
+    // $("#tr"+data).show()
+    // show.toggle();
+    $('.second').toggle();
+    $('.last').toggle();
+}
+    
+</script>

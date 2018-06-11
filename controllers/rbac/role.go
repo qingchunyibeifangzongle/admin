@@ -12,7 +12,6 @@ import (
 	"github.com/astaxie/beego/validation"
 	"strings"
 	"strconv"
-	"github.com/astaxie/beego"
 )
 
 type RoleController struct {
@@ -129,10 +128,10 @@ func (this *RoleController) RoleAdds() {
 }
 
 func (this *RoleController) RolePower() {
-	//userinfo := this.GetSession("userinfo")
-	//if userinfo == nil {
-	//	this.Ctx.Redirect(302,"/public/login")
-	//}
+	userinfo := this.GetSession("userinfo")
+	if userinfo == nil {
+		this.Ctx.Redirect(302,"/public/login")
+	}
 	roleid,_ := this.GetInt64(":id")
 	powers1,powers2,powers3:= models.GetPowerlistByRoleId(roleid)
 	//models.GetPowerlistByRoleId(roleid)
@@ -148,6 +147,10 @@ func (this *RoleController) RolePower() {
 	this.TplName = this.GetTemplatetype() + "/rolepower.html"
 }
 func (this *RoleController) RolePowers(){
+	userinfo := this.GetSession("userinfo")
+	if userinfo == nil {
+		this.Ctx.Redirect(302,"/public/login")
+	}
 	powerid := this.GetString("powerid")
 	roleid,_ := this.GetInt64("id")
 	ids := strings.Split(powerid,",")
