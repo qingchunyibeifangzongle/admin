@@ -84,12 +84,6 @@ func Getpowerlist(page int, pageSize int , sort string) (users []orm.Params , co
 	return maps,num
 }
 
-//func GetPowerlistByGroupid(Groupid int64) (nodes []orm.Params, count int64) {
-//	o := orm.NewOrm()
-//	power := new(Power)
-//	count, _ = o.QueryTable(power).Filter(, Groupid).RelatedSel().Values(&nodes)
-//	return nodes, 0
-//}
 //根据role去读取role_power，获取power数据
 func GetPowerlistByRoleId(id int64) (power1 []orm.Params,power2 []orm.Params,power3 []orm.Params) {
 	o := orm.NewOrm()
