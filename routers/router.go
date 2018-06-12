@@ -34,6 +34,8 @@ func init() {
 	beego.Router("admin/role/rolepowers",&rbac.RoleController{},"*:RolePowers")
 	
 	beego.Router("admin/power/?:page",&rbac.PowerController{},"*:Index")
+	beego.Router("admin/power/edit/:id",&rbac.PowerController{},"*:PowerEdit")
+	beego.Router("admin/power/edits",&rbac.PowerController{},"*:PowerEdits")
 	
 	
 }

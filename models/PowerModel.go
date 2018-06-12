@@ -107,3 +107,9 @@ func GetPowerlistByRoleId(id int64) (power1 []orm.Params,power2 []orm.Params,pow
 	}
 	return power1,power2,power3
 }
+
+func GetPowerId(id int64) (powers []orm.Params) {
+	o := orm.NewOrm()
+	o.QueryTable(new(Power)).Filter("Id",id).Values(&powers)
+	return powers
+}
