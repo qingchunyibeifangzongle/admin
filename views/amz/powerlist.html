@@ -107,9 +107,9 @@
                                 </thead>
                                 <tbody>
                                 {{range $a,$b := .powers1}}
-                                <tr  class="initialized parent collapsed expander" id="tr{{$b.Id}}">
+                                <tr class="first" id="first{{$b.Id}}">
                                     {{if eq $b.Pid 0}}
-                                        <td><span {{if eq $b.Pid 0}} class="expander"{{end}} onclick="first_show({{$b.Id}})" >▶</span>️</td><td>{{$b.Id}}</td><td>{{$b.Powername}}</td><td>{{$b.Controller}}</td><td>{{$b.Action}}</td><td>{{$b.Createtime}}</td><td><div class="am-btn-toolbar"><div class="am-btn-group am-btn-group-xs"><button class="am-btn am-btn-xs am-text-secondary"  style="width: 65.8px;height: 28px"><span class="am-icon-check-square-o"></span>{{if eq $b.Status 2}}<a href="javascript:0">关闭</a></button>{{else}}<a href="javascript:0">开启</a></button>{{end}}</div></div></td></td><td>
+                                        <td><span id="firstId" onclick="first_show({{$b.Id}})" >▶</span>️</td><td>{{$b.Id}}</td><td>{{$b.Powername}}</td><td>{{$b.Controller}}</td><td>{{$b.Action}}</td><td>{{$b.Createtime}}</td><td><div class="am-btn-toolbar"><div class="am-btn-group am-btn-group-xs"><button class="am-btn am-btn-xs am-text-secondary"  style="width: 65.8px;height: 28px"><span class="am-icon-check-square-o"></span>{{if eq $b.Status 2}}<a href="javascript:0">关闭</a></button>{{else}}<a href="javascript:0">开启</a></button>{{end}}</div></div></td></td><td>
                                     <div class="am-btn-toolbar">
                                     <div class="am-btn-group am-btn-group-xs">
                                     <button class="am-btn am-btn-xs am-text-secondary"  style="width: 65.8px;height: 28px;margin-left: 5px"><span class="am-icon-pencil-square-o"></span>
@@ -120,9 +120,9 @@
                                     </div>
                                     </td>
                                     {{range $c,$d := $.powers2}}
-                                    <tr class="second">
+                                    <tr class="second" id="second{{$d.Id}}">
                                     {{if eq $d.Pid $b.Id}}
-                                        <td><span>▶</span></td><td>{{$d.Id}}</td><td>├--{{$d.Powername}}</td><td>{{$d.Controller}}</td><td>{{$d.Action}}</td><td>{{$d.Createtime}}</td><td><div class="am-btn-toolbar"><div class="am-btn-group am-btn-group-xs"><button class="am-btn am-btn-xs am-text-secondary"  style="width: 65.8px;height: 28px"><span class="am-icon-check-square-o"></span>{{if eq $d.Status 2}}<a href="javascript:0">关闭</a></button>{{else}}<a href="javascript:0">开启</a></button>{{end}}</div></div></td></td><td>
+                                        <td><span onclick="second_show({{$d.Id}})" >▶</span></td><td >{{$d.Id}}</td><td>├--{{$d.Powername}}</td><td>{{$d.Controller}}</td><td>{{$d.Action}}</td><td>{{$d.Createtime}}</td><td><div class="am-btn-toolbar"><div class="am-btn-group am-btn-group-xs"><button class="am-btn am-btn-xs am-text-secondary"  style="width: 65.8px;height: 28px"><span class="am-icon-check-square-o"></span>{{if eq $d.Status 2}}<a href="javascript:0">关闭</a></button>{{else}}<a href="javascript:0">开启</a></button>{{end}}</div></div></td></td><td>
                                                 <div class="am-btn-toolbar">
                                                     <div class="am-btn-group am-btn-group-xs">
                                                         <button class="am-btn am-btn-xs am-text-secondary"  style="width: 65.8px;height: 28px;margin-left: 5px"><span class="am-icon-pencil-square-o"></span>
@@ -134,7 +134,7 @@
                                             </td>
                                             {{end}}
                                         {{range $e,$f := $.powers3}}
-                                        <tr class="last">
+                                        <tr class="last" id="last{{$f.Id}}">
                                         {{if eq $f.Pid $d.Id}}
                                             <td>️</td><td>{{$f.Id}}</td><td>└─{{$f.Powername}}</td><td>{{$f.Controller}}</td><td>{{$f.Action}}</td><td>{{$f.Createtime}}</td><td><div class="am-btn-toolbar"><div class="am-btn-group am-btn-group-xs"><button class="am-btn am-btn-xs am-text-secondary"  style="width: 65.8px;height: 28px"><span class="am-icon-check-square-o"></span>{{if eq $f.Status 2}}<a href="javascript:0">关闭</a></button>{{else}}<a href="javascript:0">开启</a></button>{{end}}</div></div></td></td><td>
                                             <div class="am-btn-toolbar">
@@ -214,16 +214,18 @@
         }
     })
     $(document).ready(function(){
+        // $(".second").css("display","none")
+        // $(".last").css("display","none")
+        // $(".second").hide()
+        // $(".last").hide()
         $(".second").slideUp()
         $(".last").slideUp()
     } )
 function first_show(data) {
-    var show= $('.show'+data);
-    // $(".second").show()
-    // $("#tr"+data).show()
-    // show.toggle();
-    $('.second').toggle();
-    $('.last').toggle();
+    $(".second").toggle()
+}
+function second_show(data) {
+    $(".last").toggle()
 }
     
 </script>
