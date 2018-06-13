@@ -14,12 +14,12 @@ import (
 type Power struct {
 	Id              int64           `orm:"auto"`
 	//Power_id        int64
-	Controller       string         `orm:"size(100)" form:"Controller" valid:"Required;MaxSize(20);MinSize(6)"`
+	Controller       string         `orm:"size(100)" form:"Controller" valid:"Required;MaxSize(20);MinSize(1)"`
 	Action           string         `orm:"size(100)" form:"Action"  valid:"Required"`
-	Powername       string          `orm:"size(100)" form:"Powername" valid:"Required;MaxSize(20);MinSize(6)"`
+	Powername       string          `orm:"size(100)" form:"Powername" valid:"Required;MaxSize(20);MinSize(1)"`
 	Pid             int             `form:"Pid"  valid:"Required"`
-	Level           int             `orm:"default(2)" form:"Level" valid:"Range(1,2);"`
-	Status          int             `orm:"default(2)" form:"Status" valid:"Range(1,2);"`
+	Level           int             `orm:"default(2)" form:"Level" valid:"Required"`
+	Status          int             `orm:"default(2)" form:"Status" valid:"Required"`
 	Createtime      time.Time       `orm:"type(datetime);auto_now_add"`
 	Updatetime      time.Time       `orm:"null;type(datetime)" form:"-"`
 }

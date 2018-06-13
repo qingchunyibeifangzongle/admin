@@ -11,6 +11,7 @@ import (
 	"github.com/astaxie/beego/orm"
 	"time"
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/validation"
 )
 
 type PowerController struct {
@@ -103,6 +104,13 @@ func (this *PowerController) PowerEdits(){
 	power.Id = powerid
 	power.Updatetime = time.Now()
 	power.Createtime = time.Now()
+	valid := validation.Validation{}
+	valid.Valid(power)
+	switch { // 使用switch方式来判断是否出现错误，如果有错，则打印错误并返回
+	case valid.HasErrors():
+		this.Rsp(false,valid.Errors[0].Key +"    "+ valid.Errors[0].Message)
+		return
+	}
 	if _, err := o.Update(&power); err == nil {
 		this.Rsp(true,"修改成功")
 		return
@@ -141,23 +149,31 @@ func (this *PowerController) PowerAdds() {
 	status,_ := this.GetInt("status")
 	o := orm.NewOrm()
 	power := models.Power{}
+	power1 := models.Power{}
 	if pid == 0 { //顶级
 		power.Level = 1
 		power.Pid = pid
 	}else{
-		power.Id = id
-		o.Read(&power)
-		if power.Level == 1 {
+		power1.Id = id
+		o.Read(&power1)
+		if power1.Level == 1 {
 			power.Level = 2
 		}else {
 			power.Level = 3
 		}
-		power.Pid = int(power.Id)
+		power.Pid = int(power1.Id)
 	}
 	power.Controller = controller
 	power.Action = action
 	power.Status = status
 	power.Powername = powername
+	//valid := validation.Validation{}
+	//valid.Valid(power)
+	//switch { // 使用switch方式来判断是否出现错误，如果有错，则打印错误并返回
+	//case valid.HasErrors():
+	//	this.Rsp(false,valid.Errors[0].Key +"    "+ valid.Errors[0].Message)
+	//	return
+	//}
 	if _, err := o.Insert(&power); err == nil {
 		this.Rsp(true,"添加成功")
 		return

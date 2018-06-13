@@ -11,6 +11,7 @@ import (
 	"github.com/astaxie/beego/orm"
 	"github.com/astaxie/beego"
 	"strconv"
+	//"github.com/astaxie/beego/validation"
 )
 
 type UserController struct {
@@ -66,8 +67,16 @@ func (this *UserController) UserAdds() {
 	o := orm.NewOrm()
 	user := new(models.User)
 	user.Username = username
-	user.Password = models.Pwdhash(password)
 	user.Email = email
+	//user.Password = password
+	//valid := validation.Validation{}
+	//valid.Valid(user)
+	//switch { // 使用switch方式来判断是否出现错误，如果有错，则打印错误并返回
+	//case valid.HasErrors():
+	//	this.Rsp(false,valid.Errors[0].Key +"    "+ valid.Errors[0].Message)
+	//	return
+	//}
+	user.Password = models.Pwdhash(password)
 	num,_ := o.Insert(user)
 	if num == 0 {
 		this.Rsp(false,"用户添加失败！")
@@ -133,7 +142,6 @@ func (this *UserController) UserSwitch(){
 	id,_ := this.GetInt64("id")
 	o := orm.NewOrm()
 	user := models.User{Id:id,Status:status}
-	beego.Info(user)
 	if _, err := o.Update(&user,"Status"); err == nil {
 		this.Rsp(true,"修改成功")
 		return
