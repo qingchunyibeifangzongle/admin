@@ -37,6 +37,7 @@ func (this *RoleController) Index() {
 	this.Data["roles"] = &roles
 	this.Data["paginator"] = res
 	this.Data["totals"] = totalRows
+	this.Data["username"] = userinfo.(models.User).Username
 	this.TplName = this.GetTemplatetype() + "/rolelist.html"
 }
 
@@ -47,8 +48,6 @@ func (this *RoleController) RoleEdit() {
 		this.Ctx.Redirect(302,"/public/login")
 	}
 	roleId,_ := this.GetInt64(":id")
-	//var roleId int
-	//this.Ctx.Input.Bind(&roleId,":id")
 	roles := models.GetRoleId(roleId)
 	tree := this.GetTree()
 	this.Data["tree"] = &tree
@@ -56,6 +55,7 @@ func (this *RoleController) RoleEdit() {
 	this.Data["Status"] = roles.Status
 	this.Data["Id"] = roles.Id
 	this.Data["Remark"] = roles.Remark
+	this.Data["username"] = userinfo.(models.User).Username
 	this.TplName = this.GetTemplatetype() + "/roleedit.html"
 }
 
@@ -94,7 +94,7 @@ func (this *RoleController) RoleAdd() {
 	
 	tree := this.GetTree()
 	this.Data["tree"] = &tree
-	//this.Data["users"] = userinfo
+	this.Data["username"] = userinfo.(models.User).Username
 	this.TplName = this.GetTemplatetype() + "/roleadd.html"
 }
 
@@ -146,6 +146,7 @@ func (this *RoleController) RolePower() {
 	this.Data["powers1"] = &powers1
 	this.Data["powers2"] = &powers2
 	this.Data["powers3"] = &powers3
+	
 	this.TplName = this.GetTemplatetype() + "/rolepower.html"
 }
 func (this *RoleController) RolePowers(){
@@ -169,4 +170,21 @@ func (this *RoleController) RolePowers(){
 	}
 	this.Rsp(true,"修改成功")
 	
+}
+//开关
+func (this *RoleController) RoleSwitch(){
+	userinfo := this.GetSession("userinfo")
+	if userinfo == nil {
+		this.Ctx.Redirect(302,"/public/login")
+	}
+	status,_ := this.GetInt("status")
+	id,_ := this.GetInt64("id")
+	o := orm.NewOrm()
+	role := models.Role{Id:id,Status:status}
+	if _, err := o.Update(&role,"Status"); err == nil {
+		this.Rsp(true,"修改成功")
+		return
+	}
+	this.Rsp(false,"修改失败")
+	return
 }

@@ -18,7 +18,6 @@ type UserController struct {
 }
 
 func (this *UserController) Index ()  {
-	
 	userinfo := this.GetSession("userinfo")
 	if userinfo == nil {
 		this.Ctx.Redirect(302,"/public/login")
@@ -36,6 +35,7 @@ func (this *UserController) Index ()  {
 	this.Data["users"] = &users
 	this.Data["paginator"] = res
 	this.Data["totals"] = totalRows
+	this.Data["username"] = userinfo.(models.User).Username
 	this.TplName = this.GetTemplatetype() + "/userlist.html"
 
 }
@@ -49,12 +49,16 @@ func (this *UserController) UserAdd() {
 	}
 	tree := this.GetTree()
 	this.Data["tree"] = &tree
-	this.Data["users"] = userinfo
+	this.Data["username"] = userinfo.(models.User).Username
 	this.TplName = this.GetTemplatetype() + "/useradd.html"
 }
 
 // user add  now
 func (this *UserController) UserAdds() {
+	userinfo := this.GetSession("userinfo")
+	if userinfo == nil {
+		this.Ctx.Redirect(302,"/public/login")
+	}
 	username := this.GetString("username")
 	password := this.GetString("password")
 	email := this.GetString("email")
@@ -84,13 +88,15 @@ func (this *UserController) UserEdit() {
 	this.Data["username"] = userinfo.(models.User).Username
 	this.Data["email"] = userinfo.(models.User).Email
 	this.Data["id"] = userinfo.(models.User).Id
-	//this.Data["password"] = userinfo.(models.User).Password
-	
 	this.TplName = this.GetTemplatetype() + "/useredit.html"
 }
 
 // user edit now
 func (this *UserController) UserEdits() {
+	userinfo := this.GetSession("userinfo")
+	if userinfo == nil {
+		this.Ctx.Redirect(302,"/public/login")
+	}
 	email := this.GetString("email")
 	username := this.GetString("username")
 	role_id := this.GetString("rolename")
@@ -115,4 +121,23 @@ func (this *UserController) UserEdits() {
 		err = o.Rollback()
 		this.Rsp(false, err.Error())
 	}
+}
+
+//开关
+func (this *UserController) UserSwitch(){
+	userinfo := this.GetSession("userinfo")
+	if userinfo == nil {
+		this.Ctx.Redirect(302,"/public/login")
+	}
+	status,_ := this.GetInt("status")
+	id,_ := this.GetInt64("id")
+	o := orm.NewOrm()
+	user := models.User{Id:id,Status:status}
+	beego.Info(user)
+	if _, err := o.Update(&user,"Status"); err == nil {
+		this.Rsp(true,"修改成功")
+		return
+	}
+	this.Rsp(false,"修改失败")
+	return
 }

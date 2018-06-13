@@ -23,6 +23,7 @@ func init() {
 	beego.Router("admin/user/adds",&rbac.UserController{},"*:UserAdds")
 	beego.Router("admin/user/edit",&rbac.UserController{},"*:UserEdit")
 	beego.Router("admin/user/edits",&rbac.UserController{},"*:UserEdits")
+	beego.Router("admin/user/switch",&rbac.UserController{},"*:UserSwitch")
 	
 	
 	beego.Router("admin/role/?:page",&rbac.RoleController{},"*:Index")
@@ -32,6 +33,8 @@ func init() {
 	beego.Router("admin/role/adds",&rbac.RoleController{},"*:RoleAdds")
 	beego.Router("admin/role/rolepower/:id",&rbac.RoleController{},"*:RolePower")
 	beego.Router("admin/role/rolepowers",&rbac.RoleController{},"*:RolePowers")
+	beego.Router("admin/role/switch",&rbac.RoleController{},"*:RoleSwitch")
+	
 	
 	beego.Router("admin/power/?:page",&rbac.PowerController{},"*:Index")
 	beego.Router("admin/power/edit/:id",&rbac.PowerController{},"*:PowerEdit")
@@ -40,7 +43,6 @@ func init() {
 	beego.Router("admin/power/adds",&rbac.PowerController{},"*:PowerAdds")
 	//开关
 	beego.Router("admin/power/switch",&rbac.PowerController{},"*:PowerSwitch")
-	
 	
 }
 

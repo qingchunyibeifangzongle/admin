@@ -1,13 +1,28 @@
 {{template "../amz/header.html"}}
 
 <body data-type="generalComponents">
+<header class="am-topbar am-topbar-inverse admin-header">
+    <div class="am-topbar-brand">
+        <a href="javascript:;" class="tpl-logo">
+            <img src="/static/assets/i/q.jpg" alt="">
+        </a>
+    </div>
+    <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
 
+    <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
 
+        <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list tpl-header-list">
+            <li class="am-hide-sm-only"><a href="javascript:;" id="admin-fullscreen" class="tpl-header-list-link"><span class="am-icon-arrows-alt"></span> <span class="admin-fullText">开启全屏</span></a></li>
 
-{{template "../amz/body.html"}}
-
-
-
+            <li class="am-dropdown" data-am-dropdown data-am-dropdown-toggle>
+                <a class="am-dropdown-toggle tpl-header-list-link" href="javascript:;">
+                    <span class="tpl-header-list-user-nick">{{.username}}</span><span class="tpl-header-list-user-ico"> <img src="/static/assets//img/user01.png"></span>
+                </a>
+            </li>
+            <li><a href="/public/logout" class="tpl-header-list-link"><span class="am-icon-sign-out tpl-header-list-ico-out-size"></span></a></li>
+        </ul>
+    </div>
+</header>
 <div class="tpl-page-container tpl-page-header-fixed">
 
 
@@ -137,10 +152,10 @@
                                         <div class="am-btn-toolbar">
                                             <div class="am-btn-group am-btn-group-xs">
                                             <button class="am-btn am-btn-xs am-text-secondary"  style="width: 65.8px;height: 28px"><span class="am-icon-check-square-o"></span>
-                                            {{if eq .Status "2"}}
-                                                <a href="javascript:0">关闭</a></button>
+                                            {{if eq .Status "1"}}
+                                                <a href="javascript:0" class="switch">关闭 <input type="hidden" value="{{.Id}}"></a></button>
                                             {{else}}
-                                                <a href="javascript:0">开启</a></button>
+                                                <a href="javascript:0" class="switch">开启 <input type="hidden" value="{{.Id}}"></a></button>
                                             {{end}}
 
                                             </div>
@@ -248,5 +263,29 @@
             $(".firstpage").parent().html("<a href='javascript:void(0)' class='firstpage'>«</a>")
             return false
         }
+    })
+    $(".switch").click(function () {
+        var sw = $(this).text()
+        var id = $(this).find("input").val()
+        var status = null
+        var ws = null
+        if ($.trim(sw) == "关闭") {
+            status = 2
+            ws = '开启'
+        }else{
+            status = 1
+            ws = '关闭'
+        }
+        $.post(
+                "/admin/role/switch",{status:status,id:id},
+                function (res) {
+                    if (res.status) {
+                        $(".switch").text(ws)
+                    } else {
+                        alert(res.info);
+                        return
+                    }
+                }
+        )
     })
 </script>

@@ -28,6 +28,7 @@ func (this *PowerController) Index() {
 	this.Data["powers1"] = &powers1
 	this.Data["powers2"] = &powers2
 	this.Data["powers3"] = &powers3
+	this.Data["username"] = userinfo.(models.User).Username
 	this.TplName = this.GetTemplatetype() + "/powerlist.html"
 }
 
@@ -46,6 +47,7 @@ func (this *PowerController) PowerEdit(){
 	this.Data["powers2"] = &powers2
 	this.Data["powers3"] = &powers3
 	this.Data["powers"] = &powers
+	this.Data["username"] = userinfo.(models.User).Username
 	this.TplName = this.GetTemplatetype() + "/poweredit.html"
 }
 func (this *PowerController) PowerEdits(){
@@ -112,17 +114,17 @@ func (this *PowerController) PowerEdits(){
 }
 //add
 func (this *PowerController) PowerAdd() {
-	//userinfo := this.GetSession("userinfo")
-	//if userinfo == nil {
-	//	this.Ctx.Redirect(302,"/public/login")
-	//}
+	userinfo := this.GetSession("userinfo")
+	if userinfo == nil {
+		this.Ctx.Redirect(302,"/public/login")
+	}
 	tree := this.GetTree()
 	powers1,powers2,powers3 := models.GroupList()
 	this.Data["powers1"] = &powers1
 	this.Data["powers2"] = &powers2
 	this.Data["powers3"] = &powers3
 	this.Data["tree"] = &tree
-	//this.Data["users"] = userinfo
+	this.Data["username"] = userinfo.(models.User).Username
 	this.TplName = this.GetTemplatetype() + "/poweradd.html"
 }
 
