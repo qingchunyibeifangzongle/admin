@@ -27,7 +27,8 @@
                     <ul class="tpl-left-nav-sub-menu">
                     {{range .Children}}
                         <li>
-                            <a href="{{.Attributes.Url}}">
+                            <a href="javascript:void(0)"  class="dianji">
+                                <input type="hidden" id="url" value="{{.Attributes.Url}}">
                                 <i class="am-icon-angle-right"></i>
                                 <span>{{.Text}}</span>
                                 <i class="am-icon-star tpl-left-nav-content-ico am-fr am-margin-right"></i>
@@ -189,6 +190,11 @@
 
 {{template "../amz/foot.html"}}
 <script>
+    $(".dianji").click(function () {
+        var url = $("#url").val()
+        alert(url)
+        return false
+    })
 
     // $(".lastpage").click(function () {
     //     var lastpage = $(".lastpage").parent().html()

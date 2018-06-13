@@ -10,6 +10,7 @@ import (
 	"admin/models"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
+	"time"
 )
 
 type PowerController struct {
@@ -22,7 +23,6 @@ func (this *PowerController) Index() {
 	//	this.Ctx.Redirect(302,"/public/login")
 	//}
 	powers1,powers2,powers3 := models.GroupList()
-	beego.Info(powers1)
 	tree := this.GetTree()
 	this.Data["tree"] = &tree
 	this.Data["powers1"] = &powers1
@@ -63,16 +63,37 @@ func (this *PowerController) PowerEdits(){
 	powerid,_ := this.GetInt64("powerid")
 	status,_ := this.GetInt("status")
 	o := orm.NewOrm()
+	power1 := models.Power{}
+	power2 := models.Power{}
 	power := models.Power{}
-	power.Id = id
-	o.Read(&power)
+	power1.Id = id
+	power2.Id = powerid
+	o.Read(&power1) //选择的
+	o.Read(&power2) //当前的
+	o.Read(&power) //当前的
 	if pid == 0 { //顶级
 		power.Level = 2
-		power.Pid = int(power.Id)
+		power.Pid = int(power1.Id)
 	}else{
-		if power.Level == 2 {
-			power.Level = 3
-			power.Pid = int(power.Id)
+		if id == powerid {
+			power.Level = power1.Level
+			power.Pid = power1.Pid
+		}else {
+			//如果选择的等级大于现在的等级
+			if power1.Level == 1 &&  power2.Level == 1 {
+				power.Level = 2
+			}else if power1.Level == 2 &&  power2.Level == 2 {
+				power.Level = 3
+			}else if power1.Level == 1 && power2.Level == 2 {
+				power.Level = 2
+			}else if power1.Level == 1 && power2.Level == 3 {
+				power.Level = 2
+			}else if power1.Level == 2 && power2.Level == 3 {
+				power.Level = 3
+			}else if power1.Level == 2 && power2.Level == 1 {
+				power.Level = 3
+			}
+			power.Pid = int(power1.Id)
 		}
 	}
 	power.Controller = controller
@@ -80,12 +101,18 @@ func (this *PowerController) PowerEdits(){
 	power.Status = status
 	power.Powername = powername
 	power.Id = powerid
-	if _, err := o.Update(&power); err == nil {
+	power.Updatetime = time.Now()
+	power.Createtime = time.Now()
+	beego.Info(power)
+	if num, err := o.Update(&power); err == nil {
 		this.Rsp(true,"修改成功")
 		return
+	}else{
+		beego.Info(num)
+		this.Rsp(false,"修改失败")
+		return
 	}
-	this.Rsp(false,"修改失败")
-	return
+	
 }
 
 func (this *PowerController) PowerAdd() {
