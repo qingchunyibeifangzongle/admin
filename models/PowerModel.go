@@ -56,6 +56,18 @@ func GroupList() (parents []orm.Params,parent []orm.Params,children []orm.Params
 	qs3.Values(&children,"Id","Controller","Action","Powername","Pid","Level","Createtime","Status")
 	return parents,parent,children
 }
+func GroupLists() (parents []orm.Params,parent []orm.Params,children []orm.Params) {
+	o := orm.NewOrm()
+	power := new(Power)
+	qs1 := o.QueryTable(power).Filter("Level",1).Filter("Status",2)
+	qs2 := o.QueryTable(power).Filter("Level",2).Filter("Status",2)
+	qs3 := o.QueryTable(power).Filter("Level",3).Filter("Status",2)
+	//var groups []orm.Params
+	qs1.Values(&parents,"Id","Controller","Action","Powername","Pid","Level","Createtime","Status")
+	qs2.Values(&parent,"Id","Controller","Action","Powername","Pid","Level","Createtime","Status")
+	qs3.Values(&children,"Id","Controller","Action","Powername","Pid","Level","Createtime","Status")
+	return parents,parent,children
+}
 
 func GroupsList()(groups []orm.Params) {
 	o := orm.NewOrm()

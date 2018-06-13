@@ -8,9 +8,9 @@ package rbac
 import (
 	"admin/controllers/common"
 	"admin/models"
-	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"time"
+	"github.com/astaxie/beego"
 )
 
 type PowerController struct {
@@ -18,10 +18,10 @@ type PowerController struct {
 }
 
 func (this *PowerController) Index() {
-	//userinfo := this.GetSession("userinfo")
-	//if userinfo == nil {
-	//	this.Ctx.Redirect(302,"/public/login")
-	//}
+	userinfo := this.GetSession("userinfo")
+	if userinfo == nil {
+		this.Ctx.Redirect(302,"/public/login")
+	}
 	powers1,powers2,powers3 := models.GroupList()
 	tree := this.GetTree()
 	this.Data["tree"] = &tree
@@ -39,7 +39,7 @@ func (this *PowerController) PowerEdit(){
 	}
 	powerId,_ := this.GetInt64(":id")
 	powers := models.GetPowerId(powerId)
-	powers1,powers2,powers3 := models.GroupList()
+	powers1,powers2,powers3 := models.GroupLists()
 	tree := this.GetTree()
 	this.Data["tree"] = &tree
 	this.Data["powers1"] = &powers1
@@ -57,8 +57,6 @@ func (this *PowerController) PowerEdits(){
 	controller := this.GetString("controller")
 	action := this.GetString("action")
 	pid,_ := this.GetInt("pid")
-	//var lpid int64
-	//lpid = int64(pid)
 	id,_ := this.GetInt64("id")
 	powerid,_ := this.GetInt64("powerid")
 	status,_ := this.GetInt("status")
@@ -103,18 +101,16 @@ func (this *PowerController) PowerEdits(){
 	power.Id = powerid
 	power.Updatetime = time.Now()
 	power.Createtime = time.Now()
-	beego.Info(power)
-	if num, err := o.Update(&power); err == nil {
+	if _, err := o.Update(&power); err == nil {
 		this.Rsp(true,"修改成功")
 		return
 	}else{
-		beego.Info(num)
 		this.Rsp(false,"修改失败")
 		return
 	}
 	
 }
-
+//add
 func (this *PowerController) PowerAdd() {
 	//userinfo := this.GetSession("userinfo")
 	//if userinfo == nil {
@@ -165,5 +161,23 @@ func (this *PowerController) PowerAdds() {
 		return
 	}
 	this.Rsp(false,"添加失败")
+	return
+}
+//开关
+func (this *PowerController) PowerSwitch() {
+	userinfo := this.GetSession("userinfo")
+	if userinfo == nil {
+		this.Ctx.Redirect(302,"/public/login")
+	}
+	status,_ := this.GetInt("status")
+	id,_ := this.GetInt64("id")
+	o := orm.NewOrm()
+	power := models.Power{Id:id,Status:status}
+	beego.Info(power)
+	if _, err := o.Update(&power,"Status"); err == nil {
+		this.Rsp(true,"修改成功")
+		return
+	}
+	this.Rsp(false,"修改失败")
 	return
 }

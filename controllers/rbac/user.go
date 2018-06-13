@@ -9,6 +9,7 @@ import (
 	"admin/controllers/common"
 	"admin/models"
 	"github.com/astaxie/beego/orm"
+	"github.com/astaxie/beego"
 	"strconv"
 )
 
@@ -22,7 +23,7 @@ func (this *UserController) Index ()  {
 	if userinfo == nil {
 		this.Ctx.Redirect(302,"/public/login")
 	}
-	const pageSize = 1
+	pageSize,_ := beego.AppConfig.Int("pagesize")
 	page, _ := this.GetInt(":page")
 	if page == 0 {
 		page = 1

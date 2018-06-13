@@ -9,6 +9,7 @@ import (
 	"admin/controllers/common"
 	"admin/models"
 	"github.com/astaxie/beego/orm"
+	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/validation"
 	"strings"
 	"strconv"
@@ -23,7 +24,8 @@ func (this *RoleController) Index() {
 	if userinfo == nil {
 		this.Ctx.Redirect(302,"/public/login")
 	}
-	const pageSize = 1
+	pageSize,_ := beego.AppConfig.Int("pagesize")
+	
 	page,_ := this.GetInt(":page")
 	if page == 0 {
 		page = 1
@@ -135,7 +137,7 @@ func (this *RoleController) RolePower() {
 	roleid,_ := this.GetInt64(":id")
 	powers1,powers2,powers3:= models.GetPowerlistByRoleId(roleid)
 	//models.GetPowerlistByRoleId(roleid)
-	parents,parent,children := models.GroupList()
+	parents,parent,children := models.GroupLists()
 	tree := this.GetTree()
 	this.Data["tree"] = &tree
 	this.Data["parents"] = &parents

@@ -27,8 +27,7 @@
                     <ul class="tpl-left-nav-sub-menu">
                     {{range .Children}}
                         <li>
-                            <a href="javascript:void(0)"  class="dianji">
-                                <input type="hidden" id="url" value="{{.Attributes.Url}}">
+                            <a href="{{.Attributes.Url}}">
                                 <i class="am-icon-angle-right"></i>
                                 <span>{{.Text}}</span>
                                 <i class="am-icon-star tpl-left-nav-content-ico am-fr am-margin-right"></i>
@@ -56,7 +55,7 @@
             <div class="portlet-title">
                 <div class="caption font-green bold">
                     <span class=""></span> <a href="/public/index" class="am-icon-home">首页</a>
-                    <span class=""></span>>>> 列表
+                    <span class=""></span>>>>权限 列表
                 </div>
                 {{/*<div class="tpl-portlet-input tpl-fz-ml">*/}}
                     {{/*<div class="portlet-input input-small input-inline">*/}}
@@ -110,7 +109,14 @@
                                 {{range $a,$b := .powers1}}
                                 <tr class="first" id="first{{$b.Id}}">
                                     {{if eq $b.Pid 0}}
-                                        <td><span id="firstId" onclick="first_show({{$b.Id}})" >▶</span>️</td><td>{{$b.Id}}</td><td>{{$b.Powername}}</td><td>{{$b.Controller}}</td><td>{{$b.Action}}</td><td>{{$b.Createtime}}</td><td><div class="am-btn-toolbar"><div class="am-btn-group am-btn-group-xs"><button class="am-btn am-btn-xs am-text-secondary"  style="width: 65.8px;height: 28px"><span class="am-icon-check-square-o"></span>{{if eq $b.Status 2}}<a href="javascript:0">关闭</a></button>{{else}}<a href="javascript:0">开启</a></button>{{end}}</div></div></td></td><td>
+                                        <td><span id="firstId" onclick="first_show({{$b.Id}})" >▶</span>️</td><td>{{$b.Id}}</td><td>{{$b.Powername}}</td><td>{{$b.Controller}}</td><td>{{$b.Action}}</td><td>{{$b.Createtime}}</td>
+                                        <td><div class="am-btn-toolbar"><div class="am-btn-group am-btn-group-xs">
+                                    <button class="am-btn am-btn-xs am-text-secondary"  style="width: 65.8px;height: 28px"><span class="am-icon-check-square-o"></span>
+                                    {{if eq $b.Status 1}}
+                                        <a href="javascript:0" class="switch">关闭 <input type="hidden" value="{{$b.Id}}"></a></button>
+                                    {{else}}
+                                        <a href="javascript:0" class="switch">开启 <input type="hidden" value="{{$b.Id}}"></a></a></button>
+                                    {{end}}</div></div></td></td><td>
                                     <div class="am-btn-toolbar">
                                     <div class="am-btn-group am-btn-group-xs">
                                     <button class="am-btn am-btn-xs am-text-secondary"  style="width: 65.8px;height: 28px;margin-left: 5px"><span class="am-icon-pencil-square-o"></span>
@@ -123,7 +129,12 @@
                                     {{range $c,$d := $.powers2}}
                                     <tr class="second" id="second{{$d.Id}}">
                                     {{if eq $d.Pid $b.Id}}
-                                        <td><span onclick="second_show({{$d.Id}})" >▶</span></td><td >{{$d.Id}}</td><td>├--{{$d.Powername}}</td><td>{{$d.Controller}}</td><td>{{$d.Action}}</td><td>{{$d.Createtime}}</td><td><div class="am-btn-toolbar"><div class="am-btn-group am-btn-group-xs"><button class="am-btn am-btn-xs am-text-secondary"  style="width: 65.8px;height: 28px"><span class="am-icon-check-square-o"></span>{{if eq $d.Status 2}}<a href="javascript:0">关闭</a></button>{{else}}<a href="javascript:0">开启</a></button>{{end}}</div></div></td></td><td>
+                                        <td><span onclick="second_show({{$d.Id}})" >▶</span></td><td >{{$d.Id}}</td><td>├--{{$d.Powername}}</td><td>{{$d.Controller}}</td><td>{{$d.Action}}</td><td>{{$d.Createtime}}</td><td><div class="am-btn-toolbar"><div class="am-btn-group am-btn-group-xs"><button class="am-btn am-btn-xs am-text-secondary"  style="width: 65.8px;height: 28px"><span class="am-icon-check-square-o"></span>{{if eq $d.Status 1}}
+                                        <a href="javascript:0" class="switch">关闭 <input type="hidden" value="{{$d.Id}}"></a></button>
+                                    {{else}}
+                                        <a href="javascript:0" class="switch">开启 <input type="hidden" value="{{$d.Id}}"></a></button>
+                                    {{end}}
+                                    </div></div></td></td><td>
                                                 <div class="am-btn-toolbar">
                                                     <div class="am-btn-group am-btn-group-xs">
                                                         <button class="am-btn am-btn-xs am-text-secondary"  style="width: 65.8px;height: 28px;margin-left: 5px"><span class="am-icon-pencil-square-o"></span>
@@ -137,7 +148,12 @@
                                         {{range $e,$f := $.powers3}}
                                         <tr class="last" id="last{{$f.Id}}">
                                         {{if eq $f.Pid $d.Id}}
-                                            <td>️</td><td>{{$f.Id}}</td><td>└─{{$f.Powername}}</td><td>{{$f.Controller}}</td><td>{{$f.Action}}</td><td>{{$f.Createtime}}</td><td><div class="am-btn-toolbar"><div class="am-btn-group am-btn-group-xs"><button class="am-btn am-btn-xs am-text-secondary"  style="width: 65.8px;height: 28px"><span class="am-icon-check-square-o"></span>{{if eq $f.Status 2}}<a href="javascript:0">关闭</a></button>{{else}}<a href="javascript:0">开启</a></button>{{end}}</div></div></td></td><td>
+                                            <td>️</td><td>{{$f.Id}}</td><td>└─{{$f.Powername}}</td><td>{{$f.Controller}}</td><td>{{$f.Action}}</td><td>{{$f.Createtime}}</td><td><div class="am-btn-toolbar"><div class="am-btn-group am-btn-group-xs"><button class="am-btn am-btn-xs am-text-secondary"  style="width: 65.8px;height: 28px"><span class="am-icon-check-square-o"></span>{{if eq $f.Status 1}}
+                                            <a href="javascript:0" class="switch">关闭 <input type="hidden" value="{{$f.Id}}"></a></button>
+                                        {{else}}
+                                            <a href="javascript:0" class="switch">开启 <input type="hidden" value="{{$f.Id}}"></a></button>
+                                        {{end}}
+                                        </div></div></td></td><td>
                                             <div class="am-btn-toolbar">
                                                 <div class="am-btn-group am-btn-group-xs">
                                                     <button class="am-btn am-btn-xs am-text-secondary"  style="width: 65.8px;height: 28px;margin-left: 5px"><span class="am-icon-pencil-square-o"></span>
@@ -190,48 +206,43 @@
 
 {{template "../amz/foot.html"}}
 <script>
-    $(".dianji").click(function () {
-        var url = $("#url").val()
-        alert(url)
-        return false
-    })
-
-    // $(".lastpage").click(function () {
-    //     var lastpage = $(".lastpage").parent().html()
-    //     var url = window.location.href;
-    //     var arr = url.split("/power/");
-    //     var totalpages = $(".totalpages").text()
-    //     if (totalpages == 1) {
-    //         $(".lastpage").parent().html("<a href='javascript:void(0)' class='lastpage'>»</a>")
-    //         return  false
-    //     }
-    //     if ($.trim(arr[1]) == $.trim(totalpages)) {
-    //         $(".lastpage").parent().html("<a href='javascript:void(0)' class='lastpage'>»</a>")
-    //         return  false
-    //     }
-	//
-	//
+    // $(".dianji").click(function () {
+    //     var url = $(this).find("input").val();
+    //     window.location.href = url
     // })
-    // $(".firstpage").click(function () {
-    //     var totalpages = $(".totalpages").text()
-    //     if (totalpages == 1) {
-    //         $(".firstpage").parent().html("<a href='javascript:void(0)' class='firstpage'>«</a>")
-    //         return false
-    //     }
-    // })
-    $(document).ready(function(){
-        // $(".second").css("display","none")
-        // $(".last").css("display","none")
-        // $(".second").hide()
-        // $(".last").hide()
+    $(function(){
+        $(".tpl-left-nav-sub-menu").css("display","block");
         $(".second").slideUp()
         $(".last").slideUp()
-    } )
+    })
 function first_show(data) {
     $(".second").toggle()
 }
 function second_show(data) {
     $(".last").toggle()
 }
-
+$(".switch").click(function () {
+    var sw = $(this).text()
+    var id = $(this).find("input").val()
+    var status = null
+    var ws = null
+    if ($.trim(sw) == "关闭") {
+       status = 2
+        ws = '开启'
+    }else{
+        status = 1
+        ws = '关闭'
+    }
+    $.post(
+        "/admin/power/switch",{status:status,id:id},
+        function (res) {
+            if (res.status) {
+               $(".switch").text(ws)
+            } else {
+                alert(res.info);
+                return
+            }
+        }
+    )
+})
 </script>

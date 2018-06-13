@@ -38,6 +38,8 @@ func init() {
 	beego.Router("admin/power/edits",&rbac.PowerController{},"*:PowerEdits")
 	beego.Router("admin/power/add",&rbac.PowerController{},"*:PowerAdd")
 	beego.Router("admin/power/adds",&rbac.PowerController{},"*:PowerAdds")
+	//开关
+	beego.Router("admin/power/switch",&rbac.PowerController{},"*:PowerSwitch")
 	
 	
 }
