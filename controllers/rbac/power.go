@@ -17,17 +17,10 @@ type PowerController struct {
 }
 
 func (this *PowerController) Index() {
-	userinfo := this.GetSession("userinfo")
-	if userinfo == nil {
-		this.Ctx.Redirect(302,"/public/login")
-	}
-	//const pageSize = 1
-	//page,_ := this.GetInt(":page")
-	//if page == 0 {
-	//	page = 1
+	//userinfo := this.GetSession("userinfo")
+	//if userinfo == nil {
+	//	this.Ctx.Redirect(302,"/public/login")
 	//}
-	//powers , totalRows := models.Getpowerlist(page , pageSize)
-	//res := models.Paginator(page, pageSize, totalRows)
 	powers1,powers2,powers3 := models.GroupList()
 	beego.Info(powers1)
 	tree := this.GetTree()
@@ -35,20 +28,18 @@ func (this *PowerController) Index() {
 	this.Data["powers1"] = &powers1
 	this.Data["powers2"] = &powers2
 	this.Data["powers3"] = &powers3
-	//this.Data["paginator"] = res
-	//this.Data["totals"] = totalRows
 	this.TplName = this.GetTemplatetype() + "/powerlist.html"
 }
 
+// 管理
 func (this *PowerController) PowerEdit(){
-	//userinfo := this.GetSession("userinfo")
-	//if userinfo == nil {
-	//	this.Ctx.Redirect(302,"/public/login")
-	//}
+	userinfo := this.GetSession("userinfo")
+	if userinfo == nil {
+		this.Ctx.Redirect(302,"/public/login")
+	}
 	powerId,_ := this.GetInt64(":id")
 	powers := models.GetPowerId(powerId)
 	powers1,powers2,powers3 := models.GroupList()
-	beego.Info(powers)
 	tree := this.GetTree()
 	this.Data["tree"] = &tree
 	this.Data["powers1"] = &powers1
@@ -58,6 +49,10 @@ func (this *PowerController) PowerEdit(){
 	this.TplName = this.GetTemplatetype() + "/poweredit.html"
 }
 func (this *PowerController) PowerEdits(){
+	userinfo := this.GetSession("userinfo")
+	if userinfo == nil {
+		this.Ctx.Redirect(302,"/public/login")
+	}
 	powername := this.GetString("powername")
 	controller := this.GetString("controller")
 	action := this.GetString("action")
@@ -85,11 +80,63 @@ func (this *PowerController) PowerEdits(){
 	power.Status = status
 	power.Powername = powername
 	power.Id = powerid
-	beego.Info(power)
 	if _, err := o.Update(&power); err == nil {
 		this.Rsp(true,"修改成功")
 		return
 	}
 	this.Rsp(false,"修改失败")
+	return
+}
+
+func (this *PowerController) PowerAdd() {
+	//userinfo := this.GetSession("userinfo")
+	//if userinfo == nil {
+	//	this.Ctx.Redirect(302,"/public/login")
+	//}
+	tree := this.GetTree()
+	powers1,powers2,powers3 := models.GroupList()
+	this.Data["powers1"] = &powers1
+	this.Data["powers2"] = &powers2
+	this.Data["powers3"] = &powers3
+	this.Data["tree"] = &tree
+	//this.Data["users"] = userinfo
+	this.TplName = this.GetTemplatetype() + "/poweradd.html"
+}
+
+func (this *PowerController) PowerAdds() {
+	userinfo := this.GetSession("userinfo")
+	if userinfo == nil {
+		this.Ctx.Redirect(302,"/public/login")
+	}
+	id,_ := this.GetInt64("id")
+	powername := this.GetString("powername")
+	controller := this.GetString("controller")
+	action := this.GetString("action")
+	pid,_ := this.GetInt("pid")
+	status,_ := this.GetInt("status")
+	o := orm.NewOrm()
+	power := models.Power{}
+	if pid == 0 { //顶级
+		power.Level = 1
+		power.Pid = pid
+	}else{
+		power.Id = id
+		o.Read(&power)
+		if power.Level == 1 {
+			power.Level = 2
+		}else {
+			power.Level = 3
+		}
+		power.Pid = int(power.Id)
+	}
+	power.Controller = controller
+	power.Action = action
+	power.Status = status
+	power.Powername = powername
+	if _, err := o.Insert(&power); err == nil {
+		this.Rsp(true,"添加成功")
+		return
+	}
+	this.Rsp(false,"添加失败")
 	return
 }

@@ -100,8 +100,8 @@
                                     <th class="table-title">权限名称</th>
                                     <th class="table-title">应用</th>
                                     <th class="table-title">菜单</th>
-                                    <th class="table-type">状态</th>
                                     <th class="table-date am-hide-sm-only">创建日期</th>
+                                    <th class="table-type">状态</th>
                                     <th class="table-set">操作</th>
                                 </tr>
                                 </thead>
@@ -157,21 +157,21 @@
                                 {{end}}
                                 </tbody>
                             </table>
-                            <div class="am-cf">
-                                <div class="am-cf">
-                                    共 <span class="total"> {{.totals}} </span> 条记录
-									共记 <span class="totalpages">{{.paginator.totalpages}}</span> 页 当前第 {{.paginator.currpage}} 页
-                                    <div class="am-fr">
-                                        <ul class="am-pagination">
-                                            <li><a href="/admin/power/{{.paginator.firstpage}}" class="firstpage">«</a></li>
-										{{range $index,$page := .paginator.pages}}
-                                            <li  {{if eq $.paginator.currpage $page }}class="am-active"{{end}}><a href="/admin/power/{{$page}}">{{$page}}</a></li>
-										{{end}}
-                                            <li><a href="/admin/power/{{.paginator.lastpage}}" class="lastpage">»</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+                            {{/*<div class="am-cf">*/}}
+                                {{/*<div class="am-cf">*/}}
+                                    {{/*共 <span class="total"> {{.totals}} </span> 条记录*/}}
+									{{/*共记 <span class="totalpages">{{.paginator.totalpages}}</span> 页 当前第 {{.paginator.currpage}} 页*/}}
+                                    {{/*<div class="am-fr">*/}}
+                                        {{/*<ul class="am-pagination">*/}}
+                                            {{/*<li><a href="/admin/power/{{.paginator.firstpage}}" class="firstpage">«</a></li>*/}}
+										{{/*{{range $index,$page := .paginator.pages}}*/}}
+                                            {{/*<li  {{if eq $.paginator.currpage $page }}class="am-active"{{end}}><a href="/admin/power/{{$page}}">{{$page}}</a></li>*/}}
+										{{/*{{end}}*/}}
+                                            {{/*<li><a href="/admin/power/{{.paginator.lastpage}}" class="lastpage">»</a></li>*/}}
+                                        {{/*</ul>*/}}
+                                    {{/*</div>*/}}
+                                {{/*</div>*/}}
+                            {{/*</div>*/}}
                             <hr>
 
                         </form>
@@ -190,29 +190,29 @@
 {{template "../amz/foot.html"}}
 <script>
 
-    $(".lastpage").click(function () {
-        var lastpage = $(".lastpage").parent().html()
-        var url = window.location.href;
-        var arr = url.split("/power/");
-        var totalpages = $(".totalpages").text()
-        if (totalpages == 1) {
-            $(".lastpage").parent().html("<a href='javascript:void(0)' class='lastpage'>»</a>")
-            return  false
-        }
-        if ($.trim(arr[1]) == $.trim(totalpages)) {
-            $(".lastpage").parent().html("<a href='javascript:void(0)' class='lastpage'>»</a>")
-            return  false
-        }
-
-
-    })
-    $(".firstpage").click(function () {
-        var totalpages = $(".totalpages").text()
-        if (totalpages == 1) {
-            $(".firstpage").parent().html("<a href='javascript:void(0)' class='firstpage'>«</a>")
-            return false
-        }
-    })
+    // $(".lastpage").click(function () {
+    //     var lastpage = $(".lastpage").parent().html()
+    //     var url = window.location.href;
+    //     var arr = url.split("/power/");
+    //     var totalpages = $(".totalpages").text()
+    //     if (totalpages == 1) {
+    //         $(".lastpage").parent().html("<a href='javascript:void(0)' class='lastpage'>»</a>")
+    //         return  false
+    //     }
+    //     if ($.trim(arr[1]) == $.trim(totalpages)) {
+    //         $(".lastpage").parent().html("<a href='javascript:void(0)' class='lastpage'>»</a>")
+    //         return  false
+    //     }
+	//
+	//
+    // })
+    // $(".firstpage").click(function () {
+    //     var totalpages = $(".totalpages").text()
+    //     if (totalpages == 1) {
+    //         $(".firstpage").parent().html("<a href='javascript:void(0)' class='firstpage'>«</a>")
+    //         return false
+    //     }
+    // })
     $(document).ready(function(){
         // $(".second").css("display","none")
         // $(".last").css("display","none")
@@ -227,5 +227,5 @@ function first_show(data) {
 function second_show(data) {
     $(".last").toggle()
 }
-    
+
 </script>
