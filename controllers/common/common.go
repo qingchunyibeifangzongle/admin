@@ -49,3 +49,9 @@ func (this *CommonController) GetTemplatetype() string {
 	}
 	return templatetype
 }
+
+func init() {
+	
+	//验证权限
+	AccessRegister()
+}

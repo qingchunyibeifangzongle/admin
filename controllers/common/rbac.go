@@ -10,12 +10,81 @@ import (
 	"errors"
 	"strings"
 	"fmt"
+	"github.com/astaxie/beego/context"
+	"strconv"
+	"github.com/astaxie/beego"
 )
 
 type AccessNode struct {
 	Id        int64
 	Controller      string
 	Childrens []*AccessNode
+}
+func AccessRegister(){
+	var Check  = func(ctx *context.Context) {
+		user_auth_type,_ := strconv.Atoi(beego.AppConfig.String("user_auth_type"))
+		rbac_auth_gateway := beego.AppConfig.String("rbac_auth_gateway")
+		var accesslist map[string]bool
+		if user_auth_type > 0 {
+			params := strings.Split(strings.ToLower(strings.Split(ctx.Request.RequestURI,"?")[0]),"/")
+			if CheckAccess(params){
+				userinfo := ctx.Input.Session("userinfo")
+				if userinfo == nil {
+					ctx.Redirect(302, rbac_auth_gateway)
+					return
+				}
+				adminuser := beego.AppConfig.String("rbac_admin_user")
+				if userinfo.(models.User).Username == adminuser {
+					return
+				}
+				if user_auth_type == 1 {
+					listbysession := ctx.Input.Session("accesslist")
+					if listbysession != nil {
+						accesslist = listbysession.(map[string]bool)
+					}
+				} else if user_auth_type == 2 {
+					
+					accesslist, _ = GetAccessList(userinfo.(models.User).Id)
+				}
+				beego.Info(accesslist)
+				ret := AccessDecision(params, accesslist)
+				beego.Info(ret)
+				if !ret {
+					ctx.Output.JSON(&map[string]interface{}{"status": false, "info": "权限不足"}, true, false)
+				}
+			}
+		}
+	}
+	beego.InsertFilter("/*", beego.BeforeRouter, Check)
+}
+//Determine whether need to verify
+func CheckAccess(params []string) bool {
+	if len(params) < 3 {
+		return false
+	}
+	for _, nap := range strings.Split(beego.AppConfig.String("not_auth_package"), ",") {
+		if params[1] == nap {
+			return false
+		}
+	}
+	return true
+}
+
+//To test whether permissions
+func AccessDecision(params []string, accesslist map[string]bool) bool {
+	if CheckAccess(params) {
+		s := fmt.Sprintf("%s/%s/%s", params[1], params[2], params[3])
+		if len(accesslist) < 1 {
+			return false
+		}
+		_, ok := accesslist[s]
+		if ok != false {
+			return true
+		}
+	} else {
+		return true
+	}
+	return false
 }
 
 func GetAccessList(id int64)(map[string]bool ,error){
