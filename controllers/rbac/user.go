@@ -11,7 +11,7 @@ import (
 	"github.com/astaxie/beego/orm"
 	"github.com/astaxie/beego"
 	"strconv"
-	//"github.com/astaxie/beego/validation"
+	"github.com/astaxie/beego/validation"
 )
 
 type UserController struct {
@@ -48,8 +48,10 @@ func (this *UserController) UserAdd() {
 	if userinfo == nil {
 		this.Ctx.Redirect(302,"/public/login")
 	}
+	roles := models.GetRoleAll()
 	tree := this.GetTree()
 	this.Data["tree"] = &tree
+	this.Data["roles"] = &roles
 	this.Data["username"] = userinfo.(models.User).Username
 	this.TplName = this.GetTemplatetype() + "/useradd.html"
 }
@@ -61,26 +63,32 @@ func (this *UserController) UserAdds() {
 		this.Ctx.Redirect(302,"/public/login")
 	}
 	username := this.GetString("username")
+	nickname := this.GetString("nickname")
 	password := this.GetString("password")
 	email := this.GetString("email")
+	status,_ := this.GetInt("status")
+	roleid,_ := this.GetInt64("roleid")
 	
 	o := orm.NewOrm()
 	user := new(models.User)
 	user.Username = username
 	user.Email = email
-	//user.Password = password
-	//valid := validation.Validation{}
-	//valid.Valid(user)
-	//switch { // 使用switch方式来判断是否出现错误，如果有错，则打印错误并返回
-	//case valid.HasErrors():
-	//	this.Rsp(false,valid.Errors[0].Key +"    "+ valid.Errors[0].Message)
-	//	return
-	//}
+	user.Nickname = nickname
+	user.Status = status
+	user.Password = password
+	valid := validation.Validation{}
+	valid.Valid(user)
+	switch { // 使用switch方式来判断是否出现错误，如果有错，则打印错误并返回
+	case valid.HasErrors():
+		this.Rsp(false,valid.Errors[0].Key +"    "+ valid.Errors[0].Message)
+		return
+	}
 	user.Password = models.Pwdhash(password)
-	num,_ := o.Insert(user)
-	if num == 0 {
+	id,err := o.Insert(user)
+	if err != nil {
 		this.Rsp(false,"用户添加失败！")
 	}
+	o.Insert(&models.UserRole{Role_id:roleid,User_id:id})
 	this.Rsp(true,"用户添加成功！")
 }
 

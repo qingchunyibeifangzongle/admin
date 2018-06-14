@@ -9,7 +9,7 @@ import (
 
 type User struct {
 	Id       int64          `orm:"auto"`
-	Username      string    `orm:"unique;size(32)" form:"Username"  valid:"Required;MaxSize(20);MinSize(1)"`
+	Username      string    `orm:"unique;size(32);" form:"Username"  valid:"Required;MaxSize(20);MinSize(1)"`
 	Password      string    `orm:"size(32)" form:"Password"  valid:"Required;MaxSize(20);MinSize(1)"`
 	Nickname      string    `orm:"-" form:"Nickname" valid:"Required;MaxSize(20);MinSize(1)"`
 	Status        int       `orm:"default(2)" form:"Status" valid:"Required;"`

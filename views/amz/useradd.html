@@ -88,7 +88,13 @@
                                 <div class="am-form-group">
                                     <label for="user-password" class="am-u-sm-3 am-form-label">密码 / Passsword</label>
                                     <div class="am-u-sm-9">
-                                        <input type="tel" id="user-password" name="password" placeholder="输入你的密码 / Password">
+                                        <input type="password" id="user-password" name="password" placeholder="输入你的密码 / Password">
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="user-nickname" class="am-u-sm-3 am-form-label">昵称 / Nickname</label>
+                                    <div class="am-u-sm-9">
+                                        <input type="text" id="user-nickname" name="nickname" placeholder="输入你的昵称 / Nickname">
                                     </div>
                                 </div>
 
@@ -99,20 +105,23 @@
                                         <small>邮箱你懂得...</small>
                                     </div>
                                 </div>
-                                {{/*<div class="am-form-group">*/}}
-                                    {{/*<label for="user-status" class="am-u-sm-3 am-form-label">状态</label>*/}}
-                                    {{/*<div class="am-u-sm-9">*/}}
-                                        {{/*<input type="radio" name="status" id="user-status1" placeholder="请选择状态" value="1">   <span style="margin-left: 5px">关闭</span>*/}}
-                                        {{/*<input type="radio" name="status" id="user-status2" placeholder="请选择状态" value="2">    <span style="margin-left: 5px">开启</span>*/}}
-                                    {{/*</div>*/}}
-                                {{/*</div>*/}}
-
-                                {{/*<div class="am-form-group">*/}}
-                                    {{/*<label for="user-weibo" class="am-u-sm-3 am-form-label">微博 / Twitter</label>*/}}
-                                    {{/*<div class="am-u-sm-9">*/}}
-                                        {{/*<input type="text" id="user-weibo" placeholder="输入你的微博 / Twitter">*/}}
-                                    {{/*</div>*/}}
-                                {{/*</div>*/}}
+                                <div class="am-form-group">
+                                    <label for="rolename" class="am-u-sm-3 am-form-label">角色 / Rolename</label>
+                                    <div class="am-u-sm-9">
+                                        <select name="rolename" id="rolename">
+                                        {{range .roles}}
+                                            <option value="{{.Id}}">{{.Rolename}}</option>
+                                        {{end}}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="user-status" class="am-u-sm-3 am-form-label">状态</label>
+                                    <div class="am-u-sm-9">
+                                        <input type="radio" name="status" id="user-status1" placeholder="请选择状态" value="1">   <span style="margin-left: 5px">关闭</span>
+                                        <input type="radio" name="status" id="user-status2" placeholder="请选择状态" checked value="2">    <span style="margin-left: 5px">开启</span>
+                                    </div>
+                                </div>
 
                                 {{/*<div class="am-form-group">*/}}
                                     {{/*<label for="user-intro" class="am-u-sm-3 am-form-label">简介 / Intro</label>*/}}
@@ -149,15 +158,17 @@
 
 {{template "../amz/foot.html"}}
 <script>
-	var URL = "/admin/user/"
+	var URL = "/admin/user"
 	$(".am-btn-primary").click(function () {
         var username = $("#user-name").val()
         var password = $("#user-password").val()
         var email = $("#user-email").val()
-        // var status =  $("input[name='status']:checked").val();
+        var nickname = $("#user-nickname").val()
+        var status =  $("input[name='status']:checked").val();
+        var roleid = $("#rolename").val()
         $.post(
             URL + '/adds',
-			{username:username,password:password,email:email},
+			{username:username,password:password,email:email,nickname:nickname,status:status,roleid:roleid},
 			function (res) {
                 if (res.status) {
                     location.href = URL

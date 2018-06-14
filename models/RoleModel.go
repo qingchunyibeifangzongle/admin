@@ -122,7 +122,7 @@ func Getrolelist(page int, pageSize int) (roles []orm.Params , count int64){
 func GetRoleAll()(roles []orm.Params) {
 	o := orm.NewOrm()
 	role := new(Role)
-	o.QueryTable(role).Values(&roles)
+	o.QueryTable(role).Filter("Status",2).Values(&roles)
 	return roles
 }
 
