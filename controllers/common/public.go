@@ -8,6 +8,7 @@ package common
 import (
 	"github.com/astaxie/beego"
 	"admin/models"
+	"github.com/astaxie/beego/orm"
 )
 
 type MainController struct {
@@ -38,18 +39,15 @@ func (this *MainController) Index() {
 	if userinfo == nil {
 		this.Ctx.Redirect(302, beego.AppConfig.String("rbac_auth_gateway"))
 	}
+	
 	tree := this.GetTree()
-	if this.IsAjax() {
-		this.Data["json"] = &tree
-		this.ServeJSON()
-	} else {
-		//groups := models.GroupList()
-		this.Data["tree"] = &tree
-		this.Data["userinfo"] = userinfo
-		this.TplName = this.GetTemplatetype() + "/index.html"
-	}
-	
-	
+	newRegisterNum := models.NewRegisterPeople()
+	newLoginNum := models.NewLoginNum()
+	this.Data["tree"] = &tree
+	this.Data["userinfo"] = userinfo
+	this.Data["newRegisterNum"] = &newRegisterNum
+	this.Data["newLoginNum"] = &newLoginNum
+	this.TplName = this.GetTemplatetype() + "/index.html"
 }
 
 //登陆
@@ -64,6 +62,8 @@ func (this *MainController) Login()  {
 			this.SetSession("userinfo",user)
 			accessList, _ := GetAccessList(user.Id)
 			this.SetSession("accesslist", accessList)
+			o := orm.NewOrm()
+			o.Insert(&models.LoginLog{Username:username})
 			this.Rsp(true, "登录成功")
 			return
 		} else {

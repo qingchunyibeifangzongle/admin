@@ -119,3 +119,23 @@ func UpdUser(u *User) (int64 ,error) {
 	
 }
 
+//首页第一个展示当日注册人数
+func NewRegisterPeople() (count int64){
+	var users []orm.Params
+	times := time.Now().String()
+	t := string([]byte(times)[:10])
+	sql := "select * from user where createtime like "+"'%"+t+"%'"
+	o := orm.NewOrm()
+	num,_ := o.Raw(sql).Values(&users)
+	return num
+}
+//当日登录次数
+func NewLoginNum() (count int64){
+	var logins []orm.Params
+	times := time.Now().String()
+	t := string([]byte(times)[:10])
+	sql := "select * from login_log where createtime like "+"'%"+t+"%'"
+	o := orm.NewOrm()
+	num,_ := o.Raw(sql).Values(&logins)
+	return num
+}

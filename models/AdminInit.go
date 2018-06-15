@@ -36,6 +36,7 @@ func Syncdb()  {
 	insertUserRole()
 	insertPower()
 	insertRolePower()
+	insertLoginLog()
 	fmt.Println("database init is complete.\nPlease restart the application")
 }
 
@@ -207,4 +208,12 @@ func insertPower() {
 	fmt.Println("insert into power end")
 }
 
+func insertLoginLog() {
+	fmt.Println("insert into login_log ...")
+	u := new(LoginLog)
+	u.Username = "admin"
+	o := orm.NewOrm()
+	o.Insert(u)
+	fmt.Println("insert into login_log end")
+}
 
