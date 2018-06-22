@@ -22,7 +22,7 @@ func (this *CommonController) Rsp(status bool, str string) {
 func (this *CommonController) GetTree() []Tree {
 	powers, _ := models.GetPowerTree(0,1)
 	tree := make([]Tree , len(powers))
-	
+
 	for k,v := range powers {
 		tree[k].Id = v["Id"].(int64)
 		tree[k].Text = v["Powername"].(string)
