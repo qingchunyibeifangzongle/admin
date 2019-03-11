@@ -1,0 +1,183 @@
+{{template "../amz/header.html"}}
+
+<body data-type="generalComponents">
+<header class="am-topbar am-topbar-inverse admin-header">
+    <div class="am-topbar-brand">
+        <a href="javascript:;" class="tpl-logo">
+            <img src="/static/assets/i/q.jpg" alt="">
+        </a>
+    </div>
+    <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
+
+    <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
+
+        <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list tpl-header-list">
+            <li class="am-hide-sm-only"><a href="javascript:;" id="admin-fullscreen" class="tpl-header-list-link"><span class="am-icon-arrows-alt"></span> <span class="admin-fullText">开启全屏</span></a></li>
+
+            <li class="am-dropdown" data-am-dropdown data-am-dropdown-toggle>
+                <a class="am-dropdown-toggle tpl-header-list-link" href="javascript:;">
+                    <span class="tpl-header-list-user-nick">{{.username}}</span><span class="tpl-header-list-user-ico"> <img src="/static/assets//img/user01.png"></span>
+                </a>
+            </li>
+            <li><a href="/public/logout" class="tpl-header-list-link"><span class="am-icon-sign-out tpl-header-list-ico-out-size"></span></a></li>
+        </ul>
+    </div>
+</header>
+<div class="tpl-page-container tpl-page-header-fixed">
+    <div class="tpl-left-nav tpl-left-nav-hover">
+        <div class="tpl-left-nav-title">
+            左侧导航栏展示
+        </div>
+        <div class="tpl-left-nav-list">
+            <ul class="tpl-left-nav-menu">
+            {{range .tree}}
+                <li class="tpl-left-nav-item">
+                    <a href="javascript:;" class="nav-link tpl-left-nav-link-list">
+                        <i class="am-icon-table"></i>
+                        <span>{{.Text}}</span>
+                        <i class="am-icon-angle-right tpl-left-nav-more-ico am-fr am-margin-right"></i>
+                    </a>
+                    <ul class="tpl-left-nav-sub-menu">
+                    {{range .Children}}
+                        <li>
+                            <a href="{{.Attributes.Url}}">
+                                <i class="am-icon-angle-right"></i>
+                                <span>{{.Text}}</span>
+                                <i class="am-icon-star tpl-left-nav-content-ico am-fr am-margin-right"></i>
+                            </a>
+                        </li>
+                    {{end}}
+                    </ul>
+                </li>
+            {{end}}
+
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="tpl-content-wrapper">
+    {{/*<ol class="am-breadcrumb">*/}}
+    {{/*<li><a href="" class="am-icon-home">首页</a></li>*/}}
+    {{/*<li class="am-active">用户列表</li>*/}}
+    {{/*</ol>*/}}
+        <div class="tpl-portlet-components">
+            <div class="portlet-title">
+                <div class="caption font-green bold">
+                    <span class=""></span> <a href="/public/index" class="am-icon-home">首页</a>
+                    <span class=""></span>>>> 分配权限
+                </div>
+            </div>
+            <div class="tpl-block">
+                <div class="am-g">
+                    <div class="am-u-sm-12">
+                        <form class="am-form">
+                            <table class="am-table am-table-striped am-table-hover table-main">
+                                {{range $a,$b :=  .parents}}
+                                <tr class="first">
+                                    <td><input type="checkbox" value="{{$b.Id}}" name="powerid[]" {{range $aa,$bb := $.powers1}}{{if eq $bb.Id $b.Id }} checked {{end}}{{end}} class="parents">{{$b.Powername}}</td>
+                                    {{range $c,$d := $.parent}}
+                                    <tr class="second">
+                                        {{if eq $d.Pid $b.Id}}
+											<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="{{$d.Id}}" name="powerid[]" {{range $cc,$dd := $.powers2}}{{if eq $dd.Id $d.Id }} checked {{end}}{{end}} class="parent">{{$d.Powername}}</td>
+										{{end}}
+                                            {{range $e,$f := $.children}}
+                                            <tr class="last">
+                                                {{if eq $f.Pid $d.Id}}
+                                                     <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="{{$f.Id}}" name="powerid[]"  {{range $ee,$ff := $.powers3}}{{if eq $ff.Id $f.Id }} checked {{end}}{{end}} class="children">{{$f.Powername}}</td>
+                                            </tr>
+                                                {{end}}
+                                            {{end}}
+                                    </tr>
+                                    {{end}}
+                                </tr>
+                                {{end}}
+                                    {{/*<input type="hidden" name="userid" value="{{.userid}}" id="userid">*/}}
+								</tbody>
+                            </table>
+                            <hr>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+                            <div class="am-form-group">
+                                <div class="am-u-sm-9 am-u-sm-push-3">
+                                    <button type="button" class="am-btn am-btn-primary">保存修改</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+</div>
+
+{{template "../amz/foot.html"}}
+<script>
+    var URL = "/admin/role/";
+    $(".am-btn-primary").click(function () {
+        var valArr = new Array();
+        $("input[name='powerid[]']:checked").each(function (i) {
+            valArr[i] = $(this).val();
+        })
+        var id = location.href.split('/rolepower/')[1];
+        var vals = valArr.join(',');
+        $.post(
+                URL + 'rolepowers',
+                {id:id,powerid:vals},
+                function (res) {
+                    if (res.status) {
+                        location.href = URL
+                    } else {
+                        alert(res.info);
+                        return
+                    }
+
+                }
+        )
+    })
+    $(function(){
+        $(".tpl-left-nav-sub-menu").css("display","block");
+    })
+    // $(function () {
+    //     $(".second").hide()
+    //     $(".last").hide()
+    //     $(".first").click(function () {
+    //         $(".second").show("slow")
+    //     });
+    //     $(".second").click(function () {
+    //         $(".last").show("slow")
+    //     })
+    // })
+
+    // $('input[name="powerid[]"]').click(function(){
+    //     //alert(this.checked);
+    //     if($(this).is(':checked')){
+    //         $('input[name="powerid[]"]').each(function(){
+    //             //此处如果用attr，会出现第三次失效的情况
+    //             $(this).prop("checked",true);
+    //         });
+    //     }else{
+    //         $('input[name="powerid[]"]').each(function(){
+    //             $(this).removeAttr("checked",false);
+    //         });
+    //         //$(this).removeAttr("checked");
+    //     }
+	//
+    // });
+</script>

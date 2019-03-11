@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+<ul>
+{{range $a,$b :=  .parents}}
+    <input type="checkbox" name="powerid[]" value="{{$b.Id}}" {{range $aa,$bb := $.powers1}}{{if eq $bb.Id $b.Id }} checked {{end}}{{end}} >{{$b.Powername}}
+    <ul>
+    {{range $c,$d := $.parent}}
+        {{if eq $d.Pid $b.Id}}
+    <input type="checkbox" name="powerid[]" value="{{$d.Id}}" {{range $cc,$dd := $.powers2}}{{if eq $dd.Id $d.Id }} checked {{end}}{{end}}>{{.Powername}}
+        {{end}}
+    <ul>
+        {{range $e,$f := $.children}}
+            {{if eq $f.Pid $d.Id}}
+            {{/*{{if eq .$f.Pid $d.Id}}*/}}
+            <input type="checkbox" name="powerid[]" value="{{$f.Id}}" {{range $ee,$ff := $.powers3}}{{if eq $ff.Id $f.Id }} checked {{end}}{{end}}>{{$f.Powername}}
+            {{end}}
+        {{end}}
+    </ul>
+    {{end}}
+    </ul>
+{{end}}
+</ul>
+{{/*{{range .Categoryjieduan}}*/}}
+    {{/*{{.Id}} {{.Title}} {{.Views}}*/}}
+    {{/*{{range $.Categoryzhuanye}}*/}}
+        {{/*{{.Title}}*/}}
+        {{/*{{range $.Categorychengguo}}*/}}
+            {{/*{{.Title}}*/}}
+        {{/*{{end}}*/}}
+    {{/*{{end}}*/}}
+{{/*{{end}}*/}}
+{{/*<ul>*/}}
+{{/*{{range $a,$b := .groups}}*/}}
+{{/*{{if eq $b.Level 1}}*/}}
+{{/*<input type="checkbox" name="powerid[]" value="{{.Pid}}">{{$b.Powername}}</li>*/}}
+{{/*{{else if eq $b.Level 2}}*/}}
+{{/*<input type="checkbox" name="powerid[]" value="{{.Pid}}">{{$b.Powername}}</li>*/}}
+{{/*<input type="checkbox" name="powerid[]" value="{{.Pid}}">{{$b.Pid}}</li>*/}}
+{{/*<input type="checkbox" name="powerid[]" value="{{.Pid}}">{{$b.Pid}}</li>*/}}
+{{/*{{if eq $b.Pid $b.ParentsId}}*/}}
+{{/*<input type="checkbox" name="powerid[]" value="{{.Pid}}">{{$b.Powername}}</li>*/}}
+{{/*{{end}}*/}}
+{{/*{{end}}*/}}
+{{/*{{end}}*/}}
+{{/*</ul>*/}}
+</body>
+</html>

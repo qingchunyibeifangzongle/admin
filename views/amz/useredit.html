@@ -1,0 +1,199 @@
+{{template "../amz/header.html"}}
+
+<body data-type="generalComponents">
+<header class="am-topbar am-topbar-inverse admin-header">
+    <div class="am-topbar-brand">
+        <a href="javascript:;" class="tpl-logo">
+            <img src="/static/assets/i/q.jpg" alt="">
+        </a>
+    </div>
+    <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
+
+    <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
+
+        <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list tpl-header-list">
+            <li class="am-hide-sm-only"><a href="javascript:;" id="admin-fullscreen" class="tpl-header-list-link"><span class="am-icon-arrows-alt"></span> <span class="admin-fullText">开启全屏</span></a></li>
+
+            <li class="am-dropdown" data-am-dropdown data-am-dropdown-toggle>
+                <a class="am-dropdown-toggle tpl-header-list-link" href="javascript:;">
+                    <span class="tpl-header-list-user-nick">{{.username}}</span><span class="tpl-header-list-user-ico"> <img src="/static/assets//img/user01.png"></span>
+                </a>
+            </li>
+            <li><a href="/public/logout" class="tpl-header-list-link"><span class="am-icon-sign-out tpl-header-list-ico-out-size"></span></a></li>
+        </ul>
+    </div>
+</header>
+<div class="tpl-page-container tpl-page-header-fixed">
+    <div class="tpl-left-nav tpl-left-nav-hover">
+        <div class="tpl-left-nav-title">
+            左侧导航栏展示
+        </div>
+        <div class="tpl-left-nav-list">
+            <ul class="tpl-left-nav-menu">
+            {{range .tree}}
+                <li class="tpl-left-nav-item">
+                    <a href="javascript:;" class="nav-link tpl-left-nav-link-list">
+                        <i class="am-icon-table"></i>
+                        <span>{{.Text}}</span>
+                        <i class="am-icon-angle-right tpl-left-nav-more-ico am-fr am-margin-right"></i>
+                    </a>
+                    <ul class="tpl-left-nav-sub-menu">
+                    {{range .Children}}
+                        <li>
+                            <a href="{{.Attributes.Url}}">
+                                <i class="am-icon-angle-right"></i>
+                                <span>{{.Text}}</span>
+                                <i class="am-icon-star tpl-left-nav-content-ico am-fr am-margin-right"></i>
+                            </a>
+                        </li>
+                    {{end}}
+                    </ul>
+                </li>
+            {{end}}
+
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="tpl-content-wrapper">
+    {{/*<ol class="am-breadcrumb">*/}}
+    {{/*<li><a href="" class="am-icon-home">首页</a></li>*/}}
+    {{/*<li class="am-active">用户列表</li>*/}}
+    {{/*</ol>*/}}
+        <div class="tpl-portlet-components">
+            <div class="portlet-title">
+                <div class="caption font-green bold">
+                    <span class=""></span> <a href="/public/index" class="am-icon-home">首页</a>
+                    <span class=""></span>>>> 用户修改
+                </div>
+            </div>
+            <div class="tpl-block ">
+
+                <div class="am-g tpl-amazeui-form">
+
+
+                    <div class="am-u-sm-12 am-u-md-9">
+                        <form class="am-form am-form-horizontal">
+                            <div class="am-form-group">
+                                <label for="user-name" class="am-u-sm-3 am-form-label">姓名 / Name</label>
+                                <div class="am-u-sm-9">
+                                {{if eq .username  "admin"}}
+                                    <input type="text" id="user-name" disabled name="username"  value="{{.username}}" >                      {{else}}
+                                    <input type="text" id="user-name"  name="username"  value="{{.username}}" >                      {{end}}
+                                    <input type="hidden" id="user-id" name="id" value="{{.id}}" >
+                                </div>
+                            </div>
+                            <div class="am-form-group">
+                                <label for="user-name" class="am-u-sm-3 am-form-label">角色 / Role</label>
+                                <div class="am-u-sm-9">
+                                    <select name="rolename" class="rolename">
+                                        {{range .roles}}
+                                        <option value="{{.Id}}">{{.Rolename}}</option>
+                                        {{end}}
+                                    </select>
+                                </div>
+                            </div>
+
+                            {{/*<div class="am-u-sm-12 am-u-md-3">*/}}
+                                {{/*<div class="am-form-group">*/}}
+                                    {{/*<select data-am-selected="{btnSize: 'sm'}">*/}}
+                                        {{/*<option value="option1">所有类别</option>*/}}
+                                        {{/*<option value="option2">IT业界</option>*/}}
+                                        {{/*<option value="option3">数码产品</option>*/}}
+                                        {{/*<option value="option3">笔记本电脑</option>*/}}
+                                        {{/*<option value="option3">平板电脑</option>*/}}
+                                        {{/*<option value="option3">只能手机</option>*/}}
+                                        {{/*<option value="option3">超极本</option>*/}}
+                                    {{/*</select>*/}}
+                                {{/*</div>*/}}
+                            {{/*</div>*/}}
+
+                            {{/*<div class="am-form-group">*/}}
+                                {{/*<label for="user-password" class="am-u-sm-3 am-form-label">密码 / Passsword</label>*/}}
+                                {{/*<div class="am-u-sm-9">*/}}
+                                    {{/*<input type="tel" id="user-password" name="password" placeholder="{{.Password}}" value="{{.pass}}">*/}}
+                                {{/*</div>*/}}
+                            {{/*</div>*/}}
+
+                            <div class="am-form-group">
+                                <label for="user-email" class="am-u-sm-3 am-form-label">电子邮件 / Email</label>
+                                <div class="am-u-sm-9">
+                                    <input type="email" id="user-email" name="email" value="{{.email}}">
+                                </div>
+                            </div>
+                        {{/*<div class="am-form-group">*/}}
+                        {{/*<label for="user-status" class="am-u-sm-3 am-form-label">状态</label>*/}}
+                        {{/*<div class="am-u-sm-9">*/}}
+                        {{/*<input type="radio" name="status" id="user-status1" placeholder="请选择状态" value="1">   <span style="margin-left: 5px">关闭</span>*/}}
+                        {{/*<input type="radio" name="status" id="user-status2" placeholder="请选择状态" value="2">    <span style="margin-left: 5px">开启</span>*/}}
+                        {{/*</div>*/}}
+                        {{/*</div>*/}}
+
+                        {{/*<div class="am-form-group">*/}}
+                        {{/*<label for="user-weibo" class="am-u-sm-3 am-form-label">微博 / Twitter</label>*/}}
+                        {{/*<div class="am-u-sm-9">*/}}
+                        {{/*<input type="text" id="user-weibo" placeholder="输入你的微博 / Twitter">*/}}
+                        {{/*</div>*/}}
+                        {{/*</div>*/}}
+
+                        {{/*<div class="am-form-group">*/}}
+                        {{/*<label for="user-intro" class="am-u-sm-3 am-form-label">简介 / Intro</label>*/}}
+                        {{/*<div class="am-u-sm-9">*/}}
+                        {{/*<textarea class="" rows="5" id="user-intro" placeholder="输入个人简介"></textarea>*/}}
+                        {{/*<small>250字以内写出你的一生...</small>*/}}
+                        {{/*</div>*/}}
+                        {{/*</div>*/}}
+
+                            <div class="am-form-group">
+                                <div class="am-u-sm-9 am-u-sm-push-3">
+                                    <button type="button" class="am-btn am-btn-primary">保存修改</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+</div>
+
+{{template "../amz/foot.html"}}
+<script>
+    var URL = "/admin/user/"
+    $(".am-btn-primary").click(function () {
+        var id = $("#user-id").val()
+        var username = $("#user-username").val()
+        var rolename = $(".rolename").val()
+        // var password = $("#user-password").val()
+        var email = $("#user-email").val()
+        $.post(
+                URL + '/edits',
+                {id:id,username:username,email:email,rolename:rolename},
+                function (res) {
+                    if (res.status) {
+                        location.href = URL
+                    } else {
+                        alert(res.info);
+                        return
+                    }
+
+                }
+        )
+    })
+    $(function(){
+        $(".tpl-left-nav-sub-menu").css("display","block");
+    })
+</script>

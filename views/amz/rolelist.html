@@ -1,0 +1,291 @@
+{{template "../amz/header.html"}}
+
+<body data-type="generalComponents">
+<header class="am-topbar am-topbar-inverse admin-header">
+    <div class="am-topbar-brand">
+        <a href="javascript:;" class="tpl-logo">
+            <img src="/static/assets/i/q.jpg" alt="">
+        </a>
+    </div>
+    <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
+
+    <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
+
+        <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list tpl-header-list">
+            <li class="am-hide-sm-only"><a href="javascript:;" id="admin-fullscreen" class="tpl-header-list-link"><span class="am-icon-arrows-alt"></span> <span class="admin-fullText">开启全屏</span></a></li>
+
+            <li class="am-dropdown" data-am-dropdown data-am-dropdown-toggle>
+                <a class="am-dropdown-toggle tpl-header-list-link" href="javascript:;">
+                    <span class="tpl-header-list-user-nick">{{.username}}</span><span class="tpl-header-list-user-ico"> <img src="/static/assets//img/user01.png"></span>
+                </a>
+            </li>
+            <li><a href="/public/logout" class="tpl-header-list-link"><span class="am-icon-sign-out tpl-header-list-ico-out-size"></span></a></li>
+        </ul>
+    </div>
+</header>
+<div class="tpl-page-container tpl-page-header-fixed">
+
+
+    <div class="tpl-left-nav tpl-left-nav-hover">
+        <div class="tpl-left-nav-title">
+            左侧导航栏展示
+        </div>
+        <div class="tpl-left-nav-list">
+            <ul class="tpl-left-nav-menu">
+            {{range .tree}}
+                <li class="tpl-left-nav-item">
+                    <a href="javascript:;" class="nav-link tpl-left-nav-link-list">
+                        <i class="am-icon-table"></i>
+                        <span>{{.Text}}</span>
+                        <i class="am-icon-angle-right tpl-left-nav-more-ico am-fr am-margin-right"></i>
+                    </a>
+                    <ul class="tpl-left-nav-sub-menu">
+                    {{range .Children}}
+                        <li>
+                            <a href="{{.Attributes.Url}}">
+                                <i class="am-icon-angle-right"></i>
+                                <span>{{.Text}}</span>
+                                <i class="am-icon-star tpl-left-nav-content-ico am-fr am-margin-right"></i>
+                            </a>
+                        </li>
+                    {{end}}
+                    </ul>
+                </li>
+            {{end}}
+
+            </ul>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="tpl-content-wrapper">
+        {{/*<ol class="am-breadcrumb">*/}}
+            {{/*<li><a href="" class="am-icon-home">首页</a></li>*/}}
+            {{/*<li class="am-active">用户列表</li>*/}}
+        {{/*</ol>*/}}
+        <div class="tpl-portlet-components">
+            <div class="portlet-title">
+                <div class="caption font-green bold">
+                    <span class=""></span> <a href="/public/index" class="am-icon-home">首页</a>
+                    <span class=""></span>>>>角色 列表
+                </div>
+                {{/*<div class="tpl-portlet-input tpl-fz-ml">*/}}
+                    {{/*<div class="portlet-input input-small input-inline">*/}}
+                        {{/*<div class="input-icon right">*/}}
+                            {{/*<i class="am-icon-search"></i>*/}}
+                            {{/*<input type="text" class="form-control form-control-solid" placeholder="搜索..."> </div>*/}}
+                    {{/*</div>*/}}
+                {{/*</div>*/}}
+
+
+            </div>
+            <div class="tpl-block">
+                <div class="am-g">
+                    <div class="am-u-sm-12 am-u-md-6">
+                        <div class="am-btn-toolbar">
+                            <div class="am-btn-group am-btn-group-xs">
+                                <button type="button" class="am-btn am-btn-default am-btn-success"><span class="am-icon-plus"></span><a
+                                        href="/admin/role/add">新增</a></button>
+                                {{/*<button type="button" class="am-btn am-btn-default am-btn-secondary"><span class="am-icon-save"></span> 保存</button>*/}}
+                                {{/*<button type="button" class="am-btn am-btn-default am-btn-warning"><span class="am-icon-archive"></span> 审核</button>*/}}
+                                {{/*<button type="button" class="am-btn am-btn-default am-btn-danger"><span class="am-icon-trash-o"></span> 删除</button>*/}}
+                            </div>
+                        </div>
+                    </div>
+                    {{/*<div class="am-u-sm-12 am-u-md-3">*/}}
+                        {{/*<div class="am-form-group">*/}}
+                            {{/*<select data-am-selected="{btnSize: 'sm'}">*/}}
+                                {{/*<option value="option1">所有类别</option>*/}}
+                                {{/*<option value="option2">IT业界</option>*/}}
+                                {{/*<option value="option3">数码产品</option>*/}}
+                                {{/*<option value="option3">笔记本电脑</option>*/}}
+                                {{/*<option value="option3">平板电脑</option>*/}}
+                                {{/*<option value="option3">只能手机</option>*/}}
+                                {{/*<option value="option3">超极本</option>*/}}
+                            {{/*</select>*/}}
+                        {{/*</div>*/}}
+                    {{/*</div>*/}}
+                    <div class="am-u-sm-12 am-u-md-3">
+                        <div class="am-input-group am-input-group-sm">
+                            <input type="text" class="am-form-field">
+                            <span class="am-input-group-btn">
+            <button class="am-btn  am-btn-default am-btn-success tpl-am-btn-success am-icon-search" type="button"></button>
+          </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="am-g">
+                    <div class="am-u-sm-12">
+                        <form class="am-form">
+                            <table class="am-table am-table-striped am-table-hover table-main">
+                                <thead>
+                                <tr>
+                                    <th class="table-check"><input type="checkbox" class="tpl-table-fz-check"></th>
+                                    <th class="table-id">ID</th>
+                                    <th class="table-title">角色名称</th>
+                                    <th class="table-title">角色描述</th>
+                                    <th class="table-date am-hide-sm-only">创建日期</th>
+                                    <th class="table-date am-hide-sm-only">修改日期</th>
+                                    <th class="table-type">状态</th>
+                                    <th class="table-set">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {{range .roles}}
+                                <tr>
+                                    <td><input type="checkbox"></td>
+                                    <td>{{.Id}}</td>
+                                    <td>{{.Rolename}}</td>
+                                    <td>{{.Remark}}</td>
+                                    <td class="createtime">{{.Createtime}}</td>
+                                    <td class="updatetime">
+										{{if .Updatetime}}
+											{{.Updatetime}}
+										{{else}}
+                                            null
+										{{end}}
+									</td>
+                                    <td>
+                                        <div class="am-btn-toolbar">
+                                            <div class="am-btn-group am-btn-group-xs">
+                                            <button class="am-btn am-btn-xs am-text-secondary"  style="width: 65.8px;height: 28px"><span class="am-icon-check-square-o"></span>
+                                            {{if eq .Status "1"}}
+                                                <a href="javascript:0" class="switch">关闭 <input type="hidden" value="{{.Id}}"></a></button>
+                                            {{else}}
+                                                <a href="javascript:0" class="switch">开启 <input type="hidden" value="{{.Id}}"></a></button>
+                                            {{end}}
+
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="am-btn-toolbar">
+                                            <div class="am-btn-group am-btn-group-xs">
+                                                <button class="am-btn am-btn-xs am-text-secondary"  style="width: 65.8px;height: 28px;margin-left: 5px"><span class="am-icon-pencil-square-o"></span>
+                                                    <a href="/admin/role/edit/{{.Id}}">编辑</a></button>
+                                                <button class="am-btn am-btn-xs am-text-secondary"  style="width: 65.8px;height: 28px;margin-left: 5px;"><span class="am-icon-archive"></span>
+                                                    <a href="/admin/role/rolepower/{{.Id}}">权限</a></button>
+                                                {{/*<button class="am-btn am-btn-xs am-text-secondary"  style="width: 65.8px;height: 28px"><span class="am-icon-trash-o"></span>*/}}
+                                                    {{/*<a href="/admin/user/del">删除</a></button>*/}}
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {{end}}
+                                </tbody>
+                            </table>
+                            <div class="am-cf">
+                                <div class="am-cf">
+                                    共 <span class="total"> {{.totals}} </span> 条记录
+									共记 <span class="totalpages">{{.paginator.totalpages}}</span> 页 当前第 {{.paginator.currpage}} 页
+                                    <div class="am-fr">
+                                        <ul class="am-pagination">
+                                            <li><a href="/admin/role/{{.paginator.firstpage}}" class="firstpage">«</a></li>
+										{{range $index,$page := .paginator.pages}}
+                                            <li  {{if eq $.paginator.currpage $page }}class="am-active"{{end}}><a href="/admin/role/{{$page}}">{{$page}}</a></li>
+										{{end}}
+                                            <li><a href="/admin/role/{{.paginator.lastpage}}" class="lastpage">»</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                                {{/*<div class="am-fr">*/}}
+                                    {{/*<ul class="am-pagination tpl-pagination">*/}}
+                                        {{/*<li class="am-disabled"><a href="#">«</a></li>*/}}
+                                        {{/*<li class="am-active"><a href="#">1</a></li>*/}}
+                                        {{/*<li><a href="#">2</a></li>*/}}
+                                        {{/*<li><a href="#">3</a></li>*/}}
+                                        {{/*<li><a href="#">4</a></li>*/}}
+                                        {{/*<li><a href="#">5</a></li>*/}}
+                                        {{/*<li><a href="#">»</a></li>*/}}
+                                    {{/*</ul>*/}}
+                                {{/*</div>*/}}
+                            <hr>
+
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+            <div class="tpl-alert"></div>
+        </div>
+
+
+    </div>
+
+</div>
+
+{{template "../amz/foot.html"}}
+<script>
+    // $(document).ready(function(){
+    //     $(".createtime").each(function(){
+    //         var createtime = $(this).html()
+    //         create = createtime.substr(0,19);
+    //         $(".createtime").html(create)
+	//
+    //     })
+        // var createtime = $(".createtime").html();
+        // var updatetime = $(".updatetime").html();
+        // create = createtime.substr(0,19);
+        // update = updatetime.substr(0,19);
+        // // $(".createtime").html(date.toLocaleString())
+        // $(".createtime").html(create)
+        // $(".updatetime").html(update)
+
+
+    // })
+    $(function(){
+        $(".tpl-left-nav-sub-menu").css("display","block");
+    })
+    $(".lastpage").click(function () {
+        var lastpage = $(".lastpage").parent().html()
+        var url = window.location.href;
+        var arr = url.split("/role/");
+        var totalpages = $(".totalpages").text()
+        if (totalpages == 1) {
+            $(".lastpage").parent().html("<a href='javascript:void(0)' class='lastpage'>»</a>")
+            return  false
+        }
+        if ($.trim(arr[1]) == $.trim(totalpages)) {
+            $(".lastpage").parent().html("<a href='javascript:void(0)' class='lastpage'>»</a>")
+            return  false
+        }
+
+
+    })
+    $(".firstpage").click(function () {
+        var totalpages = $(".totalpages").text()
+        if (totalpages == 1) {
+            $(".firstpage").parent().html("<a href='javascript:void(0)' class='firstpage'>«</a>")
+            return false
+        }
+    })
+    $(".switch").click(function () {
+        var sw = $(this).text()
+        var id = $(this).find("input").val()
+        var status = null
+        var ws = null
+        if ($.trim(sw) == "关闭") {
+            status = 2
+            ws = '开启'
+        }else{
+            status = 1
+            ws = '关闭'
+        }
+        $.post(
+                "/admin/role/switch",{status:status,id:id},
+                function (res) {
+                    if (res.status) {
+                        $(".switch").text(ws)
+                    } else {
+                        alert(res.info);
+                        return
+                    }
+                }
+        )
+    })
+</script>

@@ -1,0 +1,87 @@
+{{template "../amz/header.html"}}
+
+<body data-type="login">
+
+  <div class="am-g myapp-login">
+	<div class="myapp-login-logo-block  tpl-login-max">
+		<div class="myapp-login-logo-text">
+			<div class="myapp-login-logo-text">
+                My beego admin <br><span> Login</span> <i class="am-icon-skyatlas"></i>
+			</div>
+		</div>
+
+		<div class="login-font">
+			{{/*<i>Log In </i> or <span> Sign Up</span>*/}}
+		</div>
+		<div class="am-u-sm-10 login-am-center">
+			<form class="am-form">
+				{{/*<fieldset>*/}}
+					<div class="am-form-group">
+						<input type="text" class="" name="username" id="doc-ipt-email-1" placeholder="请输入用户名：">
+					</div>
+					<div class="am-form-group">
+						<input type="password" class=""  name="password" id="doc-ipt-pwd-1" placeholder="请输入密码：">
+					</div>
+					{{/*<p><button class="am-btn am-btn-default" disabled="disabled">登录</button></p>*/}}
+					<p><input type="button" class="am-btn am-btn-default"  value="登录" style="background-color: #53d192;font-size: 15px"></p>
+				{{/*</fieldset>*/}}
+			</form>
+		</div>
+	</div>
+</div>
+
+  <script src="/static/assets/js/jquery.min.js"></script>
+  {{/*<script src="/static/assets/js/jquery.js"></script>*/}}
+  <script src="/static/assets/js/jquery-ui.min.js"></script>
+  <script src="/static/assets/js/common.js"></script>
+  {{/*<script src="/static/assets/js/amazeui.min.js"></script>*/}}
+  {{/*<script src="/static/assets/js/app.js"></script>*/}}
+  <script type="text/javascript">
+      var URL="/public"
+      $(function () {
+          $(".am-btn-default").click(function () {
+              var username = $("#doc-ipt-email-1").val();
+              var password = $("#doc-ipt-pwd-1").val();
+              if (username == "") {
+                  alert("null");
+                  $('#doc-ipt-email-1').focus();
+                  return
+              }
+              if (password == "") {
+                  alert("null");
+                  $("#doc-ipt-pwd-1").focus();
+                  return
+              }
+              $.ajax({
+                  type: "post",
+                  url: URL + '/login',
+                  data: {isajax: 1, username: username, password: password},
+                  dataType: 'json',
+                  success: function (r) {
+                      // console.log(r)
+                      // var rs = $.parseJSON( r )
+                      // var rs = JSON.parse(r)
+                      // alert(rs)
+
+                      if (r.status) {
+                          location.href = URL + "/index"
+                      } else {
+                          alert(r.info);
+                          return
+                      }
+
+                  }
+              });
+          });
+		  document.onkeydown = function(e){
+			  var ev = document.all ? window.event : e;
+			  if(ev.keyCode==13) {
+				  $('.am-btn-default').triggerHandler('click');
+			  }
+		  }
+      })
+
+  </script>
+</body>
+
+</html>
