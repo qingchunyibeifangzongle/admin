@@ -8,10 +8,17 @@ package rbac
 import (
 	"admin/controllers/common"
 	"admin/models"
+<<<<<<< HEAD
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"github.com/astaxie/beego/validation"
 	"strconv"
+=======
+	"github.com/astaxie/beego/orm"
+	"github.com/astaxie/beego"
+	"strconv"
+	"github.com/astaxie/beego/validation"
+>>>>>>> 416f0cd1e9133e4ad6ab2023f135e5fd3f1ff301
 )
 
 type UserController struct {
@@ -28,6 +35,10 @@ func (this *UserController) Index ()  {
 	if page == 0 {
 		page = 1
 	}
+<<<<<<< HEAD
+=======
+ 
+>>>>>>> 416f0cd1e9133e4ad6ab2023f135e5fd3f1ff301
 	users , totalRows := models.Getuserlist(page , pageSize)
 	res := models.Paginator(page, pageSize, totalRows)
 	tree := this.GetTree()

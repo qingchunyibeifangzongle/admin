@@ -8,11 +8,19 @@ package rbac
 import (
 	"admin/controllers/common"
 	"admin/models"
+<<<<<<< HEAD
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"github.com/astaxie/beego/validation"
 	"strconv"
 	"strings"
+=======
+	"github.com/astaxie/beego/orm"
+	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/validation"
+	"strings"
+	"strconv"
+>>>>>>> 416f0cd1e9133e4ad6ab2023f135e5fd3f1ff301
 )
 
 type RoleController struct {

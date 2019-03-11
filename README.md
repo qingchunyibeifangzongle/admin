@@ -65,10 +65,13 @@ user_auth_type = 1
 rbac_auth_gateway = /public/login
 #默认模版
 template_type=amz
+<<<<<<< HEAD
 
 
 #分页（自己运行发现出错，Handler crashed with error runtime error: makeslice: len out of range ，然后寻找问题，定位到分页的那，发现没有配置，，，尴尬）
 pagesize=5
+=======
+>>>>>>> 416f0cd1e9133e4ad6ab2023f135e5fd3f1ff301
 ```
 以上配置信息都需要加入admin/conf/app.conf的配置。
 
