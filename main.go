@@ -3,12 +3,10 @@ package main
 import (
 	"admin/models"
 	_ "admin/routers"
+	"fmt"
 	"github.com/astaxie/beego"
 	"mime"
 	"os"
-	//"github.com/astaxie/beego/orm"
-	"fmt"
-	_ "admin/routers"
 )
 
 const VERSION = "0.1.2"
