@@ -1,7 +1,5 @@
 # beego admin
 
-[![Build Status]
-
 基于beego，jquery  ,bootstrap的一个后台管理系统
 
 VERSION = "0.1.1"
