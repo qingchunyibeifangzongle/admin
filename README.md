@@ -1,3 +1,9 @@
+[![Packagist](https://img.shields.io/packagist/dt/babenkoivan/scout-elasticsearch-driver.svg)](https://packagist.org/packages/babenkoivan/scout-elasticsearch-driver)
+[![Build Status](https://travis-ci.com/babenkoivan/scout-elasticsearch-driver.svg?branch=master)](https://travis-ci.com/babenkoivan/scout-elasticsearch-driver)
+[![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/scout-elasticsearch-driver/Lobby)
+[![Donate](https://img.shields.io/badge/donate-PayPal-blue.svg)](https://www.paypal.me/ivanbabenko)
+
+
 # beego admin
 
 基于beego，jquery  ,bootstrap的一个后台管理系统
