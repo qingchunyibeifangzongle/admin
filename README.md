@@ -1,4 +1,4 @@
-# beego admin
+# beego admin . [![Build Status](https://travis-ci.org/qingchunyibeifangzongle/admin.svg?branch=master)](https://travis-ci.org/qingchunyibeifangzongle/admin)
 
 
 
